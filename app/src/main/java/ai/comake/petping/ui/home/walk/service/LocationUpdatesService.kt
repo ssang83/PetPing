@@ -21,7 +21,7 @@ import ai.comake.petping.R
 import ai.comake.petping.data.db.walk.Walk
 import ai.comake.petping.data.vo.AudioGuideItem
 import ai.comake.petping.data.vo.AudioGuideStatus
-import ai.comake.petping.data.vo.WalkAudioGuide
+import ai.comake.petping.data.vo.MyMarkingPoi
 import ai.comake.petping.data.vo.WalkPath
 import ai.comake.petping.google.database.room.walk.WalkRepository
 import ai.comake.petping.ui.home.walk.EndState
@@ -32,6 +32,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.location.Location
+import android.location.LocationManager
 import android.os.*
 import android.util.Log
 import android.widget.RemoteViews
@@ -41,8 +42,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.NaverMap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,7 +65,7 @@ class LocationUpdatesService() : LifecycleService() {
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var mLocationCallback: LocationCallback? = null
     private var mServiceHandler: Handler? = null
-    private var mLocation: Location = Location("")
+    private var mLocation: Location = Location(LocationManager.GPS_PROVIDER)
     private var mContext: Context? = null
     private var mWalkStatus = START
     private var mWalEndState = EndState.FORCE_END
@@ -135,12 +136,15 @@ class LocationUpdatesService() : LifecycleService() {
 
     private fun clearWalkResource() {
         LogUtil.log("TAG", "")
+        localWalkData = Walk()
         _walkTimeSeconds.value = "00:00"
         _isStartWalk.value = false
         _isPauseWalk.value = false
-        _isSystemStopWalk.value = Event(false)
+        _isStopWalkService.value = Event(false)
         _walkDistanceKm.value = "0.000"
         _walkPathList.value = ArrayList()
+        _picturePaths.value = ArrayList()
+        _myMarkingList.value = ArrayList()
         lifecycleScope.coroutineContext.cancelChildren()
     }
 
@@ -276,19 +280,19 @@ class LocationUpdatesService() : LifecycleService() {
     private fun saveAndStopWalk() {
         lifecycleScope.launch(Dispatchers.IO) {
             saveLocalDatabase()
-            _isSystemStopWalk.postValue(Event(true))
+            _isStopWalkService.postValue(Event(true))
         }
         LogUtil.log("TAG", "")
     }
 
     suspend fun saveLocalDatabase() {
-        LogUtil.log("TAG", "mWalEndState ${mWalEndState.ordinal} ")
+//        LogUtil.log("TAG", "mWalEndState ${mWalEndState.ordinal} ")
         localWalkData.path = _walkPathList.value
         localWalkData.endState = mWalEndState.ordinal
-        localWalkData.time = _walkTimeSeconds.value
+        localWalkData.time = elapsedStartMilliSeconds.toHHMMSSFormat()
         localWalkData.walkEndDatetimeMilli = Date().time
         localWalkData.distance = _walkDistanceKm.value.toDouble()
-        localWalkData.pictures = picturePathList
+        localWalkData.pictures = _picturePaths.value
         walkRepository.insert(localWalkData)
     }
 
@@ -305,7 +309,7 @@ class LocationUpdatesService() : LifecycleService() {
     }
 
     private fun onNewLocation(location: Location) {
-        LogUtil.log("TAG", "")
+//        LogUtil.log("TAG", "")
         location?.let {
             mLocation = location
             val walkPath = WalkPath(
@@ -432,7 +436,7 @@ class LocationUpdatesService() : LifecycleService() {
                 checkConditionsForStopWalking()
                 elapsedStartMilliSeconds =
                     ((System.currentTimeMillis() - timerStartTimeMillis) + elapsedPauseMilliSeconds)
-                _walkTimeSeconds.value = elapsedStartMilliSeconds.toHHMMSSFormat()
+                _walkTimeSeconds.value = elapsedStartMilliSeconds.toWalkTimeFormat()
                 delay(1000)
             }
         }
@@ -537,21 +541,26 @@ class LocationUpdatesService() : LifecycleService() {
          */
         private const val NOTIFICATION_ID = 111
 
+        lateinit var naverMapService: NaverMap
+
         var localWalkData = Walk()
         var walkAudioGuideData = AudioGuideItem()
 
-        val picturePathList = ArrayList<String>()
+        var _picturePaths = MutableStateFlow(ArrayList<String>())
 
         val _isStartWalk = MutableStateFlow(false)
         val _isPauseWalk = MutableStateFlow(false)
 
-        val _isSystemStopWalk = MutableLiveData(Event(false))
+        val _isStopWalkService = MutableLiveData(Event(false))
 
         val _cameraZoom = MutableStateFlow(8.0)
         val _walkDistanceKm = MutableStateFlow("0.00")
         val _walkPathList = MutableStateFlow(ArrayList<WalkPath>())
+        val _myMarkingList = MutableStateFlow(ArrayList<MyMarkingPoi>())
+
         val _audioGuideStatus = MutableStateFlow(AudioGuideStatus())
         val _isWithAudioGuide = MutableStateFlow(true)
+        var _lastLocation = Location("")
 
         val _cameraPosition = MutableStateFlow(LatLng(37.566573, 126.978179))
 

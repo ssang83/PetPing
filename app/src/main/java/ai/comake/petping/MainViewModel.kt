@@ -1,8 +1,11 @@
 package ai.comake.petping
 
+import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.AppDataRepository
 import ai.comake.petping.data.vo.AppVersionResponse
+import ai.comake.petping.util.Coroutines
+import ai.comake.petping.util.LogUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,6 +30,14 @@ class MainViewModel @Inject constructor() : ViewModel(
 
     private var _appData = MutableStateFlow<AppVersionResponse.Data.AppUpdateVersion?>(null)
     val appData = _appData.asStateFlow()
+
+    val systemCheckTitle = MutableStateFlow("")
+    val systemCheckDesc = MutableStateFlow("")
+    val systemCheckMode = MutableStateFlow(false)
+
+    // Event
+    private val _eventFlow = MutableEventFlow<MainEvent>()
+    val eventFlow = _eventFlow.asEventFlow()
 
     //    private val _openWidzet = MutableStateFlow<Event<Boolean>>(Event(false))
 //    val openWidzet: StateFlow<Event<Boolean>> = _openWidzet
@@ -62,5 +73,38 @@ class MainViewModel @Inject constructor() : ViewModel(
             }
             is Resource.Failure -> AppConstants.LOGIN_HEADER_IS_VISIBLE = true
         }
+    }
+
+    fun checkAppVersion() = Coroutines.main(this) {
+        val response = appDataRepository.getAppVersion(SAPA_KEY)
+        when (response) {
+            is Resource.Success -> {
+                val data = response.value.data
+                val selectVersion = data.appUpdateVersion.selectUpdateVerAos.replace("[^0-9]".toRegex(), "").toInt()
+                val forceVersion = data.appUpdateVersion.forceUpdateVerAos.replace("[^0-9]".toRegex(), "").toInt()
+                val version = BuildConfig.VERSION_NAME.replace("[^0-9]".toRegex(), "").toInt()
+                LogUtil.log("selectVersion : $selectVersion, forceVersion : $forceVersion")
+
+                val isForcedUpdate = version <= forceVersion
+                val isSelectUpdate = version <= selectVersion
+                if (isForcedUpdate) {
+                    event(MainEvent.ForceUpdate)
+                } else if (isSelectUpdate) {
+                    event(MainEvent.SelectUpdate)
+                } else {
+                    event(MainEvent.SystemCheck)
+                }
+            }
+        }
+    }
+
+    private suspend fun event(event: MainEvent) {
+        _eventFlow.emit(event)
+    }
+
+    sealed class MainEvent {
+        object ForceUpdate : MainEvent()
+        object SelectUpdate : MainEvent()
+        object SystemCheck : MainEvent()
     }
 }

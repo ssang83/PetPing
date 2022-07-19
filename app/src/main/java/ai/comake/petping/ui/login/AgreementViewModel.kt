@@ -1,6 +1,7 @@
 package ai.comake.petping.ui.login
 
 import ai.comake.petping.*
+import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.LoginRepository
 import ai.comake.petping.data.vo.AgreementConfig
@@ -8,7 +9,6 @@ import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.PolicyData
 import ai.comake.petping.util.getErrorBodyConverter
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

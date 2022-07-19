@@ -89,7 +89,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/greyscale_e4_e4_e4"
+                android:background="@color/color_e4e4e4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:visibility="@{viewModel.isScroll == true ? View.VISIBLE : View.GONE, default = gone}"
                 />

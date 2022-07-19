@@ -1,5 +1,8 @@
 package ai.comake.petping
 
+import ai.comake.petping.AppConstants.clientId
+import ai.comake.petping.AppConstants.clientName
+import ai.comake.petping.AppConstants.clientSecret
 import ai.comake.petping.data.preference.Preference
 import ai.comake.petping.data.preference.PreferenceImpl
 import android.app.Application

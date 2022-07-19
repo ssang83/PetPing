@@ -1,24 +1,21 @@
 package ai.comake.petping.ui.login
 
 import ai.comake.petping.*
+import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.LoginRepository
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.NaverData
-import ai.comake.petping.data.vo.NaverResponse
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.getErrorBodyConverter
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.GsonBuilder
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.model.User
-import com.nhn.android.naverlogin.OAuthLogin
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

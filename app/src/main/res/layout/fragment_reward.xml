@@ -175,7 +175,7 @@
                         android:lineSpacingExtra="10dp"
                         android:text="@string/mission_empty"
                         android:textAlignment="center"
-                        android:textColor="@color/greyscale_g_5_bbb"
+                        android:textColor="@color/color_bbbbbb"
                         android:textSize="14dp" />
 
                     <TextView

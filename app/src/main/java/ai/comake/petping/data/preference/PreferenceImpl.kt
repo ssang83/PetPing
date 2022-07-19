@@ -31,6 +31,8 @@ class PreferenceImpl(
     private val PREF_KEY_CLOSE = "CLOSE_POP_UP"
     private val PREF_KEY_LAST_DATE = "LAST_DATE"
     private val PREF_KEY_UUID_KEY = "UUID_KEY"
+    private val PREF_KEY_AUTHORITY_POP_UP = "AUTHORITY_POP_UP"
+    private val PREF_KEY_GUIDE_POP_UP_SHOW = "GUIDE_POP_UP_SHOW"
 
     override fun getUUID(): String {
         return mPref.getString(PREF_KEY_UUID_KEY, "")!!
@@ -145,6 +147,22 @@ class PreferenceImpl(
     override fun isInitialLogin(): Boolean {
         return mPref.getBoolean(PREF_KEY_INITIAL, true)
 
+    }
+
+    override fun getAuthorityPopup(): Boolean {
+        return mPref.getBoolean(PREF_KEY_AUTHORITY_POP_UP, false)
+    }
+
+    override fun setAuthorityPopup(clear: Boolean) {
+        mPref.edit().putBoolean(PREF_KEY_AUTHORITY_POP_UP, clear).apply()
+    }
+
+    override fun getGuidePopupShow() {
+        mPref.getBoolean(PREF_KEY_GUIDE_POP_UP_SHOW, false)
+    }
+
+    override fun setGuidePopupShow() {
+        mPref.edit().putBoolean(PREF_KEY_GUIDE_POP_UP_SHOW, true).apply()
     }
 
     override fun logout() {

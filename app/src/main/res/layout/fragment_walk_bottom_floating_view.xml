@@ -19,6 +19,7 @@
         android:clickable="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/walkStartTrackingLocationButton"
             android:background="@drawable/tracking_location_bg"
             android:layout_width="52dp"
             android:layout_height="52dp"
@@ -33,7 +34,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/walkStartTrackingLocationButton"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:backgroundTint="@android:color/white"
@@ -42,6 +42,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/audioGuideDownloadButton"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/tracking_location_bg"
@@ -56,7 +57,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/audioGuideDownloadButton"
+
                 android:layout_width="19dp"
                 android:layout_height="18dp"
                 android:backgroundTint="@android:color/white"

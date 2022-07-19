@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             "walk" -> {
                 val arg = MenuLink.PetPing("walk")
                 findNavController(R.id.nav_main).navigate(
-                    NavMainDirections.actionMainToHome().setMenulink(arg)
+                    MainFragmentDirections.actionMainToHome().setMenulink(arg)
                 )
             }
         }

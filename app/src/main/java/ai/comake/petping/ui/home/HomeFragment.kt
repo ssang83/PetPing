@@ -1,6 +1,7 @@
 package ai.comake.petping.ui.home
 
 import ai.comake.petping.*
+import ai.comake.petping.AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentHomeBinding
 import ai.comake.petping.util.LogUtil
@@ -13,9 +14,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -33,11 +36,11 @@ class HomeFragment : Fragment() {
     private val homeShareViewModel: HomeShareViewModel by activityViewModels()
     private var navController: NavController? = null
     private var menuIcons = hashMapOf(
-        R.id.dashBoardScreen to R.id.dashBoardScreenIcon,
-        R.id.walkScreen to R.id.walkScreenIcon,
-        R.id.rewardScreen to R.id.rewardScreenIcon,
-        R.id.shopScreen to R.id.shopScreenIcon,
-        R.id.insuranceScreen to R.id.insuranceScreenIcon,
+        R.id.dashBoardScreen to BottomMenu(R.id.dashBoardScreenIcon, R.id.dashBoardScreenTitle),
+        R.id.walkScreen to BottomMenu(R.id.walkScreenIcon, R.id.walkScreenTitle),
+        R.id.rewardScreen to BottomMenu(R.id.rewardScreenIcon, R.id.rewardScreenTitle),
+        R.id.shopScreen to BottomMenu(R.id.shopScreenIcon, R.id.shopScreenTitle),
+        R.id.insuranceScreen to BottomMenu(R.id.insuranceScreenIcon, R.id.insuranceScreenTitle),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,8 +126,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun changeUnSelectedMenuIcon(menuId: Int) {
-        for ((key, value) in menuIcons) {
-            binding.layoutHomeBottomNav.root.findViewById<ImageView>(value).isSelected = key == menuId
+        activity?.let { activity ->
+            for ((key, value) in menuIcons) {
+                val iconId = value.iconId
+                val titleId = value.titleId
+                if (key == menuId) {
+                    binding.layoutHomeBottomNav.root.findViewById<ImageView>(iconId).isSelected =
+                        true
+                    binding.layoutHomeBottomNav.root.findViewById<TextView>(titleId)
+                        .setTextColor(ContextCompat.getColor(activity, R.color.color_ff4857))
+                } else {
+                    binding.layoutHomeBottomNav.root.findViewById<ImageView>(iconId).isSelected =
+                        false
+                    binding.layoutHomeBottomNav.root.findViewById<TextView>(titleId)
+                        .setTextColor(ContextCompat.getColor(activity, R.color.color_444444))
+                }
+            }
         }
     }
 
@@ -280,5 +297,11 @@ class HomeFragment : Fragment() {
 
     companion object {
         const val TAG = "HomeFragment"
+    }
+
+    data class BottomMenu(
+        val iconId: Int = 0,
+        val titleId: Int = 0
+    ) {
     }
 }

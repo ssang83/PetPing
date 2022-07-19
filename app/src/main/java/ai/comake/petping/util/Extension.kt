@@ -126,7 +126,7 @@ fun String.toNumberFormat(): String {
 
 private val onClickCheck = AtomicBoolean(true)
 private val timeChecker = AtomicLong(0L)
-private const val btnDelay = 300L
+private const val btnDelay = 500L
 
 class SafeClickListener(
     private val onSafeClick: (View) -> Unit

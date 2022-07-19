@@ -16,7 +16,7 @@ class WalkablePetRecyclerViewAdapter(
     val walkablePetDialogViewModel: WalkablePetDialogViewModel
 ) :
     ListAdapter<WalkablePet.Pets, WalkablePetRecyclerViewAdapter.ViewHolder>(TaskDiffCallback()) {
-    private var selectedPetIds = ArrayList<Int>()
+    private var selectedPetIds = ArrayList<WalkablePet.Pets>()
 
     init {
         LogUtil.log("TAG", "")
@@ -48,13 +48,13 @@ class WalkablePetRecyclerViewAdapter(
                     notifyDataSetChanged()
                 } else {
                     if (!binding.selCheckbox.isChecked) {
-                        selectedPetIds.add(item.id)
+                        selectedPetIds.add(item)
                     } else {
-                        selectedPetIds.remove(item.id)
+                        selectedPetIds.remove(item)
                     }
 
-                    if(selectedPetIds.size > 5) {
-                        selectedPetIds.remove(item.id)
+                    if (selectedPetIds.size > 5) {
+                        selectedPetIds.remove(item)
                         walkablePetDialogViewModel._isOverPetMaxSize.postValue(Event(true))
                     } else {
                         binding.selCheckbox.isChecked = !binding.selCheckbox.isChecked
@@ -75,9 +75,7 @@ class WalkablePetRecyclerViewAdapter(
 
     private fun addAllSelect() {
         currentList.forEach { item ->
-            if (item.id != -1) {
-                selectedPetIds.add(item.id)
-            }
+            selectedPetIds.add(item)
         }
         walkablePetDialogViewModel._selectedPetIds.postValue(Event(selectedPetIds))
     }

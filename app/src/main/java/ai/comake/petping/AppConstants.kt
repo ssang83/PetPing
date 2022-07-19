@@ -3,6 +3,7 @@ package ai.comake.petping
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
+import android.location.LocationManager
 import android.provider.Settings
 
 object AppConstants {
@@ -30,12 +31,29 @@ object AppConstants {
     var closeMissionPetAlert = false
 
     //기본 위도 경도 좌표 (시청)
-    var defaultLocation = Location("CityHall").apply {
+    var defaultLocation = Location(LocationManager.GPS_PROVIDER).apply {
         latitude = 37.566573
         longitude = 126.978179
     }
 
     var lastLocation = defaultLocation
+
+    //네이버 로그인
+    val clientId = "XMVfweb2d5dFLoz25QM4"
+    val clientSecret = "89mQW9Vkgz"
+    val clientName = "펫핑"
+
+    val SYSTEM_CHECKING_INFO = "system_checking_info"
+    val SYSTEM_CHECKING_INFO_DEV = "system_checking_info_dev"
+
+    //펫핑 기본 도메인
+    val PETPING_URL = BuildConfig.PETPING_DOMAIN
+
+    //인증 토큰
+    val SAPA_KEY = BuildConfig.PETPING_SAPA_KEY
+
+    // 더블클릭 앱 종료 제한시간
+    val DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT = 2000L
 
     @SuppressLint("HardwareIds")
     fun getAndroidId(context: Context): String {

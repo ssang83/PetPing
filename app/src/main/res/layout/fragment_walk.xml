@@ -11,16 +11,20 @@
         <import type="ai.comake.petping.ui.home.walk.WalkBottomUi" />
 
         <variable
+            name="event"
+            type="ai.comake.petping.ui.home.walk.WalkFragment" />
+
+        <variable
             name="viewModel"
             type="ai.comake.petping.ui.home.walk.WalkViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingBottom="56dp"
         android:id="@+id/walkMainView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:paddingBottom="56dp">
 
         <ViewFlipper
             android:id="@+id/walkViewFlipper"
@@ -32,6 +36,7 @@
                 layout="@layout/viewflipper_walk_tracker"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                bind:event="@{event}"
                 bind:viewModel="@{viewModel}" />
 
             <include

@@ -68,4 +68,8 @@ class AppDataRepository @Inject constructor(private val webService: WebService) 
     suspend fun getPingZoneFriends(authKey: String, petId:Int) = safeApiCall {
         webService.getPingZoneFriends(authKey, petId)
     }
+
+    suspend fun getAppVersion(authKey: String) = safeApiCall {
+        webService.getAppVersion(authKey)
+    }
 }

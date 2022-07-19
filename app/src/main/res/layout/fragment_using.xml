@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/empty_using_ping"
-            android:textColor="@color/greyscale_g_5_bbb"
+            android:textColor="@color/color_bbbbbb"
             android:textSize="20dp"
             android:fontFamily="@font/nanum_square_round_b"
             android:visibility="@{viewModel.usingHistoryData.size() == 0 ? View.VISIBLE : View.GONE}"

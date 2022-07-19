@@ -1,9 +1,9 @@
 package ai.comake.petping.data.vo
 
-import ai.comake.petping.util.toHHMMSSFormat
+import ai.comake.petping.util.toWalkTimeFormat
 import android.location.Location
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import java.io.File
 
 data class WalkablePet(
@@ -38,7 +38,7 @@ data class WalkStart(
 ) {
     data class Walk(
         val petIds: List<Int>,
-        val id: Number,
+        val id: Int,
         val memberId: String
     )
 }
@@ -49,21 +49,17 @@ data class WalkFinishRequest(
     val endState: Int,
     val walkPaths: List<WalkPath>,
     val walkEndDatetimeMilli: Long
-) {
-    data class WalkPath(
-        val location: Location,
-        var state: Int,
-        var lat: String,
-        var lng: String
-    )
-}
+)
 
+@Parcelize
 data class WalkFinish(
     var walk: Walk,
     var isMissionAchievement: Boolean,
     var missionReward: Int,
-    var pets: List<Pets>
-) {
+    var pets: List<Pets>,
+    var pictures: List<String>
+) : Parcelable {
+    @Parcelize
     data class Walk(
         var id: Int,
         var distance: Double,
@@ -71,13 +67,13 @@ data class WalkFinish(
         var markingCount: Int,
         var distanceString: String,
         var endState: Int
-    )
-
+    ) : Parcelable
+    @Parcelize
     data class Pets(
         var id: Int,
         var name: String,
         var markingCount: Int
-    )
+    ) : Parcelable
 }
 
 data class WalkRecordingResponseData(
@@ -124,7 +120,7 @@ data class AudioGuideItem(
     var speakerThumbnailFileSeq: Int = 0,
     var listThumbnailFileSeq: Int = 0,
     var description: String = "",
-    var runningTime: Int =  0,
+    var runningTime: Int = 0,
     var title: String = "",
     var createDatetime: Long = 0,
     var tagList: List<String> = emptyList(),
@@ -138,7 +134,7 @@ data class AudioGuideItem(
     var progress: Int? = 0,
     var readyProgress: Boolean = false
 ) {
-    val getRunningTime get() = "소요시간 · ${runningTime.toHHMMSSFormat()}"
+    val getRunningTime get() = "소요시간 · ${runningTime.toWalkTimeFormat()}"
 }
 
 data class AudioGuideStatus(
@@ -158,6 +154,35 @@ data class DownLoadProgress(
     val position: Int = 0
 ) {
 }
+
+@Parcelize
+data class WalkFinishRecord(
+    var walk: Walk,
+    var isMissionAchievement: Boolean,
+    var missionReward: Int,
+    var pets: List<WalkFinishPet>
+) : Parcelable
+
+@Parcelize
+data class WalkFinishPet(
+    var id: Int,
+    var name: String,
+    var markingCount: Int
+) : Parcelable
+
+@Parcelize
+data class Walk(
+    var id: Int,
+    var distance: Double,
+    var realWalkTime: List<Int>,
+    var markingCount: Int,
+    var distanceString: String,
+    var endState: Int
+) : Parcelable
+
+data class WalkPicture(
+    var imageUrl: String = ""
+)
 
 sealed class Download {
     data class Progress(val percent: Int) : Download()

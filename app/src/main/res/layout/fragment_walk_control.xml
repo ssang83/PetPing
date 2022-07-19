@@ -18,11 +18,11 @@
         android:background="@color/white">
 
         <TextView
-            android:text="@{viewModel.walkTimeSeconds}"
             android:id="@+id/walkTimeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:text="@{viewModel.walkTimeSeconds}"
             android:textColor="@color/color_111111"
             android:textSize="26dp"
             app:layout_constraintEnd_toStartOf="@+id/verticalLine1"
@@ -58,9 +58,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:text="@{viewModel.walkDistanceKm}"
             android:textColor="@color/color_111111"
             android:textSize="26dp"
-            android:text="@{viewModel.walkDistanceKm}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/verticalLine1"
             app:layout_constraintTop_toTopOf="parent"
@@ -172,11 +172,12 @@
             android:elevation="6dp"
             android:gravity="center"
             android:outlineProvider="none"
+            android:text="@{String.valueOf(viewModel.pictureCount)}"
             android:textColor="@android:color/white"
             android:textSize="13dp"
+            android:visibility="@{viewModel.pictureCount > 0 ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/walkPhotoButton"
-            app:layout_constraintTop_toTopOf="@+id/walkPhotoButton"
-            tools:text="3" />
+            app:layout_constraintTop_toTopOf="@+id/walkPhotoButton" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/walkStartGroup"

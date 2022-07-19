@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.etc.mission_pet.MissionPetGuideViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_ffffff"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="150dp"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="16dp"
+                    android:text="@string/mission_pet_guide_title"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:gravity="center"
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/img_mission_pet_guide_main"
+                    android:adjustViewBounds="true"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_gravity="center"
+                    app:boldDescText="@{@string/mission_pet_guide_desc1}"
+                    tool:text="매일매일 차곡차곡!"
+                    android:textSize="24dp"
+                    android:textColor="@color/greyscale_9_111"
+                    android:fontFamily="@font/nanum_square_round"
+                    />
+
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/img_reward"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="33dp"
+                    android:layout_gravity="center"
+                    app:boldDescText1="@{@string/mission_pet_guide_desc2}"
+                    tool:text="미션 반려견과 산책하면\n리워드가 적립돼요."
+                    android:lineSpacingExtra="5dp"
+                    android:textAlignment="center"
+                    android:textSize="16dp"
+                    android:textColor="@color/greyscale_8_444"
+                    android:fontFamily="@font/nanum_square_round"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:layout_gravity="center"
+                    app:boldDescText2="@{@string/mission_pet_guide_desc3}"
+                    tool:text="펫핑샵에서 득템!"
+                    android:textSize="24dp"
+                    android:textColor="@color/greyscale_9_111"
+                    android:fontFamily="@font/nanum_square_round"
+                    />
+
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/img_shopping"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="29dp"
+                    android:layout_gravity="center"
+                    app:boldDescText3="@{@string/mission_pet_guide_desc4}"
+                    tool:text="적립한 리워드로\n반려견 웰니스 상품을\n구매할 수 있어요."
+                    android:lineSpacingExtra="5dp"
+                    android:textAlignment="center"
+                    android:textSize="16dp"
+                    android:textColor="@color/greyscale_8_444"
+                    android:fontFamily="@font/nanum_square_round"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/bg_gradient_1"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/btnGoSetting"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/nanum_square_round"
+                android:text="@string/mission_pet_guide_next"
+                android:textColor="@color/greyscale_9_111"
+                android:textSize="16dp"
+                app:onSafeClick="@{view -> viewModel.goToHome()}"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnGoSetting"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/greyscale_9_111"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:text="@string/mission_pet_guide_go_setting"
+            android:textColor="@color/greyscale_1_fff"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:onSafeClick="@{view -> viewModel.goToSetting()}"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

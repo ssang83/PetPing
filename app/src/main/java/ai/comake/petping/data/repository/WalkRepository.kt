@@ -2,9 +2,15 @@ package ai.comake.petping.data.repository
 
 import ai.comake.petping.api.WebService
 import ai.comake.petping.data.repository.base.BaseRepository
+import ai.comake.petping.data.vo.MyMarkingPoi
 import ai.comake.petping.data.vo.WalkFinishRequest
 import ai.comake.petping.data.vo.WalkStartRequest
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.Part
+import retrofit2.http.Path
 import javax.inject.Inject
 
 class WalkRepository @Inject constructor(private val webService: WebService) : BaseRepository() {
@@ -61,4 +67,18 @@ class WalkRepository @Inject constructor(private val webService: WebService) : B
 
     suspend fun downLoadFileUrl(url: String): ResponseBody =
         webService.getDownLoadFileUrl(url)
+
+    suspend fun walkFinishRecord(
+        authKey: String,
+        walkId: Int,
+        review: MultipartBody.Part,
+        file: List<MultipartBody.Part>
+    ) = safeApiCall {
+        webService.walkFinishRecord(authKey, walkId, review, file)
+    }
+
+    suspend fun registerMyMarking(authKey: String, walkId: Int, requestBody: MyMarkingPoi) =
+        safeApiCall {
+            webService.registerMyMarking(authKey, walkId, requestBody)
+        }
 }

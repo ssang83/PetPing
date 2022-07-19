@@ -28,7 +28,7 @@ data class ProfileRequest(
 data class ProfileResponse(
     val result:Boolean,
     val status:Number,
-    val data: ProfileData
+    val data: PetProfile
 )
 
 data class ProfileData(
@@ -50,5 +50,6 @@ data class PetProfile(
     val charBodyColor: Number,
     val recentWalkCountState: Number,
     val noWalkReason: String,
-    val profileImageURL: String
+    val profileImageURL: String,
+    val isMissionPet:Boolean
 )

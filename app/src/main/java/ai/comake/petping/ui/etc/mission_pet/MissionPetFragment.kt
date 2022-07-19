@@ -9,11 +9,13 @@ import ai.comake.petping.util.*
 import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -29,6 +31,17 @@ class MissionPetFragment :
 
     private val viewModel by viewModels<MissionPetViewModel>()
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
+
+    private val args: MissionPetFragmentArgs by navArgs()
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (args.config) {
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(R.id.action_missionPetFragment_to_homeScreen)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,7 +145,17 @@ class MissionPetFragment :
         }
 
         binding.header.btnBack.setSafeOnClickListener {
-            requireActivity().backStack(R.id.nav_main)
+            if (args.config) {
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(R.id.action_missionPetFragment_to_homeScreen)
+            } else {
+                requireActivity().backStack(R.id.nav_main)
+            }
         }
+    }
+
+    override fun onDestroyView() {
+        onBackPressedCallback.remove()
+        super.onDestroyView()
     }
 }

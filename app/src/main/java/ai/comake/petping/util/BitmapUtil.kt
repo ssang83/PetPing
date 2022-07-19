@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.view.View
 import androidx.core.net.toUri
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.io.*
 import kotlin.jvm.Throws
 
@@ -196,4 +197,62 @@ fun getBitmapFromInputStream(
     val outputStream = ByteArrayOutputStream()
     rotatedBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
     return outputStream
+}
+
+fun getResizeBitmap(
+    context: Context,
+    imageFile: String
+): ByteArray? {
+    try {
+        val bitmap = BitmapFactory.decodeFile(imageFile.toUri().path)
+        val width = bitmap.width
+        val height = bitmap.height
+        var fixWidth = width
+        var fixHeight = height
+        val maxWidth = 1024
+        val maxHeight = 1024
+        var rate = 0.0f
+        if (width > height) {
+            rate = maxWidth / width.toFloat()
+            fixWidth = maxWidth
+            fixHeight = (height * rate).toInt()
+        } else if (height > width) {
+            rate = maxHeight / height.toFloat()
+            fixHeight = maxHeight
+            fixWidth = (width * rate).toInt()
+        } else {
+            fixWidth = maxWidth
+            fixHeight = maxHeight
+        }
+        val orientationTag = ExifInterface(imageFile.toUri().path.toString()).getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_NORMAL
+        )
+        val orientation = when (orientationTag) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            else -> 0
+        }
+
+        val matrix = Matrix()
+        matrix.postRotate(orientation.toFloat())
+        matrix.postScale(fixWidth / width.toFloat(), fixHeight / height.toFloat())
+        val rotateBitmap = Bitmap.createBitmap(
+            bitmap,
+            0,
+            0,
+            width,
+            height,
+            matrix,
+            true
+        )
+
+        val outputStream = ByteArrayOutputStream()
+        rotateBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        return outputStream.toByteArray()
+    } catch (e: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(e)
+        return null
+    }
 }

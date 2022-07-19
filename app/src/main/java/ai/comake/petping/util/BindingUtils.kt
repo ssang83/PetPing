@@ -75,6 +75,7 @@ object BindingUtils {
     @JvmStatic
     @BindingAdapter("imageUrl")
     fun setImageUrl(imageView: ImageView, url: String?) {
+        LogUtil.log("TAG","url $url")
         if (!url.isNullOrEmpty()) {
             Glide.with(imageView.context).load(url).centerCrop().into(imageView)
         }
@@ -147,7 +148,7 @@ object BindingUtils {
                     setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.greyscale_g_5_bbb
+                            R.color.color_bbbbbb
                         )
                     )
                     setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
@@ -181,7 +182,7 @@ object BindingUtils {
                     setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.greyscale_g_5_bbb
+                            R.color.color_bbbbbb
                         )
                     )
 
@@ -429,7 +430,7 @@ object BindingUtils {
                 else -> view.setTextColor(
                     ContextCompat.getColor(
                         view.context,
-                        R.color.greyscale_g_5_bbb
+                        R.color.color_bbbbbb
                     )
                 )
             }
@@ -1219,5 +1220,49 @@ object BindingUtils {
     @BindingAdapter("tagText")
     fun setTagText(view: TextView, tag: String) {
         view.text = "#${tag}"
+    }
+
+    @JvmStatic
+    @BindingAdapter("boldDescText")
+    fun setBoldDescText(view: TextView, desc: String) {
+        val ssb = SpannableStringBuilder(desc).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 4, desc.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        view.setText(ssb)
+    }
+
+    @JvmStatic
+    @BindingAdapter("boldDescText1")
+    fun setBoldDescText1(view: TextView, desc: String) {
+        val ssb = SpannableStringBuilder(desc).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 7, desc.length - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        view.setText(ssb)
+    }
+
+    @JvmStatic
+    @BindingAdapter("boldDescText2")
+    fun setBoldDescText2(view: TextView, desc: String) {
+        val ssb = SpannableStringBuilder(desc).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        val ssb1 = SpannableStringBuilder(ssb).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 5, desc.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        view.setText(ssb1)
+    }
+
+    @JvmStatic
+    @BindingAdapter("boldDescText3")
+    fun setBoldDescText3(view: TextView, desc: String) {
+        val ssb = SpannableStringBuilder(desc).apply {
+            setSpan(StyleSpan(Typeface.BOLD), 9, 23, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        view.setText(ssb)
     }
 }

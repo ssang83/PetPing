@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="event"
+            type="ai.comake.petping.ui.home.walk.WalkFragment" />
+
+        <variable
             name="viewModel"
             type="ai.comake.petping.ui.home.walk.WalkViewModel" />
     </data>
@@ -85,6 +89,8 @@
             app:strokeColor="@color/color_111111" />
 
         <TextView
+            android:clickable="true"
+            android:onClick="@{() -> event.onClickNavWalkHistory(viewModel.markingDetail.pet.id)}"
             android:background="@drawable/shape_radius_3_dddddd"
             android:layout_marginBottom="20dp"
             android:textColor="@color/color_111111"

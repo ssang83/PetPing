@@ -15,8 +15,8 @@ import java.io.FileNotFoundException
 fun makeTestLoginBody(): RequestBody {
     return JSONObject().apply {
         put("type", "1")
-        put("email", "jhpark@smallticket.com")
-        put("authWord", "pjh9024!!!")
+        put("email", "jskim@smallticket.com")
+        put("authWord", "qwer1234!")
         put("deviceId", "sadifjiadjf")
         put("snsAuthToken", "")
     }.toString().toRequestBody("application/json".toMediaTypeOrNull())

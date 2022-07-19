@@ -2,7 +2,10 @@ package ai.comake.petping.util
 
 import ai.comake.petping.data.vo.Download
 import android.content.Context
+import android.database.Cursor
 import android.net.Uri
+import android.provider.MediaStore
+import androidx.loader.content.CursorLoader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -102,3 +105,20 @@ fun ResponseBody.downloadToFileWithProgress(
     }
         .flowOn(Dispatchers.IO)
         .distinctUntilChanged()
+
+
+fun getFileFromURI(uri: Uri, context: Context): String? {
+    var result: String? = null
+    try {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(context, uri, proj, null, null, null)
+        val cursor: Cursor? = loader.loadInBackground()
+        val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor?.moveToFirst()
+        result = cursor?.getString(columnIndex!!)
+        cursor?.close()
+    } catch (e: Exception) {
+        return null
+    }
+    return result
+}

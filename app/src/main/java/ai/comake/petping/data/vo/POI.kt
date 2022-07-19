@@ -1,7 +1,5 @@
 package ai.comake.petping.data.vo
 
-import android.os.Parcelable
-
 data class MarkingPoi(
     val clusteredCount: Int,
     val clusteredId: Int,
@@ -28,6 +26,13 @@ data class PlacePoi(
         val lng: String
     )
 }
+
+data class MyMarkingPoi(
+    val petId: Int,
+    val type: Int,
+    val lat: String,
+    val lng: String
+)
 
 data class MarkingDetail(
     val marking: Marking?,

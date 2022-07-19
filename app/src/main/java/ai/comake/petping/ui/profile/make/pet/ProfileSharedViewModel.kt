@@ -46,12 +46,14 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
     val weight = MutableLiveData<String>().apply { value = "" }
     val imageSrc = MutableLiveData<String>().apply { value = "" }
 
+    // Event
     val uiState = MutableLiveData<Event<UiState>>()
     val moveToSecond = MutableLiveData<Event<Unit>>()
     val moveToLast = MutableLiveData<Event<Unit>>()
     val birthErrorUI = MutableLiveData<Event<String>>()
     val moveToFirst = MutableLiveData<Event<Unit>>()
     val moveToHome = MutableLiveData<Event<Unit>>()
+    val moveToMissionPet = MutableLiveData<Event<Unit>>()
     val imagePick = MutableLiveData<Event<Unit>>()
     val breedUpdate = MutableLiveData<Event<Unit>>()
     val clickBreed = MutableLiveData<Event<String>>()
@@ -178,7 +180,11 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
             is Resource.Success -> {
                 uiState.emit(UiState.Success)
                 resetLiveData()
-                moveToHome.emit()
+                if (response.value.data.isMissionPet.not()) {
+                    moveToMissionPet.emit()
+                } else {
+                    moveToHome.emit()
+                }
             }
             else -> uiState.emit(UiState.Failure(null))
         }

@@ -10,6 +10,10 @@
         <import type="ai.comake.petping.ui.home.walk.WalkBottomUi" />
 
         <variable
+            name="event"
+            type="ai.comake.petping.ui.home.walk.WalkFragment" />
+
+        <variable
             name="viewModel"
             type="ai.comake.petping.ui.home.walk.WalkViewModel" />
     </data>
@@ -146,13 +150,14 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <include
+                android:id="@+id/bottomFloatingView"
+                layout="@layout/fragment_walk_bottom_floating_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="@{viewModel.isStartWalk ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toTopOf="@+id/bottomPOIView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/bottomFloatingView"
-                layout="@layout/fragment_walk_bottom_floating_view" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bottomPOIView"
@@ -182,6 +187,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    bind:event="@{event}"
                     bind:viewModel="@{viewModel}" />
 
                 <include

@@ -2,6 +2,7 @@ package ai.comake.petping.ui.history
 
 import ai.comake.petping.R
 import ai.comake.petping.databinding.FragmentWalkRecordAttachBinding
+import ai.comake.petping.ui.home.HomeFragmentArgs
 import ai.comake.petping.util.LogUtil
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

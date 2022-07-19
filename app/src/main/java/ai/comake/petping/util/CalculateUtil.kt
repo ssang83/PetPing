@@ -20,7 +20,7 @@ fun List<WalkPath>.calculateWalkDistance(): Float {
     return ret / 1000.0f
 }
 
-fun Long.toHHMMSSFormat(): String {
+fun Long.toWalkTimeFormat(): String {
     val diff = this
 
     val seconds = (diff / 1000) % 60
@@ -31,6 +31,14 @@ fun Long.toHHMMSSFormat(): String {
         diff >= 18000000 -> "05:00:00"
         else -> "%02d:%02d:%02d".format(hours, minutes, seconds)
     }
+}
+
+fun Long.toHHMMSSFormat(): String {
+    val diff = this
+    val seconds = (diff / 1000) % 60
+    val minutes = (diff / (60 * 1000)) % 60
+    val hours = (diff / (60 * 60 * 1000)) % 24
+    return "%02d:%02d:%02d".format(hours, minutes, seconds)
 }
 
 //산책중 움직임이 없는 시점
@@ -64,8 +72,9 @@ fun hasOverTimePassedSinceTheStopWalk(walkPathList: List<WalkPath>, walkTime: Lo
 
 //제한속도 초과
 fun hasOverWalkSpeed(walkPathList: List<WalkPath>): Boolean {
-    if (walkPathList.size >= 5) {
-        val checkOverSpeed = walkPathList.zipWithNext { startPoint, endPoint ->
+    val copyList = walkPathList
+    if (copyList.size >= 5) {
+        val checkOverSpeed = copyList.zipWithNext { startPoint, endPoint ->
             val distance = endPoint.location.distanceTo(startPoint.location)
             val time =
                 TimeUnit.MILLISECONDS.toSeconds(endPoint.location.time - startPoint.location.time)

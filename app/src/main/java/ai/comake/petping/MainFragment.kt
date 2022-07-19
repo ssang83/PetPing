@@ -2,8 +2,13 @@ package ai.comake.petping
 
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentMainBinding
+import ai.comake.petping.ui.common.dialog.DoubleBtnDialog
+import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.repeatOnStarted
 import ai.comake.petping.util.updateDarkStatusBar
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,10 +36,20 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.window?.let { updateDarkStatusBar(it) }
+        requireActivity().window.let { updateDarkStatusBar(it) }
         setUpObserver()
-        viewModel.testLogin()
         checkMenuDirection()
+        initAppConstant()
+
+        with(viewModel) {
+
+            checkAppVersion()
+
+            repeatOnStarted {
+                eventFlow.collect { event -> handleEvent(event) }
+            }
+        }
+
         LogUtil.log("TAG", "onViewCreated")
     }
 
@@ -59,11 +74,67 @@ class MainFragment : Fragment() {
                 when (it.intent.getStringExtra("menu")) {
                     "walk" -> {
                         val arg = MenuLink.PetPing("walk")
-                        findNavController().navigate(NavMainDirections.actionMainToHome().setMenulink(arg))
+                        findNavController().navigate(MainFragmentDirections.actionMainToHome().setMenulink(arg))
                     }
                 }
             }
         }
+    }
+
+    /**
+     * 강제 업데이트 팝업 표시
+     *
+     */
+    private fun showForceUpdatePopup() {
+        SingleBtnDialog(
+            requireContext(),
+            getString(R.string.app_update_title),
+            getString(R.string.app_force_update_desc),
+            btnCallback = {
+                startActivity(Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("market://details?id=${requireActivity().packageName}")
+                })
+            }
+        ).show()
+    }
+
+    /**
+     * 선택 업데이트 팝업 표시
+     *
+     */
+    private fun showUpdatePopup() {
+        DoubleBtnDialog(
+            requireContext(),
+            getString(R.string.app_update_title),
+            getString(R.string.app_update_desc),
+            true,
+            getString(R.string.app_update_next),
+            getString(R.string.app_update_do),
+            okCallback = {
+                startActivity(Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("market://details?id=${requireActivity().packageName}")
+                })
+            },
+            cancelCallback = { checkSystemInfo() }
+        ).show()
+    }
+
+    private fun checkSystemInfo() {
+        //TODO : 시스템 점검 API 로 적용할지 아니면 Firebase RemoteConfig를 사용할 지 결정되면 적용 진행
+
+        viewModel.testLogin()
+    }
+
+    private fun initAppConstant() {
+        AppConstants.closeWelcomeKitAlert = false
+        AppConstants.closeMissionAlert = false
+        AppConstants.closeMissionPetAlert = false
+    }
+
+    private fun handleEvent(event: MainViewModel.MainEvent) = when (event) {
+        is MainViewModel.MainEvent.ForceUpdate -> { showForceUpdatePopup() }
+        is MainViewModel.MainEvent.SelectUpdate -> { showUpdatePopup() }
+        is MainViewModel.MainEvent.SystemCheck -> { checkSystemInfo() }
     }
 
 //    private fun setUpDeepLink() {

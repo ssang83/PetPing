@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:textColor="@color/greyscale_g_5_bbb"
+            android:textColor="@color/color_bbbbbb"
             android:fontFamily="@font/nanum_square_round_b"
             android:layout_gravity="center_horizontal"
             android:text="건강 미션이 없어요."/>

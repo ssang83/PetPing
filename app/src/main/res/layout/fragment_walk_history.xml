@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/walk_record_empty"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/greyscale_g_5_bbb"
+                android:textColor="@color/color_bbbbbb"
                 android:layout_gravity="center_horizontal"
                 android:textSize="20dp"
                 android:fontFamily="@font/nanum_square_round_b"/>
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/walk_record_privacy_profile"
-                android:textColor="@color/greyscale_g_5_bbb"
+                android:textColor="@color/color_bbbbbb"
                 android:textSize="20dp"
                 android:fontFamily="@font/nanum_square_round_b"
                 android:layout_gravity="center"

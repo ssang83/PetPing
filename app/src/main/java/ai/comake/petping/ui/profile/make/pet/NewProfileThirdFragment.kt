@@ -40,9 +40,6 @@ class NewProfileThirdFragment :
 
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
 
-    private val WRITE_EXTERNAL_STORAGE = arrayOf(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
 
     /**
      * 이미지 요청 후 결과 처리
@@ -108,6 +105,11 @@ class NewProfileThirdFragment :
 
             moveToFirst.observeEvent(viewLifecycleOwner) {
                 requireActivity().multipleBackStack(R.id.nav_main, R.id.newProfileFirstFragment)
+            }
+
+            moveToMissionPet.observeEvent(viewLifecycleOwner) {
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(R.id.action_newProfileThirdFragment_to_missionPetGuideFragment)
             }
         }
 
@@ -192,7 +194,7 @@ class NewProfileThirdFragment :
 
     private fun requestPermission() {
         when {
-            hasPermission(requireContext(), WRITE_EXTERNAL_STORAGE) -> {
+            hasPermission(requireContext(), STORAGE_PERMISSION) -> {
                 LogUtil.log("이미 권한 있음")
                 imagePick()
             }
@@ -201,10 +203,10 @@ class NewProfileThirdFragment :
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) -> {
                 LogUtil.log("한번 거절")
-                permReqLuncher.launch(WRITE_EXTERNAL_STORAGE)
+                permReqLuncher.launch(STORAGE_PERMISSION)
             }
             else -> {
-                permReqLuncher.launch(WRITE_EXTERNAL_STORAGE)
+                permReqLuncher.launch(STORAGE_PERMISSION)
             }
         }
     }

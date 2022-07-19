@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">펫핑 2.0</string>
+    <string name="app_name">펫핑 1.3.0</string>
     <string name="nav_dashboard">대쉬보드</string>
     <string name="nav_walk">산책</string>
     <string name="walk_start">산책 시작</string>
@@ -538,5 +538,29 @@
     <string name="inquiry_content">문의 내용</string>
     <string name="inquiry_image_add_desc">이미지 첨부 (최대 3장)</string>
     <string name="inquiry_image_add">이미지 첨부하기</string>
+    <string name="dashBoardScreenTitle">홈</string>
+    <string name="walkScreenTitle">산책</string>
+    <string name="rewardScreenTitle">리워드</string>
+    <string name="shopScreenTitle">펫핑샵</string>
+    <string name="insuranceScreenTitle">펫보험</string>
+    <string name="walk_record_use_reward_comment">[펫핑샵]에서 적립한 리워드로\n반려견 웰니스 상품을 구매할 수 있어요.</string>
+    <string name="receive_reward">리워드를 받았어요!</string>
+    <string name="today_walk_record_saved">오늘 산책 기록이 저장되었어요</string>
+    <string name="walk_over">산책이 종료되었어요</string>
+    <string name="walk_record_memo_guide">오늘 산책은 어땠나요? 추억으로 기록하고 싶은 내용이 있다면 남겨 주세요. (최대 300자)</string>
+    <string name="addPicture">사진추가</string>
+    <string name="app_update_title">앱을 업데이트해 주세요.</string>
+    <string name="app_update_desc">최신 버전으로 업데이트하고 새로운 기능을 확인해 보세요.</string>
+    <string name="app_force_update_desc">지금 설치된 앱에서는 일부 새로운 기능을 사용할 수 없습니다. 원활한 앱 사용을 위해 최신 버전으로 업데이트해 주세요.</string>
+    <string name="app_update_next">다음에</string>
+    <string name="app_update_do">업데이트하기</string>
+
+    <string name="mission_pet_guide_title">프로필이 완성되었어요!</string>
+    <string name="mission_pet_guide_desc1">매일매일 차곡차곡!</string>
+    <string name="mission_pet_guide_desc2">미션 반려견과 산책하면\n리워드가 적립돼요.</string>
+    <string name="mission_pet_guide_desc3">펫핑샵에서 득템!</string>
+    <string name="mission_pet_guide_desc4">적립한 리워드로\n반려견 웰니스 상품을\n구매할 수 있어요.</string>
+    <string name="mission_pet_guide_next"><u>다음에 할래요</u></string>
+    <string name="mission_pet_guide_go_setting">지금 설정하기</string>
 
 </resources>

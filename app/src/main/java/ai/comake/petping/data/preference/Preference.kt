@@ -38,5 +38,11 @@ interface Preference {
     fun getUUID(): String
     fun setUUID(uuid: String)
 
+    fun getAuthorityPopup(): Boolean
+    fun setAuthorityPopup(clear: Boolean)
+
+    fun getGuidePopupShow()
+    fun setGuidePopupShow()
+
     fun logout()
 }

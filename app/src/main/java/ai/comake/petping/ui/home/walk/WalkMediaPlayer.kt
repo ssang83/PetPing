@@ -2,7 +2,7 @@ package ai.comake.petping.ui.home.walk
 
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.walkAudioGuideData
 import ai.comake.petping.util.LogUtil
-import ai.comake.petping.util.toHHMMSSFormat
+import ai.comake.petping.util.toWalkTimeFormat
 import android.bluetooth.BluetoothA2dp
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothHeadset
@@ -70,7 +70,7 @@ class WalkMediaPlayer(val mContext: Context) {
         mediaPlayer?.prepareAsync()
         mediaPlayer?.setOnPreparedListener {
             val duration = mediaPlayer?.duration ?: 0
-            val totalPlaytime = duration.toHHMMSSFormat()
+            val totalPlaytime = duration.toWalkTimeFormat()
 //            walkStateListener?.onWalkGuideDuration(totalPlaytime)
             mediaPlayer?.start()
         }

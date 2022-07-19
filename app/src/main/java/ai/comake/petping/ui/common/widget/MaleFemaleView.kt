@@ -106,7 +106,7 @@ class MaleFemaleView @JvmOverloads constructor(
                     findViewById<TextView>(R.id.girl_text).setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.greyscale_g_5_bbb
+                            R.color.color_bbbbbb
                         )
                     )
 
@@ -153,7 +153,7 @@ class MaleFemaleView @JvmOverloads constructor(
                     findViewById<TextView>(R.id.boy_text).setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.greyscale_g_5_bbb
+                            R.color.color_bbbbbb
                         )
                     )
 

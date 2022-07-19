@@ -83,7 +83,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/nanum_square_round"
                                 android:text="@string/email_address"
-                                android:textColor="@color/greyscale_g_5_bbb"
+                                android:textColor="@color/color_bbbbbb"
                                 android:textSize="15dp" />
 
                             <TextView
@@ -107,7 +107,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/nanum_square_round"
                                 android:text="@string/login_type"
-                                android:textColor="@color/greyscale_g_5_bbb"
+                                android:textColor="@color/color_bbbbbb"
                                 android:textSize="15dp" />
 
                             <TextView
@@ -232,7 +232,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/nanum_square_round"
                                     android:text="@string/phone_number"
-                                    android:textColor="@color/greyscale_g_5_bbb"
+                                    android:textColor="@color/color_bbbbbb"
                                     android:textSize="15dp" />
 
                                 <TextView
@@ -256,7 +256,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/nanum_square_round"
                                     android:text="@string/user_name"
-                                    android:textColor="@color/greyscale_g_5_bbb"
+                                    android:textColor="@color/color_bbbbbb"
                                     android:textSize="15dp" />
 
                                 <TextView
@@ -282,7 +282,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/nanum_square_round"
                                     android:text="@string/user_birthday"
-                                    android:textColor="@color/greyscale_g_5_bbb"
+                                    android:textColor="@color/color_bbbbbb"
                                     android:textSize="15dp" />
 
                                 <TextView
@@ -308,7 +308,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/nanum_square_round"
                                     android:text="@string/user_gender"
-                                    android:textColor="@color/greyscale_g_5_bbb"
+                                    android:textColor="@color/color_bbbbbb"
                                     android:textSize="15dp" />
 
                                 <TextView
@@ -406,7 +406,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/nanum_square_round"
-                                android:textColor="@color/greyscale_g_5_bbb"
+                                android:textColor="@color/color_bbbbbb"
                                 android:textSize="12dp"
                                 app:htmlText="@{@string/member_withdraw}"
                                 />

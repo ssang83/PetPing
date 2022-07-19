@@ -11,8 +11,9 @@ import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraZoom
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isPauseWalk
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isStartWalk
-import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isSystemStopWalk
-import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isWithAudioGuide
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isStopWalkService
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._myMarkingList
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._picturePaths
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._walkDistanceKm
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._walkPathList
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._walkTimeSeconds
@@ -38,14 +39,20 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
 
     val isStartWalk = _isStartWalk
     val isPauseWalk = _isPauseWalk
-    val isSystemStopWalk: LiveData<Event<Boolean>>
-        get() = _isSystemStopWalk
+    val isStopWalkService: LiveData<Event<Boolean>>
+        get() = _isStopWalkService
 
     val walkDistanceKm = _walkDistanceKm
     val walkTimeSeconds = _walkTimeSeconds
     val cameraPosition = _cameraPosition
     val cameraZoom = _cameraZoom
     val walkPathList = _walkPathList
+    val myMarkingList = _myMarkingList
+
+    var picturePaths = _picturePaths.asStateFlow()
+    val pictureCount = MutableStateFlow(0)
+
+    var takePhotoPath: String = ""
 
     val isAudioGuideHeader = MutableStateFlow(true)
     val isAudioGuideBottom = MutableStateFlow(false)
@@ -102,8 +109,14 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     private val _walkGuideListFlow = MutableSharedFlow<List<AudioGuideItem>?>()
     val walkGuideListFlow = _walkGuideListFlow.asSharedFlow()
 
+    private val _isSucceedWalkFinish = MutableLiveData<Event<WalkFinish>>()
+    val isSucceedWalkFinish: LiveData<Event<WalkFinish>>
+        get() = _isSucceedWalkFinish
+
     var walkGuidePageNo: Int = 1
     var hasMoreWalkGuideItem: Boolean = false
+    var walkAblePetList = ArrayList<WalkablePet.Pets>()
+    var myMarkingPOIs = ArrayList<MyMarkingPoi>()
 
     fun startWalk(isStart: Boolean) {
         _isStartWalk.value = isStart
@@ -267,6 +280,44 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
         }
     }
 
+    fun asyncWalkFinish(authKey: String, walkId: Int, body: WalkFinishRequest) {
+        viewModelScope.launch {
+            val response = walkRepository.finishWalk(
+                authKey,
+                walkId,
+                body
+            )
+
+            when (response) {
+                is Resource.Success -> {
+                    _isSucceedWalkFinish.value = Event(response.value.data)
+                }
+                else -> {
+                    //Do Nothing
+                }
+            }
+        }
+    }
+
+    fun asyncRegisterMarking(walkId: Int, myMarkingPoi: MyMarkingPoi) {
+        viewModelScope.launch {
+            val response = walkRepository.registerMyMarking(
+                AUTH_KEY,
+                walkId,
+                myMarkingPoi
+            )
+
+            when (response) {
+                is Resource.Success -> {
+                    //Do Nothing
+                }
+                else -> {
+                    //Do Nothing
+                }
+            }
+        }
+    }
+
     private suspend fun addWalkGuide(data: WalkAudioGuide) {
         LogUtil.log("TAG", "")
         data.audioGuideList?.let { items ->
@@ -318,5 +369,9 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
                     }
                 }
         }
+    }
+    
+    fun onTestClick() {
+        LogUtil.log("TAG", ": $")
     }
 }

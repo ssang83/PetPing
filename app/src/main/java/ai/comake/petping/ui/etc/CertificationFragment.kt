@@ -79,7 +79,7 @@ class CertificationFragment :
                 binding.phoneCert.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.greyscale_g_5_bbb
+                        R.color.color_bbbbbb
                     )
                 )
                 binding.phoneCert.background = ContextCompat.getDrawable(requireContext(), R.drawable.btn_outline)

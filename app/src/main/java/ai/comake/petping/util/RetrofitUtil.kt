@@ -1,6 +1,6 @@
 package ai.comake.petping.util
 
-import ai.comake.petping.PETPING_URL
+import ai.comake.petping.AppConstants.PETPING_URL
 import ai.comake.petping.data.vo.ErrorResponse
 import okhttp3.ResponseBody
 import retrofit2.Converter

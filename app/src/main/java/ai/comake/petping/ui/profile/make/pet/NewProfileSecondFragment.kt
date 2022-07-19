@@ -101,7 +101,7 @@ class NewProfileSecondFragment :
     }
 
     override fun onDestroyView() {
-        keyboardVisibilityUtils.detachKeyboardListeners()
+//        keyboardVisibilityUtils.detachKeyboardListeners()
         super.onDestroyView()
     }
 
@@ -179,17 +179,17 @@ class NewProfileSecondFragment :
                 requireActivity().backStack(R.id.nav_main)
             }
 
-            keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
-                onShowKeyboard = {
-                    scrollView.run {
-                        smoothScrollTo(scrollX, dropDownAutoComplete.top)
-                    }
-                    bottomButton.visibility = View.GONE
-                },
-                onHideKeyboard = {
-                    bottomButton.visibility = View.VISIBLE
-                    outSide.clearFocus()
-                })
+//            keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
+//                onShowKeyboard = {
+//                    scrollView.run {
+//                        smoothScrollTo(scrollX, dropDownAutoComplete.top)
+//                    }
+//                    bottomButton.visibility = View.GONE
+//                },
+//                onHideKeyboard = {
+//                    bottomButton.visibility = View.VISIBLE
+//                    outSide.clearFocus()
+//                })
         }
     }
 

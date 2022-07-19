@@ -92,7 +92,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="21dp"
                     android:text="@string/pet_insurance_join_desc"
-                    android:textColor="@color/greyscale_g_5_bbb"
+                    android:textColor="@color/color_bbbbbb"
                     android:textSize="20dp"
                     android:fontFamily="@font/nanum_square_round_b"/>
 
@@ -106,7 +106,7 @@
                     app:htmlText="@{@string/insurance_content}"
                     tools:text="펫보험 전용 미션에 도전하고 리워드를 받을 수 있어요.\n스몰티켓에서 가입하신 경우 인증이 필요해요."
                     android:lineSpacingExtra="8dp"
-                    android:textColor="@color/greyscale_g_5_bbb"
+                    android:textColor="@color/color_bbbbbb"
                     android:fontFamily="@font/nanum_square_round"
                     android:textSize="14dp"/>
             </LinearLayout>

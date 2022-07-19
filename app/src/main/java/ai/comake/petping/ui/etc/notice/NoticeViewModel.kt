@@ -49,7 +49,7 @@ class NoticeViewModel @Inject constructor() : ViewModel() {
         when (response) {
             is Resource.Success -> {
                 uiState.emit(UiState.Success)
-                _noticeItems.value = response.value.data
+                _noticeItems.value = response.value.data!!
             }
             is Resource.Failure -> {
                 uiState.emit(UiState.Failure(null))

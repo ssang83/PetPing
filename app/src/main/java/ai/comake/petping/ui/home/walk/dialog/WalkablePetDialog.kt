@@ -20,12 +20,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WalkablePetDialog(
     private var mPetList: ArrayList<WalkablePet.Pets>,
-    private val callback: (List<Int>) -> Unit
+    private val callback: (List<WalkablePet.Pets>) -> Unit
 ) : BottomSheetDialogFragment() {
     private val walkablePetDialogViewModel by viewModels<WalkablePetDialogViewModel>()
     private lateinit var binding: BottomSheetDialogWalkPetBinding
     private lateinit var mListAdapter: WalkablePetRecyclerViewAdapter
-    private var petIds = listOf<Int>()
+    private var walkPets = listOf<WalkablePet.Pets>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,14 +60,12 @@ class WalkablePetDialog(
     }
 
     private fun setUpObserver() {
-        walkablePetDialogViewModel.selectedPetIds.observeEvent(this) { ids ->
-            petIds = ids
-            binding.startWalkButton.isEnabled = petIds.isNotEmpty()
-            LogUtil.log("TAG", "it ${petIds.size}")
+        walkablePetDialogViewModel.selectedPetIds.observeEvent(this) { item ->
+            walkPets = item
+            binding.startWalkButton.isEnabled = walkPets.isNotEmpty()
         }
 
         walkablePetDialogViewModel.isOverPetMaxSize.observeEvent(this) {
-            LogUtil.log("TAG", "")
             activity?.let { it ->
                 SingleBtnDialog(
                     it,
@@ -82,9 +80,8 @@ class WalkablePetDialog(
 
     private fun setOnClickListener() {
         binding.startWalkButton.setSafeOnClickListener {
-            callback.invoke(petIds)
-            dismiss()
-            LogUtil.log("TAG", "")
+            callback.invoke(walkPets)
+            dismissAllowingStateLoss()
         }
     }
 

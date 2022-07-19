@@ -105,7 +105,7 @@ class ChangePhoneNumberFragment :
         viewModel.ci = data.ci
 
         binding.phoneCert.text = "휴대폰 본인인증 완료"
-        binding.phoneCert.setTextColor(ContextCompat.getColor(requireContext(), R.color.greyscale_g_5_bbb))
+        binding.phoneCert.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_bbbbbb))
         binding.phoneCert.background = ContextCompat.getDrawable(requireContext(), R.drawable.btn_outline)
     }
 }

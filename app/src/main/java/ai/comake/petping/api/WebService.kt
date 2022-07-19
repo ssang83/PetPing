@@ -102,6 +102,25 @@ interface WebService {
     ): CommonResponse<WalkFinish>
 
     /**
+     * 산책종료 산책기록
+     */
+    @Multipart
+    @POST("/v1/petping/walks/{walkId}/end/comment")
+    suspend fun walkFinishRecord(
+        @Header("Authorization") authKey: String,
+        @Path("walkId") walkId: Int,
+        @Part review: MultipartBody.Part,
+        @Part file: List<MultipartBody.Part>
+    ): CommonResponse<Any>
+
+    @POST("/v1/petping/walks/{walkId}/marking")
+    suspend fun registerMyMarking(
+        @Header("Authorization") authKey: String,
+        @Path("walkId") walkId: Int,
+        @Body requestBody: MyMarkingPoi
+    ): CommonResponse<Any>
+
+    /**
      * 장소 리스트 가져오기
      */
     @GET("/v1/petping/walks/place")
@@ -655,4 +674,13 @@ interface WebService {
         @Part deviceId: MultipartBody.Part,
         @Part file: List<MultipartBody.Part>
     ): CommonResponse<Any>
+
+    /**
+     * 앱 버전을 가져온다.(토큰이 없는 경우)
+     *
+     */
+    @GET("/v1/sapa/home/app-update-version")
+    suspend fun getAppVersion(
+        @Header("Authorization") authKey: String
+    ): AppVersionResponse
 }

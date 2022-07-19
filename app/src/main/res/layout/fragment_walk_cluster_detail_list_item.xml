@@ -30,7 +30,7 @@
             android:id="@+id/circleImageView"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/marking_detail_pet"
+            tools:background="@drawable/marking_detail_pet"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/roundedImageView" />

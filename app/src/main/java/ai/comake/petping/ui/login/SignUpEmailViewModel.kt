@@ -1,7 +1,7 @@
 package ai.comake.petping.ui.login
 
+import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.Event
-import ai.comake.petping.SAPA_KEY
 import ai.comake.petping.UiState
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.LoginRepository

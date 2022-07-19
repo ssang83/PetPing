@@ -1,7 +1,7 @@
 package ai.comake.petping.di
 
+import ai.comake.petping.AppConstants.PETPING_URL
 import ai.comake.petping.BuildConfig
-import ai.comake.petping.PETPING_URL
 import ai.comake.petping.api.HeaderInterceptor
 import ai.comake.petping.api.WebService
 import ai.comake.petping.data.repository.DataStoreRepository

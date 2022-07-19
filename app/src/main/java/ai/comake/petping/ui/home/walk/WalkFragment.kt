@@ -1,14 +1,20 @@
 package ai.comake.petping.ui.home.walk
 
 import ai.comake.petping.AirbridgeManager
+import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.R
+import ai.comake.petping.data.db.walk.Walk
 import ai.comake.petping.data.vo.*
 import ai.comake.petping.databinding.FragmentWalkBinding
 import ai.comake.petping.google.database.room.walk.WalkRepository
 import ai.comake.petping.observeEvent
+import ai.comake.petping.ui.common.dialog.SingleBtnDialog
+import ai.comake.petping.ui.home.HomeFragmentDirections
 import ai.comake.petping.ui.home.walk.adapter.MarkingDetailClusterRecyclerViewAdapter
 import ai.comake.petping.ui.home.walk.adapter.SpaceItemDecoration
 import ai.comake.petping.ui.home.walk.adapter.WalkGuideAdapter
+import ai.comake.petping.ui.home.walk.dialog.MarkingBottomSheetDialog
+import ai.comake.petping.ui.home.walk.dialog.WalkEndBottomSheetDialog
 import ai.comake.petping.ui.home.walk.dialog.WalkablePetDialog
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.EXTRA_LOCATION
@@ -18,12 +24,25 @@ import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.P
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._audioGuideStatus
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraPosition
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraZoom
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isStartWalk
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._lastLocation
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._myMarkingList
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._picturePaths
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.localWalkData
 import ai.comake.petping.util.*
 import android.Manifest
+import android.app.Activity
 import android.content.*
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.location.Location
+import android.location.LocationManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.IBinder
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +50,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -50,9 +70,14 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.overlay.PolylineOverlay
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class WalkFragment : Fragment(), OnMapReadyCallback {
@@ -82,7 +107,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         LogUtil.log("TAG", "")
-        requestPermission()
+        requestLocationPermission()
     }
 
     override fun onCreateView(
@@ -95,14 +120,15 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        LogUtil.log("TAG", "")
+        LogUtil.log("TAG", "_isStartWalk ${_isStartWalk.value}")
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+        binding.event = this
+        setUpNaverMap()
         setUpObserver()
         setUpClickListener()
         setUpAdapter()
-        setUpNaverMap()
         setUpView()
     }
 
@@ -122,8 +148,12 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful && task.result != null) {
                         val lastLatLng = LatLng(task.result)
+                        val lastLocation = Location(LocationManager.GPS_PROVIDER).apply {
+                            latitude = task.result.latitude
+                            longitude = task.result.longitude
+                        }
+                        _lastLocation = lastLocation
                         _cameraPosition.value = lastLatLng
-                        LogUtil.log("TAG", "${viewModel.cameraPosition.value}")
                     } else {
                         LogUtil.log(
                             TAG,
@@ -131,11 +161,11 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                         )
                     }
                     asyncPOIs()
-                    moveCamera()
+                    setUpCameraPosition()
                 }
         } catch (unlikely: SecurityException) {
             asyncPOIs()
-            moveCamera()
+            setUpCameraPosition()
             LogUtil.log(
                 TAG,
                 "Lost location permission.$unlikely"
@@ -143,13 +173,12 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun moveCamera() {
+    private fun setUpCameraPosition() {
         val cameraPosition = CameraPosition(
             viewModel.cameraPosition.value,
             viewModel.cameraZoom.value
         )
         mNaverMap.moveCamera(CameraUpdate.toCameraPosition(cameraPosition))
-
     }
 
     private fun setUpView() {
@@ -196,9 +225,19 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             setUpLastLocation()
         }
 
+        binding.walkTracker.bottomFloatingView.walkStartTrackingLocationButton.setSafeOnClickListener {
+            mNaverMap.cancelTransitions()
+            it.isSelected = true
+            setUpLastLocation()
+        }
+
         binding.walkTracker.walkControlView.walkStopButton.setSafeOnClickListener {
-            mService?.startWalk(false)
-            viewModel.startWalk(false)
+            activity?.let {
+                WalkEndBottomSheetDialog {
+                    mService?.startWalk(false)
+                    viewModel.startWalk(false)
+                }.showAllowingStateLoss(childFragmentManager)
+            }
         }
 
         binding.walkTracker.guideHeaderView.audioGuideButton.setSafeOnClickListener {
@@ -206,9 +245,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             viewModel.asyncWalkGuide(viewModel.walkGuidePageNo)
         }
 
-        /**
-         * 산책가이드 이벤트
-         */
         binding.walkAudio.walkGuideBtnBack.setSafeOnClickListener {
             binding.walkViewFlipper.displayedChild = 0
         }
@@ -218,6 +254,51 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             val motion = binding.walkAudio.root as MotionLayout
             motion.progress = 0.0f
         }
+
+        binding.walkTracker.walkControlView.walkPhotoButton.setSafeOnClickListener {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                requestStoragePermission()
+            } else {
+                takePicture()
+            }
+        }
+
+        binding.walkTracker.walkControlView.walkMarkingButton.setSafeOnClickListener {
+            activity?.let {
+                MarkingBottomSheetDialog(
+                    viewModel.walkAblePetList,
+                    this::onMarkingRegisterClick
+                ).show(
+                    it.supportFragmentManager,
+                    "MarkingBottomSheetDialog"
+                )
+            }
+        }
+    }
+
+    fun onMarkingRegisterClick(petId: Int, type: Int) {
+        LogUtil.log("TAG", "petId: $petId")
+        LogUtil.log("TAG", "type: $type")
+
+        val myMarkingPoi =
+            MyMarkingPoi(petId, type, _lastLocation.latitude.encrypt(), _lastLocation.longitude.encrypt())
+
+        viewModel.asyncRegisterMarking(localWalkData.walkId, myMarkingPoi)
+
+        _myMarkingList.value.add(myMarkingPoi)
+        displayMyMarkingPOI(_myMarkingList.value)
+
+
+    }
+
+    fun onClickNavWalkHistory(petId: Int) {
+        val config = PetProfileConfig(
+            petId = petId,
+            viewMode = "others"
+        )
+
+        requireActivity().findNavController(R.id.nav_main)
+            .navigate(HomeFragmentDirections.actionHomeScreenToDogProfileFragment(config))
     }
 
     private fun setUpObserver() {
@@ -247,26 +328,73 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             displayPlacePOIs(it)
         }
 
-        viewModel.isSucceedReadyForWalk.observeEvent(viewLifecycleOwner) {
+        viewModel.isSucceedReadyForWalk.observeEvent(viewLifecycleOwner) { walkstart ->
+            localWalkData =
+                Walk(
+                    walkId = walkstart.walk.id,
+                    startLat = _lastLocation.latitude,
+                    startLng = _lastLocation.longitude,
+                    petIds = walkstart.walk.petIds
+                )
+
             mService?.startWalk(true)
             viewModel.startWalk(true)
-            LogUtil.log("TAG", "it $it")
         }
 
         viewModel.isFaiedReadyForWalk.observeEvent(viewLifecycleOwner) {
             LogUtil.log("TAG", "it $it")
         }
 
-        viewModel.isSystemStopWalk.observeEvent(viewLifecycleOwner) { isComplete ->
+        viewModel.isStopWalkService.observeEvent(viewLifecycleOwner) { isComplete ->
             LogUtil.log("TAG", "isCompletedWalk $isComplete")
             if (isComplete) {
                 viewModel.startWalk(false)
-                viewLifecycleOwner.lifecycleScope.launch {
-                    val walkData = walkRepository.selectAll()
-                    LogUtil.log("TAG", "walkData $walkData")
+                requestWalkFinish()
 
-                    activity?.findNavController(R.id.nav_main)
-                        ?.navigate(R.id.action_home_to_walkrecordattach)
+//                    activity?.findNavController(R.id.nav_main)
+//                        ?.navigate(R.id.action_home_to_walkrecordattach)
+            }
+        }
+
+        viewModel.isSucceedWalkFinish.observeEvent(viewLifecycleOwner) { walkfinish ->
+            LogUtil.log("TAG", "walkfinish: $walkfinish")
+
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                val walkData = walkRepository.selectAll()
+                withContext(Dispatchers.Main) {
+                    walkfinish.pictures = walkData[0].pictures
+                    LogUtil.log("TAG", "walkfinish: $walkfinish")
+                    requireActivity().findNavController(R.id.nav_main).navigate(
+                        HomeFragmentDirections.actionHomeToWalkrecordattach()
+                            .setWalkFinish(walkfinish)
+                    )
+                }
+            }
+        }
+
+    }
+
+    private fun requestWalkFinish() {
+        var walkData = listOf<Walk>()
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            walkData = walkRepository.selectAll()
+            LogUtil.log("TAG", "walkData $walkData")
+        }.invokeOnCompletion { throwable ->
+            if (walkData.isNotEmpty()) {
+                when (throwable) {
+                    is CancellationException -> {}
+                    else -> {
+                        val id = walkData[0].walkId
+                        val body =
+                            WalkFinishRequest(
+                                walkData[0].distance,
+                                walkData[0].time,
+                                walkData[0].endState,
+                                walkData[0].path,
+                                walkData[0].walkEndDatetimeMilli
+                            )
+                        viewModel.asyncWalkFinish(AUTH_KEY, id, body)
+                    }
                 }
             }
         }
@@ -294,7 +422,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             requireContext()
         )
 
-        binding.walkAudio.walkGuideRecyclerView.adapter = mMarkingDetailClusterListAdapter
+        binding.walkAudio.walkGuideRecyclerView.adapter = mAudioGuideListAdapter
 
         binding.walkAudio.walkGuideRecyclerView.apply {
             layoutManager = LinearLayoutManager(mContext)
@@ -350,6 +478,8 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             mCameraChangeReason = reason
             if (mCameraChangeReason == REASON_GESTURE) {
                 binding.walkTracker.walkStopTrackingLocationImage.isSelected = false
+                binding.walkTracker.bottomFloatingView.walkStartTrackingLocationButton.isSelected =
+                    false
             }
         }
 
@@ -357,9 +487,9 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             _cameraZoom.value = mNaverMap.cameraPosition.zoom
             _cameraPosition.value = mNaverMap.cameraPosition.target
 
-            if (mCameraChangeReason == REASON_GESTURE) {
-                asyncPOIs()
-            }
+//            if (mCameraChangeReason == REASON_GESTURE) {
+            asyncPOIs()
+//            }
         }
     }
 
@@ -415,6 +545,17 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                 }
                 map = mNaverMap
             })
+        }
+    }
+
+    private fun displayMyMarkingPOI(myMarkings: List<MyMarkingPoi>) {
+        LogUtil.log("TAG", "item: $myMarkings")
+        myMarkings.forEach { item ->
+            Marker().apply {
+                position = LatLng(item.lat.decrypt(), item.lng.decrypt())
+                icon = OverlayImage.fromResource(R.drawable.ic_poi_my_marking)
+                map = mNaverMap
+            }
         }
     }
 
@@ -507,13 +648,14 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun openWalkablePetDialog(items: ArrayList<WalkablePet.Pets>) {
-        WalkablePetDialog(items) { petIds ->
+        LogUtil.log("TAG", "items: $items")
+        WalkablePetDialog(items) { item ->
+            viewModel.walkAblePetList = item as ArrayList<WalkablePet.Pets>
+            val petIds = item.map {
+                it.id
+            }
             asyncWalkId(petIds)
-            LogUtil.log("TAG", "petIds $petIds")
-        }.show(
-            childFragmentManager,
-            null
-        )
+        }.showAllowingStateLoss(childFragmentManager)
     }
 
     fun asyncWalkId(petIds: List<Int>) {
@@ -542,9 +684,9 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         )
     }
 
-    private fun requestPermission() {
+    private fun requestLocationPermission() {
         when {
-            hasPermission(mContext, LOCATION_AND_STORAGE) -> {
+            hasPermission(mContext, LOCATION_PERMISSION) -> {
                 LogUtil.log("TAG", "이미 권한 있음")
                 createLocationClient()
             }
@@ -553,15 +695,15 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) -> {
                 LogUtil.log("TAG", "한번 거절")
-                requestPermissionLauncher.launch(LOCATION_AND_STORAGE)
+                requestLocationPermissionLauncher.launch(LOCATION_PERMISSION)
             }
             else -> {
-                requestPermissionLauncher.launch(LOCATION_AND_STORAGE)
+                requestLocationPermissionLauncher.launch(LOCATION_PERMISSION)
             }
         }
     }
 
-    private val requestPermissionLauncher =
+    private val requestLocationPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
@@ -575,6 +717,42 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                 LogUtil.log("TAG", "모든 권한 없음 ")
             }
         }
+
+    private fun requestStoragePermission() {
+        when {
+            hasPermission(mContext, STORAGE_PERMISSION) -> {
+                LogUtil.log("TAG", "이미 권한 있음")
+                takePicture()
+            }
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) -> {
+                LogUtil.log("TAG", "한번 거절")
+                requestStoragePermissionLauncher.launch(STORAGE_PERMISSION)
+            }
+            else -> {
+                requestStoragePermissionLauncher.launch(STORAGE_PERMISSION)
+            }
+        }
+    }
+
+    private val requestStoragePermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            val isGranted = permissions.entries.all {
+                LogUtil.log("TAG", "it $it")
+                it.value
+            }
+            if (isGranted) {
+                LogUtil.log("TAG", "모든 권한 있음 ")
+                takePicture()
+            } else {
+                LogUtil.log("TAG", "모든 권한 없음 ")
+            }
+        }
+
 
     private fun createLocationClient() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
@@ -623,6 +801,88 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    /**
+     * 사진 찍기
+     */
+    fun takePicture() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(mContext.packageManager)?.also {
+                LogUtil.log("TAG", "")
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    ex.printStackTrace()
+                    null
+                }
+
+                if (photoFile != null) {
+                    viewModel.takePhotoPath = photoFile.path
+                    openCamera(takePictureIntent, photoFile)
+                } else {
+                    SingleBtnDialog(
+                        mContext,
+                        "에러",
+                        "파일을 저장하는데 실패했습니다."
+                    ) {}.show()
+                }
+
+            }
+        }
+    }
+//    , {
+//            SingleBtnDialog(
+//                requireActivity(),
+//                "권한 오류",
+//                "저장공간 권한이 필요합니다. 권한을 허용해 주세요."
+//            ) {}.show()
+//        }
+
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val directoryPath =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+        val filePath = File(directoryPath.path + "/Petping")
+        if (!filePath.exists())
+            filePath.mkdir()
+        return File("${filePath}", " PETPING_${timeStamp}.jpg")
+    }
+
+    private fun openCamera(intent: Intent, file: File) {
+        val photoURI: Uri = FileProvider.getUriForFile(
+            mContext, mContext.packageName + ".provider",
+            file
+        )
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+        requestTakePhotoLauncher.launch(intent)
+    }
+
+    private val requestTakePhotoLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            LogUtil.log("TAG", ": $")
+            _picturePaths.value.add(viewModel.takePhotoPath)
+            viewModel.pictureCount.value = _picturePaths.value.size
+            if (_picturePaths.value.size >= 5) {
+                binding.walkTracker.walkControlView.walkPhotoButton.isClickable = false
+                binding.walkTracker.walkControlView.walkPhotoButton.isEnabled = false
+                binding.walkTracker.walkControlView.walkPhotoButton.elevation =
+                    5.dpToPixels(requireContext())
+                binding.walkTracker.walkControlView.walkPhotoButton.setColorFilter(
+                    Color.parseColor(
+                        "#dddddd"
+                    )
+                )
+                binding.walkTracker.walkControlView.walkPhotoCount.background =
+                    mContext.getDrawable(R.drawable.shape_badge_gray)
+            }
+        } else {
+            val file = File(viewModel.picturePaths.value!![0])
+            file.deleteOnExit()
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         Intent(mContext, LocationUpdatesService::class.java).also { intent ->
@@ -658,9 +918,15 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     companion object {
-        private val LOCATION_AND_STORAGE = arrayOf(
+        private val LOCATION_PERMISSION = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION
         )
+
+        private val STORAGE_PERMISSION = arrayOf(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        private val REQUEST_TAKE_PHOTO = 11
         const val TAG = "WalkFragment"
     }
 }

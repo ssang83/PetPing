@@ -1,6 +1,7 @@
 package ai.comake.petping.ui.profile.make
 
 import ai.comake.petping.*
+import ai.comake.petping.AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT
 import ai.comake.petping.databinding.FragmentProfileBinding
 import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.util.LogUtil

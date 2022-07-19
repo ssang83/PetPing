@@ -17,12 +17,7 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/mainScreen"
             app:popUpToInclusive="true" />
-        <!--        <action-->
-        <!--            android:id="@+id/action_main_to_dashBoard"-->
-        <!--            app:destination="@id/dashBoardScreen"-->
-        <!--            app:launchSingleTop="true"-->
-        <!--            app:popUpTo="@+id/mainScreen"-->
-        <!--            app:popUpToInclusive="true" />-->
+
     </fragment>
 
     <fragment
@@ -92,9 +87,15 @@
 
     <fragment
         android:id="@+id/walkRecordAttachScreen"
-        android:name="ai.comake.petping.ui.history.WalkRecordAttachFragment"
+        android:name="ai.comake.petping.ui.history.WalkRecordFragment"
         android:label="walkRecordAttachScreen"
         tools:layout="@layout/fragment_walk_record_attach">
+
+        <argument
+            android:name="walkFinish"
+            android:defaultValue="@null"
+            app:argType="ai.comake.petping.data.vo.WalkFinish"
+            app:nullable="true"/>
 
         <action
             android:id="@+id/action_walkrecordattach_to_home"
@@ -233,6 +234,10 @@
         android:label="MissionPetFragment"
         tools:layout="@layout/fragment_mission_pet"
         >
+
+        <argument
+            android:name="config"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_missionPetFragment_to_certificationFragment"
             app:destination="@id/certificationFragment" />
@@ -242,6 +247,9 @@
         <action
             android:id="@+id/action_missionPetFragment_to_insuranceHistoryFragment"
             app:destination="@id/insuranceHistoryFragment" />
+        <action
+            android:id="@+id/action_missionPetFragment_to_homeScreen"
+            app:destination="@id/homeScreen" />
     </fragment>
     <fragment
         android:id="@+id/etcFragment"
@@ -725,7 +733,19 @@
             android:name="ai.comake.petping.ui.profile.make.pet.NewProfileThirdFragment"
             android:label="NewProfileThirdFragment"
             tools:layout="@layout/fragment_new_profile_third"
-            />
+            >
+            <action
+                android:id="@+id/action_newProfileThirdFragment_to_missionPetGuideFragment"
+                app:destination="@id/missionPetGuideFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/missionPetGuideFragment"
+            android:name="ai.comake.petping.ui.etc.mission_pet.MissionPetGuideFragment"
+            android:label="MissionPetGuideFragment"
+            tools:layout="@layout/fragment_mission_pet_guide"/>
+        <action
+            android:id="@+id/action_profile_to_missionPetFragment"
+            app:destination="@id/missionPetFragment" />
     </navigation>
     <fragment
         android:id="@+id/inquriyFragment"
