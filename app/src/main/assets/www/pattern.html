@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.3, user-scalable=no">
+	<title>monkey character pattern</title>
+	<link rel="stylesheet" type="text/css" href="font/NanumSquareRound.css">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/character.css">
+	<link rel="stylesheet" type="text/css" href="css/weather.css">
+	<style type="text/css">
+		
+		/* 색상 지정 부분 */
+
+		#character .basic_body path {
+			fill: #f09e58;
+		}
+		#character .a_half path,
+		#character .a_01_half path,
+		#character .a_03_half path,
+		#character .a_04_half path,
+		#character .b_half path,
+		#character .b_01_half path,
+		#character .b_03_half path,
+		#character .b_04_half path,
+		#character .c_half path,
+		#character .c_01_half path,
+		#character .c_03_half path,
+		#character .c_04_half path {
+			fill: #f7c893;
+		}
+		#character .a_pt1 path,
+		#character .a_pt2 path,
+		#character .a_pt3 path {
+			fill: #ffffff;
+		}
+		#character .b_pt1 path,
+		#character .b_pt2 path,
+		#character .b_pt3 path {
+			fill: #ffffff;
+		}
+		#character .c_pt1 path,
+		#character .c_pt2 path,
+		#character .c_pt3 path {
+			fill: #ffffff;
+		}
+		#character .a_nose path,
+		#character .b_nose path,
+		#character .c_nose path {
+			fill: #38291e;
+		}
+		#character .a_01_half,
+		#character .b_01_half,
+		#character .c_01_half {
+			background: #f7c893;
+		}
+	</style>
+	<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript">
+		function setWeather(weather){
+			document.querySelector("#svg_canvas").className = weather;
+		};
+		function setPetMotion(pet_motion){
+			document.querySelector("#pet_animation").className = pet_motion;
+			if (pet_motion == 'pet_01') {
+				document.querySelector('.spc_wrapper').setAttribute('style', 'margin-top: 160px')
+			} else {
+				document.querySelector('.spc_wrapper').setAttribute('style', 'margin-top: 0px')
+			}
+		};
+		function setCharacter(character){
+			document.querySelector("#character").className = character;
+		};
+		function setCharacterColor(color){
+			document.querySelector("#character .basic_body path").setAttribute('style', 'fill: ' + color);
+		};
+		function setCharacterHalfColor(color){
+			$("#character .a_half path, #character .a_03_half path, #character .a_04_half path, #character .b_half path, #character .b_03_half path, #character .b_04_half path, #character .c_half path, #character .c_03_half path, #character .c_04_half path").css('fill', color);
+			$("#character .a_01_half, #character .b_01_half, #character .c_01_half").css('background', color);
+		};
+		function setCharacterPatternColor(color){
+			document.querySelector("#character .a_pt1 path").setAttribute('style', 'fill: ' + color);
+			document.querySelector("#character .b_pt1 path").setAttribute('style', 'fill: ' + color);
+			document.querySelector("#character .c_pt1 path").setAttribute('style', 'fill: ' + color);
+			document.querySelector("#character .a_pt3 path").setAttribute('style', 'fill: ' + color);
+			document.querySelector("#character .b_pt3 path").setAttribute('style', 'fill: ' + color);
+			document.querySelector("#character .c_pt3 path").setAttribute('style', 'fill: ' + color);
+			$("#character .a_pt2 path, #character .b_pt2 path, #character .c_pt2 path").css('fill', color);
+			//200110 추가
+			$("#character .a_pt3 path, #character .b_pt3 path, #character .c_pt3 path").css('fill', color);
+		};
+
+	</script>
+	<script type="text/javascript">
+		// 추가 20201015 add toggle script
+		function  setBalloonVisible(boolean){
+			var setState = 'block'; //기본값은 보이는 상태
+			if (boolean == true) {
+				setState = 'block';
+			} else if (boolean == false) {
+				setState = 'none';
+			}
+			$(".spc_wrapper").css('display', setState);
+		}
+		// setBalloonVisible(true)
+
+		// 추가 text내용 편집
+		function setBalloonText(text){
+			$('.spc_balloon').children('span').text(text);
+		}
+		// setBalloonText('가나다라마바사')
+
+		// 클릭시 실행시킬 function
+		function balloonOnClick(text){
+			window.AndroidBridge.onClickBalloon();
+		}
+
+		// 클릭 이벤트 바인딩
+		$(document).on('click', '.spc_balloon', function(event) {
+			event.preventDefault();
+			// function callback
+			balloonOnClick('클릭했습니다.')
+		});
+	</script>
+
+</head>
+<body>
+	<!-- 말풍선 -->
+	<div class="spc_wrapper">
+		<div class="spc_balloon">
+			<span>캐릭터를 만들어 볼까요?</span>
+			<a href="#none" class="spc_more"></a>
+		</div>
+	</div>
+	<!-- 말풍선 -->
+	<!-- class 날씨 5종류 겹침 가능 sunny, rainy, snow, cloudy, night -->
+	<div id="svg_canvas" class="cloudy snow">
+		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 82 14" style="enable-background:new 0 0 82 14;" xml:space="preserve" class="shadow">
+			<ellipse cx="41" cy="7" rx="41" ry="7"></ellipse>
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" width="86" height="86" viewBox="0 0 86 86" fill="none" class="w_sunny">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M68.8689 42.9455C68.8689 57.2625 57.2629 68.8695 42.9449 68.8695C28.6279 68.8695 17.0209 57.2625 17.0209 42.9455C17.0209 28.6275 28.6279 17.0215 42.9449 17.0215C57.2629 17.0215 68.8689 28.6275 68.8689 42.9455Z" fill="#FFDE46"></path>
+			<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="39" y="0" width="7" height="7">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M39.9277 0H45.9627V6.0359H39.9277V0Z" fill="white"></path>
+			</mask>
+			<g mask="url(#mask0)">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M45.9627 3.018C45.9627 4.685 44.6117 6.036 42.9447 6.036C41.2777 6.036 39.9277 4.685 39.9277 3.018C39.9277 1.351 41.2777 0 42.9447 0C44.6117 0 45.9627 1.351 45.9627 3.018Z" fill="#FFDE46"></path>
+			</g>
+			<mask id="mask1" mask-type="alpha" maskUnits="userSpaceOnUse" x="39" y="79" width="7" height="7">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M39.9277 79.8545H45.9627V85.8901H39.9277V79.8545Z" fill="white"></path>
+			</mask>
+			<g mask="url(#mask1)">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M45.9627 82.8725C45.9627 84.5395 44.6117 85.8905 42.9447 85.8905C41.2777 85.8905 39.9277 84.5395 39.9277 82.8725C39.9277 81.2055 41.2777 79.8545 42.9447 79.8545C44.6117 79.8545 45.9627 81.2055 45.9627 82.8725Z" fill="#FFDE46"></path>
+			</g>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M16.8465 12.5786C18.0245 13.7566 18.0245 15.6676 16.8465 16.8466C15.6675 18.0246 13.7565 18.0246 12.5775 16.8466C11.4005 15.6676 11.4005 13.7566 12.5775 12.5786C13.7565 11.3996 15.6675 11.3996 16.8465 12.5786Z" fill="#FFDE46"></path>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M73.3113 69.0437C74.4903 70.2227 74.4903 72.1327 73.3113 73.3117C72.1333 74.4897 70.2223 74.4897 69.0433 73.3117C67.8653 72.1327 67.8653 70.2227 69.0433 69.0437C70.2223 67.8657 72.1333 67.8657 73.3113 69.0437Z" fill="#FFDE46"></path>
+			<mask id="mask2" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="39" width="7" height="7">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M0 39.9268H6.0364V45.9628H0V39.9268Z" fill="white"></path>
+			</mask>
+			<g mask="url(#mask2)">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M3.01739 39.9268C4.68439 39.9268 6.03639 41.2778 6.03639 42.9448C6.03639 44.6118 4.68439 45.9628 3.01739 45.9628C1.35139 45.9628 -0.000610352 44.6118 -0.000610352 42.9448C-0.000610352 41.2778 1.35139 39.9268 3.01739 39.9268Z" fill="#FFDE46"></path>
+			</g>
+			<mask id="mask3" mask-type="alpha" maskUnits="userSpaceOnUse" x="79" y="39" width="7" height="7">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M79.8539 39.9268H85.89V45.9628H79.8539V39.9268Z" fill="white"></path>
+			</mask>
+			<g mask="url(#mask3)">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M82.8719 39.9268C84.5389 39.9268 85.8909 41.2778 85.8909 42.9448C85.8909 44.6118 84.5389 45.9628 82.8719 45.9628C81.2059 45.9628 79.8539 44.6118 79.8539 42.9448C79.8539 41.2778 81.2059 39.9268 82.8719 39.9268Z" fill="#FFDE46"></path>
+			</g>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M12.5779 69.0437C13.7569 67.8657 15.6679 67.8657 16.8469 69.0437C18.0239 70.2227 18.0239 72.1327 16.8469 73.3117C15.6679 74.4897 13.7569 74.4897 12.5779 73.3117C11.3999 72.1327 11.3999 70.2227 12.5779 69.0437Z" fill="#FFDE46"></path>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M69.0437 12.5786C70.2227 11.3996 72.1337 11.3996 73.3117 12.5786C74.4897 13.7566 74.4897 15.6676 73.3117 16.8466C72.1337 18.0246 70.2227 18.0246 69.0437 16.8466C67.8647 15.6676 67.8647 13.7566 69.0437 12.5786Z" fill="#FFDE46"></path>
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" width="90" height=64 version="1.1" viewBox="0 0 90 64" class="w_cloudy" fill="#ededed">
+			<path d="M57.6,0C46.1,0,36,6.1,30.3,15.3h-5.6c-13.4,0-24.3,10.9-24.3,24.3C0.4,53.1,11.3,64,24.7,64h32.9  c17.7,0,32-14.3,32-32S75.3,0,57.6,0z"></path>
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" width="65" height="66" viewBox="0 0 65 66" fill="none" class="w_night">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M43.4379 0.5C44.8764 4.24315 45.673 8.3056 45.673 12.5551C45.673 31.1222 30.6222 46.173 12.0551 46.173C7.8056 46.173 3.74315 45.3764 0 43.9372C4.84739 56.5471 17.0661 65.5 31.3821 65.5C49.9483 65.5 65 50.4483 65 31.8821C65 17.5661 56.0463 5.34739 43.4379 0.5Z" fill="#FFDE46"></path>
+		</svg>
+		<!-- class에 이펙트값 pet_01~05 -->
+		<div id="pet_animation" class="pet_01">
+			<!-- class 명 변경 type_a,b,c / half 유무 / 얼굴 패턴 pt2, pt3 -->
+			<div id="character" class="type_a pt3 half">
+				<!-- bubble -->
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve" class="bubble1">
+					<circle cx="20" cy="20" r="20"></circle>
+				</svg>
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 26 26" style="enable-background:new 0 0 26 26;" xml:space="preserve" class="bubble2">
+					<circle cx="13" cy="13" r="13"></circle>
+				</svg>
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 14 14" style="enable-background:new 0 0 14 14;" xml:space="preserve" class="bubble3">
+					<circle cx="7" cy="7" r="7"></circle>
+				</svg>
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 26 26" style="enable-background:new 0 0 26 26;" xml:space="preserve" class="bubble4">
+					<circle cx="13" cy="13" r="13"></circle>
+				</svg>
+				<!-- basic_body -->
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="basic_body">
+					<path d="M0,80c0,44.2,35.8,80,80,80s80-35.8,80-80S124.2,0,80,0S0,35.8,0,80"></path>
+				</svg>
+				<!-- type A -->
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_half">
+					<path d="M80.1,160c42.6,0,77.5-33.3,79.9-75.4H0.2C2.6,126.7,37.4,160,80.1,160"></path>
+				</svg>
+			<!-- 				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_01_half">
+                                <path d="M2.5,100c8.9,34.5,40.2,60,77.5,60s68.6-25.5,77.5-60H2.5z"></path>
+                            </svg> -->
+                            <div class="half_wrap">
+                            	<div class="a_01_half">
+                            	</div>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_03_half">
+                            	<path d="M1.4,65C0.5,69.9,0,74.9,0,80c0,44.2,35.8,80,80,80s80-35.8,80-80c0-5.1-0.5-10.1-1.4-15H1.4z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_04_half">
+                            	<path d="M5.8,50C2.1,59.3,0,69.4,0,80c0,44.2,35.8,80,80,80s80-35.8,80-80c0-10.6-2.1-20.7-5.8-30H5.8z"></path>
+                            </svg>
+                            <div class="face_contents">
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_pt1">
+                            		<path d="M58.5,84.6c12.2,0,22,9.8,22,22h-44C36.5,94.5,46.4,84.6,58.5,84.6z"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_pt2">
+                            		<g>
+                            			<path d="M53.4,72.5c2,2,2.4,4.7,1,6.1s-4.1,0.9-6.1-1c-2-2-2.4-4.7-1-6.1C48.7,70.1,51.5,70.5,53.4,72.5z"></path>
+                            			<path d="M63.9,72.5c2-2,4.7-2.4,6.1-1s0.9,4.1-1,6.1c-2,2-4.7,2.4-6.1,1S62,74.5,63.9,72.5z"></path>
+                            		</g>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_pt3">
+                            		<path d="M98,76c0,8.8-7.2,16-16,16s-16-7.2-16-16s7.2-16,16-16S98,67.2,98,76"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_nose">
+                            		<path d="M63,84.6c0,4.4-3.6,8-8,8s-8-3.6-8-8H63z"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_eyes">
+                            		<circle cx="40.5" cy="80.1" r="3.5"></circle>
+                            		<circle cx="76.5" cy="80.1" r="3.5"></circle>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_smile">
+                            		<path d="M36,80.8c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5 M72,80.8c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_dash">
+                            		<rect x="34.8" y="78.6" width="11.1" height="3"></rect>
+                            		<rect x="70.8" y="78.6" width="11.1" height="3"></rect>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="a_mouth">
+                            		<path d="M65.9,100.4c-3.2,1.5-6.3,2.7-9.5,3.7l2.6,5.7c2.4,5.1,8.4,7.3,13.5,4.9c5.1-2.4,7.3-8.4,4.9-13.5l-2.6-5.7   C72.1,97.3,69.1,99,65.9,100.4"></path>
+                            	</svg>
+                            </div>
+                            <!-- type B -->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_half">
+                            	<path d="M80,160c42.6,0,77.5-33.3,79.9-75.4H0.1C2.5,126.7,37.4,160,80,160"></path>
+                            </svg>
+			<!-- 				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_01_half">
+                                <path d="M5.8,110c11.9,29.3,40.6,50,74.2,50s62.3-20.7,74.2-50H5.8z"></path>
+                            </svg> -->
+                            <div class="half_wrap">
+                            	<div class="b_01_half">
+                            	</div>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_03_half">
+                            	<path d="M1.4,65C0.5,69.9,0,74.9,0,80c0,44.2,35.8,80,80,80s80-35.8,80-80c0-5.1-0.5-10.1-1.4-15H1.4z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_04_half">
+                            	<path d="M5.8,50C2.1,59.3,0,69.4,0,80c0,44.2,35.8,80,80,80s80-35.8,80-80c0-10.6-2.1-20.7-5.8-30H5.8z"></path>
+                            </svg>
+                            <div class="face_contents">
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_pt1">
+                            		<path d="M80,84.6c0,12.2-9.9,22-22,22s-22-9.8-22-22H80z"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_pt2">
+                            		<g>
+                            			<path d="M59.2,61.7c2,2,2.4,4.7,1,6.1s-4.1,0.9-6.1-1c-2-2-2.4-4.7-1-6.1C54.5,59.2,57.3,59.7,59.2,61.7z"></path>
+                            			<path d="M69.8,61.7c2-2,4.7-2.4,6.1-1s0.9,4.1-1,6.1c-2,2-4.7,2.4-6.1,1C67.3,66.4,67.8,63.6,69.8,61.7z"></path>
+                            		</g>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_pt3">
+                            		<path d="M104.5,64.6c0,11-9,20-20,20s-20-9-20-20s9-20,20-20S104.5,53.6,104.5,64.6"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_nose">
+                            		<path d="M56,84.6c0,4.4-3.6,8-8,8s-8-3.6-8-8H56z"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_eyes">
+                            		<circle cx="52.5" cy="74.2" r="3.5"></circle>
+                            		<circle cx="76.6" cy="74.2" r="3.5"></circle>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_smile">
+                            		<path d="M48,74.8c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5 M72.1,74.8c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_dash">
+                            		<rect x="46.5" y="72" width="11.1" height="3"></rect>
+                            		<rect x="70.5" y="72" width="11.1" height="3"></rect>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="b_mouth">
+                            		<path d="M65.4,100.1c-3.2,1.5-6.3,2.7-9.5,3.7l2.6,5.7c2.4,5.1,8.4,7.3,13.5,4.9c5.1-2.4,7.3-8.4,4.9-13.5l-2.6-5.7   C71.6,97,68.6,98.6,65.4,100.1"></path>
+                            	</svg>
+                            </div>
+                            <!-- type C -->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_half">
+                            	<path d="M80,160c40.1,0,73.3-29.5,79.1-68.1H0.9C6.7,130.5,39.9,160,80,160"></path>
+                            </svg>
+			<!-- 				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_01_half">
+                                <path d="M4.7,107c11.1,30.9,40.6,53,75.3,53s64.2-22.1,75.3-53H4.7z"></path>
+                            </svg> -->
+                            <div class="half_wrap">
+                            	<div class="c_01_half">
+                            	</div>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_03_half">
+                            	<path d="M0.4,72C0.1,74.6,0,77.3,0,80c0,44.2,35.8,80,80,80s80-35.8,80-80c0-2.7-0.1-5.4-0.4-8H0.4z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_04_half">
+                            	<path d="M156.6,57H3.4C1.2,64.3,0,72,0,80c0,44.2,35.8,80,80,80s80-35.8,80-80C160,72,158.8,64.3,156.6,57z"></path>
+                            </svg>
+                            <div class="face_contents">
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_pt1">
+                            		<path d="M80,91.9c0,13.8-11.2,25-25,25c-13.8,0-25-11.2-25-25H80z"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_pt2">
+                            		<g>
+                            			<path d="M60.8,56.9c2,2,2.4,4.7,1,6.1s-4.1,0.9-6.1-1c-2-2-2.4-4.7-1-6.1C56.1,54.5,58.8,55,60.8,56.9L60.8,56.9z"></path>
+                            			<path d="M71.3,56.9c2-2,4.7-2.4,6.1-1c1.4,1.4,0.9,4.1-1,6.1c-2,2-4.7,2.4-6.1,1C68.9,61.6,69.4,58.9,71.3,56.9    L71.3,56.9z"></path>
+                            		</g>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_pt3">
+                            		<path d="M106,66c0,11-9,20-20,20s-20-9-20-20c0-11,9-20,20-20S106,55,106,66"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_nose">
+                            		<path d="M50.7,91.9c0,4.4-3.6,8-8,8s-8-3.6-8-8H50.7z"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_eyes">
+                            		<circle cx="55.5" cy="71.5" r="3.5"></circle>
+                            		<circle cx="76.5" cy="71.5" r="3.5"></circle>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_smile">
+                            		<path d="M72,72.2c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5 M51.1,72.2c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5"></path>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_dash">
+                            		<rect x="49.5" y="70" width="11.1" height="3"></rect>
+                            		<rect x="70.5" y="70" width="11.1" height="3"></rect>
+                            	</svg>
+                            	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 160 160" style="enable-background:new 0 0 160 160;" xml:space="preserve" class="c_mouth">
+                            		<path d="M64,109.8c-3.2,1.5-6.3,2.7-9.5,3.7l2.6,5.7c2.4,5.1,8.4,7.3,13.5,4.9c5.1-2.4,7.3-8.4,4.9-13.5l-2.6-5.7   C70.2,106.7,67.2,108.3,64,109.8"></path>
+                            	</svg>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 57 41" style="enable-background:new 0 0 57 41;" xml:space="preserve" class="smoke">
+                            	<circle cx="45" cy="20.5" r="12"></circle>
+                            	<circle cx="20.5" cy="20.5" r="20.5"></circle>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 26 49" style="enable-background:new 0 0 26 49;" xml:space="preserve" class="sweat">
+                            	<path d="M0.8,31.8L13,0l12.2,31.8C28.3,40.1,22.1,49,13,49C3.9,49-2.4,40.1,0.8,31.8"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- 캐릭터 위로 빠져야하는 액션 -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="242" viewBox="0 0 249 242" fill="none" class="w_rainy">
+                    	<g opacity="0.9">
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 221.5H27.5L18.5004 188.5L9.5 221.5Z" fill="#8EE4EF" class="drop1"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M155.5 73.5L146.5 106.5H164.5L155.5 73.5Z" fill="#8EE4EF" class="drop2"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M150.5 241.5L159.5 208.5L168.5 241.5H150.5Z" fill="#8EE4EF" class="drop3"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M231 158.5H249V158.497L240 125.5L231 158.5Z" fill="#8EE4EF" class="drop4"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M169.5 33H187.5V32.9974L178.5 0L169.5 33Z" fill="#8EE4EF" class="drop5"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 122.5H18.5L9.50043 89.5L0.5 122.5Z" fill="#8EE4EF" class="drop6"></path>
+                    	</g>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="242" viewBox="0 0 249 242" fill="none" class="w_rainy2">
+                    	<g opacity="0.9">
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 221.5H27.5L18.5004 188.5L9.5 221.5Z" fill="#8EE4EF" class="drop1"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M155.5 73.5L146.5 106.5H164.5L155.5 73.5Z" fill="#8EE4EF" class="drop2"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M150.5 241.5L159.5 208.5L168.5 241.5H150.5Z" fill="#8EE4EF" class="drop3"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M231 158.5H249V158.497L240 125.5L231 158.5Z" fill="#8EE4EF" class="drop4"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M169.5 33H187.5V32.9974L178.5 0L169.5 33Z" fill="#8EE4EF" class="drop5"></path>
+                    		<path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 122.5H18.5L9.50043 89.5L0.5 122.5Z" fill="#8EE4EF" class="drop6"></path>
+                    	</g>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="249" viewBox="0 0 244 249" fill="none" class="w_snow2">
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M125.385 75.442C125.385 80.104 121.605 83.884 116.943 83.884C112.28 83.884 108.5 80.104 108.5 75.442C108.5 70.779 112.28 67 116.943 67C121.605 67 125.385 70.779 125.385 75.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop1"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M191.385 191.442C191.385 196.104 187.605 199.884 182.943 199.884C178.28 199.884 174.5 196.104 174.5 191.442C174.5 186.779 178.28 183 182.943 183C187.605 183 191.385 186.779 191.385 191.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop2"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M60.385 240.442C60.385 245.104 56.605 248.884 51.943 248.884C47.28 248.884 43.5 245.104 43.5 240.442C43.5 235.779 47.28 232 51.943 232C56.605 232 60.385 235.779 60.385 240.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop3"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M243.385 87.442C243.385 92.104 239.605 95.884 234.943 95.884C230.28 95.884 226.5 92.104 226.5 87.442C226.5 82.779 230.28 79 234.943 79C239.605 79 243.385 82.779 243.385 87.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop4"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M196.385 8.442C196.385 13.104 192.605 16.884 187.943 16.884C183.28 16.884 179.5 13.104 179.5 8.442C179.5 3.779 183.28 0 187.943 0C192.605 0 196.385 3.779 196.385 8.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop5"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M17.385 153.442C17.385 158.104 13.605 161.884 8.943 161.884C4.28 161.884 0.5 158.104 0.5 153.442C0.5 148.779 4.28 145 8.943 145C13.605 145 17.385 148.779 17.385 153.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop6"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M243.385 240.442C243.385 245.104 239.606 248.884 234.943 248.884C230.281 248.884 226.5 245.104 226.5 240.442C226.5 235.779 230.281 232 234.943 232C239.606 232 243.385 235.779 243.385 240.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop7"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="249" viewBox="0 0 244 249" fill="none" class="w_snow">
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M125.385 75.442C125.385 80.104 121.605 83.884 116.943 83.884C112.28 83.884 108.5 80.104 108.5 75.442C108.5 70.779 112.28 67 116.943 67C121.605 67 125.385 70.779 125.385 75.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop1"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M191.385 191.442C191.385 196.104 187.605 199.884 182.943 199.884C178.28 199.884 174.5 196.104 174.5 191.442C174.5 186.779 178.28 183 182.943 183C187.605 183 191.385 186.779 191.385 191.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop2"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M60.385 240.442C60.385 245.104 56.605 248.884 51.943 248.884C47.28 248.884 43.5 245.104 43.5 240.442C43.5 235.779 47.28 232 51.943 232C56.605 232 60.385 235.779 60.385 240.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop3"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M243.385 87.442C243.385 92.104 239.605 95.884 234.943 95.884C230.28 95.884 226.5 92.104 226.5 87.442C226.5 82.779 230.28 79 234.943 79C239.605 79 243.385 82.779 243.385 87.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop4"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M196.385 8.442C196.385 13.104 192.605 16.884 187.943 16.884C183.28 16.884 179.5 13.104 179.5 8.442C179.5 3.779 183.28 0 187.943 0C192.605 0 196.385 3.779 196.385 8.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop5"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M17.385 153.442C17.385 158.104 13.605 161.884 8.943 161.884C4.28 161.884 0.5 158.104 0.5 153.442C0.5 148.779 4.28 145 8.943 145C13.605 145 17.385 148.779 17.385 153.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop6"></path>
+                    	<path fill-rule="evenodd" clip-rule="evenodd" d="M243.385 240.442C243.385 245.104 239.606 248.884 234.943 248.884C230.281 248.884 226.5 245.104 226.5 240.442C226.5 235.779 230.281 232 234.943 232C239.606 232 243.385 235.779 243.385 240.442Z" fill="#EEEEEE" fill-opacity="0.8" class="snowdrop7"></path>
+                    </svg>
+                </div>
+            </body>
+            </html>

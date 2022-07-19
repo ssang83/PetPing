@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="23dp"
+        android:orientation="vertical">
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"/>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/greyscale_9_111"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:text="진행중인 미션"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="12dp"/>
+    </LinearLayout>
+</layout>

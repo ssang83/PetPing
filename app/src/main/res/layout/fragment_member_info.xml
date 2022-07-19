@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.etc.member_info.MemberInfoViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_1_fff">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/greyscale_1_fff"
+                app:liftOnScroll="true">
+
+                <include
+                    android:id="@+id/header"
+                    layout="@layout/layout_back"
+                    />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/member_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="32dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:lineSpacingExtra="10dp"
+                            android:textColor="#111111"
+                            android:textSize="24dp"
+                            app:htmlText="@{@string/member_title_s}"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:text="@string/member_info"
+                            android:textColor="@color/greyscale_9_aaa"
+                            android:textSize="14dp"
+                            android:layout_marginTop="40dp"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginTop="30dp"
+                            android:orientation="horizontal"
+                            android:visibility="@{viewModel.email.length()==0?View.GONE:View.VISIBLE}">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:text="@string/email_address"
+                                android:textColor="@color/greyscale_g_5_bbb"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:layout_marginStart="15dp"
+                                android:text="@{viewModel.email}"
+                                android:textColor="@{viewModel.isEmailAuth()? @color/greyscale_9_111 : @color/primary_pink}"
+                                android:textSize="15dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:text="@string/login_type"
+                                android:textColor="@color/greyscale_g_5_bbb"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:text="@{viewModel.login}"
+                                android:textColor="@color/greyscale_9_111"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+
+                        <Button
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="30dp"
+                            android:background="@drawable/btn_outline_666"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:text="@string/send_auth_mail"
+                            android:textColor="@color/greyscale_9_111"
+                            android:textSize="13dp"
+                            android:visibility="@{viewModel.isVisibleEmailSend ? View.VISIBLE:View.GONE}"
+                            app:onSafeClick="@{view -> viewModel.sendAuthEmail()}" />
+
+                        <Button
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/btn_outline"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:text="@string/email_modify"
+                            android:textColor="@color/greyscale_9_111"
+                            android:textSize="13dp"
+                            android:visibility="@{viewModel.email.length()==0?View.GONE:View.VISIBLE}"
+                            app:onSafeClick="@{view -> viewModel.goToChangeEmail()}" />
+
+                        <Button
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/btn_outline"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:text="@string/passwd_modify"
+                            android:textColor="@color/greyscale_9_111"
+                            android:textSize="13dp"
+                            android:visibility="@{viewModel.login.contains(&quot;이메일&quot;)?View.VISIBLE:View.GONE}"
+                            app:onSafeClick="@{view -> viewModel.goToChangePassword()}" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.email.length()==0?View.VISIBLE:View.GONE}">
+
+                            <Button
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="46dp"
+                                android:background="@drawable/btn_outline_666"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:text="@string/email_register"
+                                android:textColor="@color/greyscale_9_111"
+                                android:textSize="13dp"
+                                app:onSafeClick="@{view -> viewModel.goToRegisterEmail()}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:text="@string/no_email_address"
+                                android:textColor="@color/greyscale_9_aaa"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:id="@+id/member_email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                tools:text="@string/input_email_and_auth"
+                                android:textColor="@color/greyscale_9_aaa"
+                                android:textSize="15dp"
+                                app:htmlText="@{@string/member_email}"
+                                />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="30dp"
+                            android:background="@color/greyscale_3_f_0" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.phone.length()==0?View.GONE:View.VISIBLE}">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:text="@string/member_confirm_info"
+                                android:textColor="@color/greyscale_9_aaa"
+                                android:textSize="14dp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="30dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/nanum_square_round"
+                                    android:text="@string/phone_number"
+                                    android:textColor="@color/greyscale_g_5_bbb"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="15dp"
+                                    android:fontFamily="@font/nanum_square_round_b"
+                                    android:text="@{viewModel.phone}"
+                                    android:textColor="@color/greyscale_9_111"
+                                    android:textSize="15dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/nanum_square_round"
+                                    android:text="@string/user_name"
+                                    android:textColor="@color/greyscale_g_5_bbb"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="15dp"
+                                    android:fontFamily="@font/nanum_square_round_b"
+                                    android:text="@{viewModel.name}"
+                                    android:textColor="@color/greyscale_9_111"
+                                    android:textSize="15dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:visibility="gone"
+                                >
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/nanum_square_round"
+                                    android:text="@string/user_birthday"
+                                    android:textColor="@color/greyscale_g_5_bbb"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="15dp"
+                                    android:fontFamily="@font/nanum_square_round_b"
+                                    android:text="@{viewModel.birth}"
+                                    android:textColor="@color/greyscale_9_111"
+                                    android:textSize="15dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:visibility="gone"
+                                >
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/nanum_square_round"
+                                    android:text="@string/user_gender"
+                                    android:textColor="@color/greyscale_g_5_bbb"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="15dp"
+                                    android:fontFamily="@font/nanum_square_round_b"
+                                    android:text="@{viewModel.gender}"
+                                    android:textColor="@color/greyscale_9_111"
+                                    android:textSize="15dp" />
+                            </LinearLayout>
+
+                            <Button
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="46dp"
+                                android:layout_marginTop="30dp"
+                                android:background="@drawable/btn_outline"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:text="@string/phone_number_modify"
+                                android:textColor="@color/greyscale_9_111"
+                                android:textSize="13dp"
+                                app:onSafeClick="@{view -> viewModel.goToChangePhoneNumber()}" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.phone.length()==0?View.VISIBLE:View.GONE}">
+
+                            <Button
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="46dp"
+                                android:background="@drawable/btn_outline_666"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:text="@string/phone_auth"
+                                android:textColor="@color/greyscale_9_111"
+                                android:textSize="13dp"
+                                app:onSafeClick="@{view -> viewModel.goToAddPhoneNumber()}" />
+
+                            <TextView
+                                android:id="@+id/member_phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:lineSpacingExtra="6dp"
+                                android:textColor="@color/greyscale_9_aaa"
+                                app:htmlText="@{@string/member_info_s}"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="30dp"
+                            android:background="@color/greyscale_3_f_0" />
+
+                        <Button
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="30dp"
+                            android:background="@drawable/btn_outline"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:text="@string/location_history"
+                            android:textColor="@color/greyscale_9_111"
+                            android:textSize="13dp"
+                            app:onSafeClick="@{view -> viewModel.goToLocationHistory()}" />
+
+                        <Button
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="30dp"
+                            android:background="@drawable/btn_outline"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:text="@string/logout_title"
+                            android:textColor="@color/greyscale_9_111"
+                            android:textSize="13dp"
+                            app:onSafeClick="@{view -> viewModel.logout()}" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="30dp"
+                            android:onClick="@{view -> viewModel.goToWithdrawal()}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/member_withdraw"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:textColor="@color/greyscale_g_5_bbb"
+                                android:textSize="12dp"
+                                app:htmlText="@{@string/member_withdraw}"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

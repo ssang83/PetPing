@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/color_1"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#f9ecd7" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_2"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#f7c893" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_3"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#f09e58" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_4"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#c6753f" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_5"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#9f653f" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_6"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#7c604d" />
+        </RelativeLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/color_7"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/color_semicircle_top"
+                android:backgroundTint="#f7f7f7" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_8"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#dcdcdc" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_9"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#ababab" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_10"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#737373" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_11"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#636363" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_more"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/color_12"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#ffee35" />
+        </RelativeLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="20dp"/>
+    <LinearLayout
+        android:id="@+id/color_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/color_13"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#7ee4dd" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_14"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#5396fa" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_15"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#a181f7" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_16"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#f773ad" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_17"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#ff4857" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:id="@+id/color_18"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/color_white" />
+            <View
+                android:layout_width="38dp"
+                android:layout_height="19dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/color_semicircle_bottom"
+                android:backgroundTint="#ff7a35" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

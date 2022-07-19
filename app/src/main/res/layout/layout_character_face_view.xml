@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/pet_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_body" />
+
+    <RelativeLayout
+        android:id="@+id/type_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/pet_a_half"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_a_b_half" />
+
+        <ImageView
+            android:id="@+id/type_a_eyebrow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_a_eyebrow" />
+
+        <ImageView
+            android:id="@+id/type_a_muzzle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_a_muzzle" />
+
+        <ImageView
+            android:id="@+id/type_a_muzzle_a"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_a_muzzle_a" />
+
+        <ImageView
+            android:id="@+id/type_a_spotted"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_a_spotted" />
+
+        <ImageView
+            android:id="@+id/type_a"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_a" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/type_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/pet_b_half"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_a_b_half" />
+
+        <ImageView
+            android:id="@+id/type_b_eyebrow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_b_eyebrow" />
+
+        <ImageView
+            android:id="@+id/type_b_muzzle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_b_muzzle" />
+
+        <ImageView
+            android:id="@+id/type_b_muzzle_a"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_b_muzzle_a" />
+
+        <ImageView
+            android:id="@+id/type_b_spotted"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_b_spotted" />
+
+        <ImageView
+            android:id="@+id/type_b"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_b" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/type_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/pet_c_half"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_c_half" />
+
+        <ImageView
+            android:id="@+id/type_c_eyebrow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_c_eyebrow" />
+
+        <ImageView
+            android:id="@+id/type_c_muzzle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_c_muzzle" />
+
+        <ImageView
+            android:id="@+id/type_c_muzzle_a"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_c_muzzle_a" />
+
+        <ImageView
+            android:id="@+id/type_c_spotted"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_c_spotted" />
+
+        <ImageView
+            android:id="@+id/type_c"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_type_c" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

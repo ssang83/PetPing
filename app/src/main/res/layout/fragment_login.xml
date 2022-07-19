@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.login.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/welcome_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:lineSpacingExtra="10dp"
+            android:textColor="#111111"
+            android:textSize="26dp"
+            app:htmlText="@{@string/login_activity_welcome}"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toTopOf="@+id/social_container"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/btn_naver_bg"
+                android:clickable="true"
+                android:focusable="true"
+                app:onSafeClick="@{view -> viewModel.goToNaverLogin()}"
+                >
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="18dp"
+                    android:src="@drawable/naver_icon"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/naver_login"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/btn_kakao_bg"
+                android:layout_marginTop="12dp"
+                app:onSafeClick="@{view -> viewModel.goToKakaoLogin()}"
+                >
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="18dp"
+                    android:src="@drawable/kakao_icon"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:text="@string/kakao_login"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/img_apple_login"
+                android:adjustViewBounds="true"
+                app:onSafeClick="@{view -> viewModel.goToAppleLogin()}"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/btn_other_bg"
+                android:layout_marginTop="12dp"
+                app:onSafeClick="@{view -> viewModel.goToOtherLogin()}">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="18dp"
+                    android:src="@drawable/letter_icon"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:textColor="@color/greyscale_9_111"
+                    android:text="@string/other_login"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/social_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:onSafeClick="@{view -> viewModel.goToFacebookUrl()}"
+                android:src="@drawable/facebook_icon_round"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                app:onSafeClick="@{view -> viewModel.goToInstagramUrl()}"
+                android:src="@drawable/instagram_icon_round"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                app:onSafeClick="@{view -> viewModel.goToNaverUrl()}"
+                android:src="@drawable/naver_icon_round"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

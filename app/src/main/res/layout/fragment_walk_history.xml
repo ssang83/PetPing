@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.history.walk.WalkHistoryViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyList"
+            android:visibility="@{viewModel.walkRecordList.size() == 0 &amp;&amp; viewModel.isPublic == true ? View.GONE : View.VISIBLE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="11dp"
+            android:scrollbars="none"
+            android:overScrollMode="never"
+            app:scrollTop="@{viewModel.scrollTopFlag}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/walk_history_item"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{viewModel.walkRecordList.size() == 0 &amp;&amp; viewModel.isPublic == true ? View.VISIBLE : View.GONE, default = gone}"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:src="@drawable/ic_ping"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/walk_record_empty"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/greyscale_g_5_bbb"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20dp"
+                android:fontFamily="@font/nanum_square_round_b"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.isPublic == true ? View.GONE : View.VISIBLE, default = gone}"
+            >
+
+            <ImageView
+                android:layout_width="126dp"
+                android:layout_height="95dp"
+                android:src="@drawable/img_privacy_profile"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/walk_record_privacy_profile"
+                android:textColor="@color/greyscale_g_5_bbb"
+                android:textSize="20dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnTop"
+            android:layout_width="41dp"
+            android:layout_height="41dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_top"
+            app:onSafeClick="@{view -> viewModel.scrollTop()}"
+            android:adjustViewBounds="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

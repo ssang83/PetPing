@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.profile.make.family.FamilyViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <RelativeLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/back_arrow_svg" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:text="@string/family_code_guide"
+                android:textColor="@color/greyscale_9_111"
+                android:fontFamily="@font/nanum_square_round"
+                android:textSize="14dp"
+                app:onSafeClick="@{view -> viewModel.moveToGuide()}" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/outSide"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnConfirm"
+            >
+
+            <TextView
+                android:id="@+id/family_code_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:htmlText="@{@string/family_code_title_s}"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:lineSpacingExtra="10dp"
+                android:textColor="#111111"
+                android:textSize="24dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/family_code_sub_title"
+                android:fontFamily="@font/nanum_square_round"
+                android:textColor="@color/greyscale_9_777"
+                android:textSize="15dp"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/family_code_wrapper"
+                style="@style/CustomTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:hint="가족코드를 입력하세요"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/CustomEditText"
+                    android:id="@+id/family_code_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:maxLength="11"
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.familyCode}" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <Button
+            style="@style/BottomBarButton"
+            android:id="@+id/btnConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:enabled="@{viewModel.familyCode.length() == 11}"
+            android:text="확인"
+            app:onSafeClick="@{view -> viewModel.confirm()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

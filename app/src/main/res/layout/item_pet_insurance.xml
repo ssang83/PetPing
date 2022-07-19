@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.insurance.InsuranceHistoryViewModel" />
+
+        <variable
+            name="item"
+            type="ai.comake.petping.data.vo.PetInsurJoinsData" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="7.5dp"
+        android:layout_marginTop="7.5dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp"
+        android:background="@color/greyscale_1_fff"
+        android:outlineSpotShadowColor="#4A000000"
+        android:orientation="vertical"
+        app:onSafeClick="@{view -> viewModel.goToInsuranceDetail(item)}"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="25dp"
+                >
+
+                <TextView
+                    android:id="@+id/insuranceCompany"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="삼성화재"
+                    android:text="@{item.insuCompany}"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="13dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/insuranceName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="반려견보험 애니펫"
+                    android:text="@{item.insuProductStr}"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="15dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@+id/insuranceCompany"
+                    app:layout_constraintStart_toStartOf="@+id/insuranceCompany"
+                    />
+
+                <TextView
+                    android:id="@+id/insuranceDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="2021-01-21 ~ 2012-01-27"
+                    app:dateText="@{item}"
+                    android:visibility="@{item.state == 1 ? View.VISIBLE : View.GONE}"
+                    android:textColor="@color/greyscale_9_aaa"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@+id/insuranceName"
+                    app:layout_constraintStart_toStartOf="@+id/insuranceCompany"
+                    />
+
+                <ImageView
+                    android:id="@+id/btnGo"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/ic_go"
+                    android:visibility="@{item.state == 1 ? View.VISIBLE : View.GONE}"
+                    android:background="@color/greyscale_1_fff"
+                    android:adjustViewBounds="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="가입 진행 중"
+                    android:textSize="13dp"
+                    app:insuranceState="@{item.state}"
+                    android:textColor="@color/greyscale_9_777"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

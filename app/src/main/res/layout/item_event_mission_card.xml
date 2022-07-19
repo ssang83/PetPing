@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:outlineSpotShadowColor="#4A000000"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:background="#6168D6">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contentLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/statusLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/symbolImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="22dp"
+                    android:scaleType="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/sample_mission_image" />
+
+                <TextView
+                    app:layout_goneMarginStart="20dp"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    android:id="@+id/descriptionSub1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:textColor="#ccffffff"
+                    android:maxLines="1"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/symbolImageView"
+                    app:layout_constraintBottom_toTopOf="@+id/descriptionMain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="일이삼사오육칠팔구십일이삼사오육" />
+
+                <TextView
+                    android:maxLines="1"
+                    app:layout_goneMarginTop="0dp"
+                    app:layout_goneMarginStart="20dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:id="@+id/descriptionMain"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:textColor="#ffffffff"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toTopOf="@+id/descriptionSub2"
+                    app:layout_constraintStart_toEndOf="@+id/symbolImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/descriptionSub1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="일이삼사오육칠팔구십일이삼사오육" />
+
+                <TextView
+                    android:maxLines="1"
+                    app:layout_goneMarginTop="0dp"
+                    app:layout_goneMarginStart="20dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/descriptionSub2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:textColor="#ccffffff"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/symbolImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/descriptionMain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="일이삼사오육칠팔구십일이삼사" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/statusLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/statusImageView"
+                    android:layout_width="5dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/ic_right_white_arrow" />
+
+                <TextView
+                    android:id="@+id/statusTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="13dp"
+                    tools:text="참여 중" />
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

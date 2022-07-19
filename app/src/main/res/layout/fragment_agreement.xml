@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.login.AgreementViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/layout_back"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/agreement_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:lineSpacingExtra="10dp"
+                    android:textColor="#111111"
+                    android:textSize="24dp"
+                    tools:text="서비스 이용을 위해\n동의해 주세요"
+                    app:htmlText="@{@string/agreement_title_s}"
+                    />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/all_agreement_check_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="56dp"
+                    android:layout_marginStart="20dp"
+                    android:button="@drawable/toggle_sel"
+                    android:checked="@={viewModel.allAgreement}"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:paddingLeft="10dp"
+                    android:text="@string/all_agreement"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="16dp"
+                    app:onNormalClick="@{view -> viewModel.onAllAgreementChanged(viewModel.allAgreement)}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/greyscale_3_f_0" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:text="@string/require_agree"
+                    android:textColor="@color/greyscale_9_aaa"
+                    android:textSize="14dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    >
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/service_check_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:button="@drawable/toggle_sel"
+                        android:checked="@={viewModel.serviceAgreement}"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:paddingLeft="10dp"
+                        android:text="@string/service_policy"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="16dp"
+                        app:onNormalClick="@{view -> viewModel.onAgreementChanged(viewModel.serviceAgreement)}" />
+
+                    <Button
+                        android:id="@+id/agreement_view_button"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:text="@string/policy_view"
+                        android:textColor="@color/greyscale_9_777"
+                        android:textSize="13dp"
+                        app:onSafeClick="@{view -> viewModel.goToPolicyPage(1)}" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    >
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/location_check_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:button="@drawable/toggle_sel"
+                        android:checked="@={viewModel.locationAgreement}"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:paddingLeft="10dp"
+                        android:text="@string/location_service_policy"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="16dp"
+                        app:onNormalClick="@{view -> viewModel.onAgreementChanged(viewModel.locationAgreement)}" />
+
+                    <Button
+                        android:id="@+id/agreement_view_button2"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:text="@string/policy_view"
+                        android:textColor="@color/greyscale_9_777"
+                        android:textSize="13dp"
+                        app:onNormalClick="@{view -> viewModel.goToPolicyPage(2)}" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    >
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/privacy_check_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:button="@drawable/toggle_sel"
+                        android:checked="@={viewModel.privacyAgreement}"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:paddingLeft="10dp"
+                        android:text="@string/privacy_policy_agree"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="16dp"
+                        app:onNormalClick="@{view -> viewModel.onAgreementChanged(viewModel.privacyAgreement)}" />
+
+                    <Button
+                        android:id="@+id/agreement_view_button3"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:text="@string/policy_view"
+                        android:textColor="@color/greyscale_9_777"
+                        android:textSize="13dp"
+                        app:onSafeClick="@{view -> viewModel.goToPolicyPage(3)}" />
+                </RelativeLayout>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/age_check_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:button="@drawable/toggle_sel"
+                    android:checked="@={viewModel.ageAgreement}"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:paddingLeft="10dp"
+                    android:text="@string/age_policy"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="16dp"
+                    app:onNormalClick="@{view -> viewModel.onAgreementChanged(viewModel.ageAgreement)}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/option_agree"
+                    android:textColor="@color/greyscale_9_aaa"
+                    android:textSize="14dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="56dp"
+                    >
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/marketing_check_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/toggle_sel"
+                        android:checked="@={viewModel.marketingAgreement}"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:paddingLeft="10dp"
+                        android:text="@string/marketing_policy"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="16dp"
+                        app:onNormalClick="@{view -> viewModel.onAgreementChanged(viewModel.marketingAgreement)}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:lineHeight="20sp"
+                        android:text="이메일 주소, 휴대폰 번호, 앱 알림으로\n이벤트 소식을 알려 드려요."
+                        android:textColor="@color/greyscale_9_aaa"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnSignUp"
+            style="@style/BottomBarButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:enabled="@{viewModel.serviceAgreement &amp;&amp; viewModel.locationAgreement &amp;&amp; viewModel.privacyAgreement &amp;&amp; viewModel.ageAgreement }"
+            android:text="@string/btn_sign_up"
+            app:onSafeClick="@{view -> viewModel.signUp(context)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

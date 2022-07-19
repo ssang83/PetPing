@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="ai.comake.petping.ui.home.walk.WalkBottomUi" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.walk.WalkViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/walkMainView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <FrameLayout
+                android:id="@+id/naverMapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/searchPoiButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/search_poi_button"
+                android:gravity="center"
+                android:textColor="@color/color_ff4857"
+                android:textSize="13dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/guideHeaderView"
+                layout="@layout/fragment_walk_guide_header"
+                android:visibility="@{viewModel.isAudioGuideHeader ? View.VISIBLE : View.GONE}"
+                bind:viewModel="@{viewModel}" />
+
+            <include
+                android:id="@+id/markingHeaderView"
+                layout="@layout/fragment_walk_marking_header"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:viewModel="@{viewModel}" />
+
+            <include
+                android:id="@+id/placeHeaderView"
+                layout="@layout/fragment_walk_place_header"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:viewModel="@{viewModel}" />
+
+            <include
+                android:id="@+id/clusterHeaderView"
+                layout="@layout/fragment_walk_marking_cluster_header"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.CLUSTER ? View.VISIBLE : View.GONE}"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:viewModel="@{viewModel}" />
+
+            <include
+                android:id="@+id/walkControlHeaderView"
+                layout="@layout/fragment_walk_control_header"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:visibility="@{viewModel.isStartWalk &amp;&amp; viewModel.walkBottomUi == WalkBottomUi.NONE &amp;&amp; viewModel.isPauseWalk == true   ? View.VISIBLE : View.GONE}"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:viewModel="@{viewModel}" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/walkStopTrackingLocationButton"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/tracking_location_bg"
+                app:layout_constraintBottom_toBottomOf="@+id/startWalkButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/startWalkButton">
+
+                <ImageView
+                    android:id="@+id/walkStopTrackingLocationImage"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginBottom="1dp"
+                    android:backgroundTint="@android:color/white"
+                    android:src="@drawable/selector_tracking_location"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/walkStopTrackingLocationButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@android:color/white"
+                android:src="@drawable/selector_tracking_location"
+                app:borderWidth="0dp"
+                app:elevation="2dp"
+                app:fabCustomSize="40dp"
+                app:layout_constraintBottom_toBottomOf="@+id/startWalkButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/startWalkButton"
+                app:maxImageSize="20dp" />-->
+
+            <ImageView
+                android:id="@+id/startWalkButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="36dp"
+                android:background="@drawable/start_walk_button"
+                android:gravity="center"
+                android:text="@string/walk_start"
+                android:textColor="@android:color/white"
+                android:textSize="16dp"
+                app:elevation="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/bottomPOIView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/bottomFloatingView"
+                layout="@layout/fragment_walk_bottom_floating_view" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottomPOIView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <include
+                    android:id="@+id/walkControlView"
+                    layout="@layout/fragment_walk_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="209dp"
+                    android:visibility="@{viewModel.isStartWalk &amp;&amp; viewModel.walkBottomUi == WalkBottomUi.NONE ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    bind:viewModel="@{viewModel}" />
+
+                <include
+                    android:id="@+id/markingDetailView"
+                    layout="@layout/fragment_walk_marking_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="209dp"
+                    android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.MARKING ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    bind:viewModel="@{viewModel}" />
+
+                <include
+                    android:id="@+id/placeDetailView"
+                    layout="@layout/fragment_walk_place_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="209dp"
+                    android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.PLACE ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    bind:viewModel="@{viewModel}" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/beforeWalkGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.isStartWalk ? View.GONE : View.VISIBLE}"
+                app:constraint_referenced_ids="startWalkButton,walkStopTrackingLocationButton" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/markingGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.MARKING ? View.VISIBLE : View.GONE}"
+                app:constraint_referenced_ids="markingHeaderView" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/placeGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.PLACE ? View.VISIBLE : View.GONE}"
+                app:constraint_referenced_ids="placeHeaderView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/clusterDetailView"
+            layout="@layout/fragment_walk_cluster_detail"
+            android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.CLUSTER ? View.VISIBLE : View.GONE}"
+            bind:viewModel="@{viewModel}" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

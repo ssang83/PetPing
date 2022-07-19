@@ -1,0 +1,1694 @@
+@charset "utf-8";
+
+#svg_canvas {
+	width: 100%;
+	height: 320px;
+	position: relative;
+	overflow: hidden;
+	zoom: 3.2;
+	text-align: center;
+}
+
+#pet_animation {
+	width: 160px;
+	height: 160px;
+	position: absolute;
+	left: 50%;
+	margin-left: -80px;
+}
+
+#character {
+	width: 160px;
+	height: 160px;
+	position: relative;
+}
+
+#character img,
+#character svg {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#character .half_wrap {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+}
+
+#character.type_a .half_wrap {
+	height: 60px;
+}
+
+#character.type_b .half_wrap {
+	height: 50px;
+}
+
+#character.type_c .half_wrap {
+	height: 53px;
+}
+
+/*//추가된부분*/
+
+#svg_canvas .shadow {
+	position: absolute;
+	left:50%;
+	margin-left: -41px;
+	bottom: 0;
+	width: 82px;
+	height: 14px;
+}
+
+#svg_canvas .smoke {
+	width: 57px;
+	height: 41px;
+	opacity: 0;
+	position: absolute;
+	top: 97px;
+	left: 50%;
+	margin-left: -116px;
+}
+
+#svg_canvas .smoke circle {
+	fill: #e4e4e4;
+	opacity: 0.5;
+}
+
+#svg_canvas .sweat {
+	width: 26px;
+	height: 49px;
+	opacity: 0;
+	position: absolute;
+	top: 35px;
+	left: 50%;
+	margin-left: 27px;
+}
+
+#svg_canvas .sweat path {
+	fill: #72beee;
+}
+
+#svg_canvas .bubble1 {
+	width: 40px;
+	height: 40px;
+	opacity: 0;
+	position: absolute;
+	top: -20px;
+	left: 50%;
+	margin-left: -130px
+}
+
+#svg_canvas .bubble2 {
+	width: 26px;
+	height: 26px;
+	opacity: 0;
+	position: absolute;
+	top: 10px;
+	left: 0;
+}
+
+#svg_canvas .bubble3 {
+	width: 14px;
+	height: 14px;
+	opacity: 0;
+	position: absolute;
+	top: -30px;
+	left: 0;
+}
+
+#svg_canvas .bubble4 {
+	width: 14px;
+	height: 14px;
+	opacity: 0;
+	position: absolute;
+	top: 10px;
+	left: 50%;
+	margin-left: -110px
+}
+
+#svg_canvas [class^="bubble"] circle {
+	fill: #ff0000;
+	opacity: 0.15;
+}
+
+
+/* 안보이는 부분 */
+
+#character.type_a [class^="b_"],
+#character.type_a [class^="c_"] {
+	display: none;
+}
+
+#character.type_b [class^="a_"],
+#character.type_b [class^="c_"] {
+	display: none;
+}
+
+#character.type_c [class^="a_"],
+#character.type_c [class^="b_"] {
+	display: none;
+}
+
+#character.type_a .a_half,
+#character.type_a .a_01_half,
+#character.type_a .a_03_half,
+#character.type_a .a_04_half,
+#character.type_a .a_pt2,
+#character.type_a .a_pt3,
+#character.type_b .b_half,
+#character.type_b .b_01_half,
+#character.type_b .b_03_half,
+#character.type_b .b_04_half,
+#character.type_b .b_pt2,
+#character.type_b .b_pt3,
+#character.type_c .c_half,
+#character.type_c .c_01_half,
+#character.type_c .c_03_half,
+#character.type_c .c_04_half,
+#character.type_c .c_pt2,
+#character.type_c .c_pt3 {
+	display: none;
+}
+
+#character.type_a.pt2 .a_pt3 {
+	display: none !important;
+}
+
+#character.type_b.pt2 .b_pt3 {
+	display: none !important;
+}
+
+#character.type_c.pt2 .c_pt3 {
+	display: none !important;
+}
+
+#character.type_a.pt3 .a_pt2 {
+	display: none !important;
+}
+
+#character.type_b.pt3 .b_pt2 {
+	display: none !important;
+}
+
+#character.type_c.pt3 .c_pt2 {
+	display: none !important;
+}
+
+
+/* 보이는 부분 */
+
+.pet_01 #character.type_a.half .a_01_half,
+.pet_02 #character.type_a.half .a_half,
+.pet_03 #character.type_a.half .a_03_half,
+.pet_04 #character.type_a.half .a_04_half,
+.pet_05 #character.type_a.half .a_half {
+	display: block !important;
+}
+
+/*추가된 부분*/
+
+.pet_01 #character.half .half_wrap>div{
+	width: 160px;
+	height: 160px;
+	border-radius: 80px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+/*//추가된부분*/
+
+.pet_01 #character.type_b.half .b_01_half,
+.pet_02 #character.type_b.half .b_half,
+.pet_03 #character.type_b.half .b_03_half,
+.pet_04 #character.type_b.half .b_04_half,
+.pet_05 #character.type_b.half .b_half {
+	display: block !important;
+}
+
+.pet_01 #character.type_c.half .c_01_half,
+.pet_02 #character.type_c.half .c_half,
+.pet_03 #character.type_c.half .c_03_half,
+.pet_04 #character.type_c.half .c_04_half,
+.pet_05 #character.type_c.half .c_half {
+	display: block !important;
+}
+
+#character.type_a.pt2 .a_pt2 {
+	display: block !important;
+}
+
+#character.type_b.pt2 .b_pt2 {
+	display: block !important;
+}
+
+#character.type_c.pt2 .c_pt2 {
+	display: block !important;
+}
+
+#character.type_a.pt3 .a_pt3 {
+	display: block !important;
+}
+
+#character.type_b.pt3 .b_pt3 {
+	display: block !important;
+}
+
+#character.type_c.pt3 .c_pt3 {
+	display: block !important;
+}
+
+
+/* 색상 지정 부분 */
+
+#character .a_eyes circle,
+#character .b_eyes circle,
+#character .c_eyes circle,
+#character .a_smile path,
+#character .b_smile path,
+#character .c_smile path,
+#character .a_dash rect,
+#character .b_dash rect,
+#character .c_dash rect {
+	fill: #38291e;
+}
+
+#character .a_mouth,
+#character .b_mouth,
+#character .c_mouth  {
+	fill: #ff7976;
+}
+
+#character.pt3 .a_pt1 path,
+#character.pt3 .b_pt1 path,
+#character.pt3 .c_pt1 path  {
+	fill: #ffffff;
+}
+
+#svg_canvas .shadow ellipse{
+	fill: #ededed;
+}
+
+#character .a_smile,
+#character .b_smile,
+#character .c_smile,
+#character .a_dash,
+#character .b_dash,
+#character .c_dash,
+#character .a_mouth,
+#character .b_mouth,
+#character .c_mouth  {
+	opacity: 0;
+}
+
+
+/* 애니메이션 정의 부분 */
+
+#pet_animation.pet_01 {
+	bottom: 7px;
+}
+
+#pet_animation.pet_02 {
+	bottom: 39px;
+}
+
+#pet_animation.pet_03 {
+	bottom: 57px;
+}
+
+#pet_animation.pet_04 {
+	bottom: 57px;
+}
+
+#pet_animation.pet_05 {
+	bottom: 57px;
+}
+
+#pet_animation.pet_01 .b_nose,
+#pet_animation.pet_01 .b_eyes,
+#pet_animation.pet_01 .b_smile,
+#pet_animation.pet_01 .b_dash,
+#pet_animation.pet_01 .b_pt1,
+#pet_animation.pet_01 .b_pt2,
+#pet_animation.pet_01 .b_pt3,
+#pet_animation.pet_01 .b_half{
+	transform: translate(-10px, 25px);
+}
+
+#pet_animation.pet_01 .a_nose,
+#pet_animation.pet_01 .a_eyes,
+#pet_animation.pet_01 .a_smile,
+#pet_animation.pet_01 .a_dash,
+#pet_animation.pet_01 .a_pt1,
+#pet_animation.pet_01 .a_pt2,
+#pet_animation.pet_01 .a_pt3,
+#pet_animation.pet_01 .a_half,
+#pet_animation.pet_01 .c_nose,
+#pet_animation.pet_01 .c_eyes,
+#pet_animation.pet_01 .c_smile,
+#pet_animation.pet_01 .c_dash,
+#pet_animation.pet_01 .c_pt1,
+#pet_animation.pet_01 .c_pt2,
+#pet_animation.pet_01 .c_pt3,
+#pet_animation.pet_01 .c_half {
+	transform: translate(-5px, 15px);
+}
+
+/*추가된 부분*/
+
+#pet_animation.pet_01 #character .basic_body,
+#pet_animation.pet_01 #character .face_contents,
+#pet_animation.pet_01 #character .half_wrap {
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-delay: 0!important;
+	-webkit-transform-origin: 50% 100%;
+}
+
+#pet_animation.pet_01 #character .face_contents {
+	-webkit-animation-name: bodyAction01;
+}
+
+#pet_animation.pet_01 #character.type_a .half_wrap {
+	/*-webkit-animation-name: halfActiona01;*/
+}
+
+#pet_animation.pet_01 #character.type_b .half_wrap {
+	/*-webkit-animation-name: halfActionb01;*/
+}
+
+
+#pet_animation.pet_01 #character.type_c .half_wrap {
+	/*-webkit-animation-name: halfActionc01;*/
+}
+
+/*추가된 부분*/
+
+
+#pet_animation.pet_01 #character .a_eyes,
+#pet_animation.pet_01 #character .b_eyes,
+#pet_animation.pet_01 #character .c_eyes {
+	-webkit-animation-name: eyesAction01;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_01 #character .a_dash,
+#pet_animation.pet_01 #character .b_dash,
+#pet_animation.pet_01 #character .c_dash {
+	-webkit-animation-name: dashAction01;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_01 #character .a_nose,
+#pet_animation.pet_01 #character .a_pt1,
+#pet_animation.pet_01 #character .b_nose,
+#pet_animation.pet_01 #character .b_pt1,
+#pet_animation.pet_01 #character .c_nose,
+#pet_animation.pet_01 #character .c_pt1 {
+	-webkit-animation-name: noseAction01;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_01 #character .smoke {
+	-webkit-animation-name: smokeAction;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_02 {
+	-webkit-animation-name: petAction02;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: steps(1);
+}
+
+#pet_animation.pet_02 #character {
+	-webkit-animation-name: bodyAction02;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_02 #character .a_nose,
+#pet_animation.pet_02 #character .a_pt1,
+#pet_animation.pet_02 #character .b_nose,
+#pet_animation.pet_02 #character .b_pt1,
+#pet_animation.pet_02 #character .c_nose,
+#pet_animation.pet_02 #character .c_pt1 {
+	-webkit-animation-name: noseAction02;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_02 #character .a_eyes,
+#pet_animation.pet_02 #character .b_eyes,
+#pet_animation.pet_02 #character .c_eyes {
+	-webkit-animation-name: eyesAction02;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_02 #character .a_dash,
+#pet_animation.pet_02 #character .b_dash,
+#pet_animation.pet_02 #character .c_dash {
+	-webkit-animation-name: dashAction02;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_02 #character .a_smile,
+#pet_animation.pet_02 #character .b_smile,
+#pet_animation.pet_02 #character .c_smile {
+	-webkit-animation-name: smileAction02;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+
+#pet_animation.pet_03 {
+	-webkit-animation-name: petAction03;
+	-webkit-animation-duration: 8.3s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: steps(1);
+}
+
+#pet_animation.pet_03 #character {
+	-webkit-animation-name: bodyAction03;
+	-webkit-animation-duration: 0.83s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_03 .b_nose,
+#pet_animation.pet_03 .b_eyes,
+#pet_animation.pet_03 .b_smile,
+#pet_animation.pet_03 .b_dash,
+#pet_animation.pet_03 .b_pt1,
+#pet_animation.pet_03 .b_pt2,
+#pet_animation.pet_03 .b_pt3,
+#pet_animation.pet_03 .b_half,
+#pet_animation.pet_03 .b_mouth,
+#pet_animation.pet_03 .a_nose,
+#pet_animation.pet_03 .a_eyes,
+#pet_animation.pet_03 .a_smile,
+#pet_animation.pet_03 .a_dash,
+#pet_animation.pet_03 .a_pt1,
+#pet_animation.pet_03 .a_pt2,
+#pet_animation.pet_03 .a_pt3,
+#pet_animation.pet_03 .a_half,
+#pet_animation.pet_03 .a_mouth,
+#pet_animation.pet_03 .c_nose,
+#pet_animation.pet_03 .c_eyes,
+#pet_animation.pet_03 .c_smile,
+#pet_animation.pet_03 .c_dash,
+#pet_animation.pet_03 .c_pt1,
+#pet_animation.pet_03 .c_pt2,
+#pet_animation.pet_03 .c_pt3,
+#pet_animation.pet_03 .c_half,
+#pet_animation.pet_03 .c_mouth {
+	transform: translate(-5px, -20px);
+}
+
+#pet_animation.pet_03 #character .a_eyes,
+#pet_animation.pet_03 #character .b_eyes,
+#pet_animation.pet_03 #character .c_eyes {
+	-webkit-animation-name: eyesAction03;
+	-webkit-animation-duration: 8.3s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_03 #character .a_dash,
+#pet_animation.pet_03 #character .b_dash,
+#pet_animation.pet_03 #character .c_dash {
+	-webkit-animation-name: dashAction03;
+	-webkit-animation-duration: 8.3s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_03 #character .a_smile,
+#pet_animation.pet_03 #character .b_smile,
+#pet_animation.pet_03 #character .c_smile {
+	-webkit-animation-name: smileAction03;
+	-webkit-animation-duration: 8.3s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_03 #character .a_mouth,
+#pet_animation.pet_03 #character .b_mouth,
+#pet_animation.pet_03 #character .c_mouth {
+	-webkit-animation-name: mouthAction03;
+	-webkit-animation-duration: 8.3s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: steps(1);
+}
+
+#pet_animation.pet_03 #character .a_nose,
+#pet_animation.pet_03 #character .a_pt1,
+#pet_animation.pet_03 #character .b_nose,
+#pet_animation.pet_03 #character .b_pt1,
+#pet_animation.pet_03 #character .c_nose,
+#pet_animation.pet_03 #character .c_pt1 {
+	-webkit-animation-name: noseAction03;
+	-webkit-animation-duration: 8.3s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+
+
+#pet_animation.pet_04 {
+	-webkit-animation-name: petAction04;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: steps(1);
+}
+
+#pet_animation.pet_04 #character {
+	-webkit-animation-name: bodyAction04;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_04 .b_nose,
+#pet_animation.pet_04 .b_pt1,
+#pet_animation.pet_04 .b_pt2,
+#pet_animation.pet_04 .b_half,
+#pet_animation.pet_04 .b_mouth,
+#pet_animation.pet_04 .a_nose,
+#pet_animation.pet_04 .a_pt1,
+#pet_animation.pet_04 .a_pt2,
+#pet_animation.pet_04 .a_half,
+#pet_animation.pet_04 .a_mouth,
+#pet_animation.pet_04 .c_nose,
+#pet_animation.pet_04 .c_pt1,
+#pet_animation.pet_04 .c_pt2,
+#pet_animation.pet_04 .c_half,
+#pet_animation.pet_04 .c_mouth {
+	transform: translate(-15px, -35px);
+}
+
+
+#pet_animation.pet_04 .b_eyes,
+#pet_animation.pet_04 .b_smile,
+#pet_animation.pet_04 .b_dash,
+#pet_animation.pet_04 .b_pt3,
+#pet_animation.pet_04 .a_eyes,
+#pet_animation.pet_04 .a_smile,
+#pet_animation.pet_04 .a_dash,
+#pet_animation.pet_04 .a_pt3,
+#pet_animation.pet_04 .c_eyes,
+#pet_animation.pet_04 .c_smile,
+#pet_animation.pet_04 .c_dash,
+#pet_animation.pet_04 .c_pt3 {
+	transform: translate(-15px, -30px);
+}
+
+#pet_animation.pet_04 #character .a_eyes,
+#pet_animation.pet_04 #character .b_eyes,
+#pet_animation.pet_04 #character .c_eyes {
+	-webkit-animation-name: eyesAction04;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_04 #character .a_dash,
+#pet_animation.pet_04 #character .b_dash,
+#pet_animation.pet_04 #character .c_dash {
+	-webkit-animation-name: dashAction04;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_04 #character .a_smile,
+#pet_animation.pet_04 #character .b_smile,
+#pet_animation.pet_04 #character .c_smile {
+	-webkit-animation-name: smileAction04;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_04 #character .a_nose,
+#pet_animation.pet_04 #character .a_pt1,
+#pet_animation.pet_04 #character .b_nose,
+#pet_animation.pet_04 #character .b_pt1,
+#pet_animation.pet_04 #character .c_nose,
+#pet_animation.pet_04 #character .c_pt1 {
+	-webkit-animation-name: noseAction04;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+
+#pet_animation.pet_04 #character .bubble1{
+	-webkit-animation-name: bubble1Action;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_04 #character .bubble2{
+	-webkit-animation-name: bubble2Action;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_04 #character .bubble3{
+	-webkit-animation-name: bubble3Action;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_04 #character .bubble4{
+	-webkit-animation-name: bubble4Action;
+	-webkit-animation-duration: 10s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+
+
+#pet_animation.pet_05 {
+	-webkit-animation-name: petAction05;
+	-webkit-animation-duration: 8s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: steps(1);
+}
+
+#pet_animation.pet_05 #character {
+	-webkit-animation-name: bodyAction05;
+	-webkit-animation-duration: 0.8s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_05 #character .a_eyes,
+#pet_animation.pet_05 #character .b_eyes,
+#pet_animation.pet_05 #character .c_eyes {
+	-webkit-animation-name: eyesAction05;
+	-webkit-animation-duration: 8s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_05 #character .a_dash,
+#pet_animation.pet_05 #character .b_dash,
+#pet_animation.pet_05 #character .c_dash {
+	-webkit-animation-name: dashAction05;
+	-webkit-animation-duration: 8s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_05 #character .a_smile,
+#pet_animation.pet_05 #character .b_smile,
+#pet_animation.pet_05 #character .c_smile {
+	-webkit-animation-name: smileAction05;
+	-webkit-animation-duration: 8s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+#pet_animation.pet_05 #character .a_nose,
+#pet_animation.pet_05 #character .a_pt1,
+#pet_animation.pet_05 #character .b_nose,
+#pet_animation.pet_05 #character .b_pt1,
+#pet_animation.pet_05 #character .c_nose,
+#pet_animation.pet_05 #character .c_pt1 {
+	-webkit-animation-name: noseAction05;
+	-webkit-animation-duration: 8s;
+	-webkit-animation-timing-function: steps(1);
+	-webkit-animation-iteration-count: infinite;
+}
+
+
+#pet_animation.pet_05 #character .a_mouth,
+#pet_animation.pet_05 #character .b_mouth,
+#pet_animation.pet_05 #character .c_mouth {
+	-webkit-animation-name: mouthAction05;
+	-webkit-animation-duration: 8s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: steps(1);
+}
+
+#pet_animation.pet_05 #character .sweat {
+	-webkit-animation-name: sweatAction;
+	-webkit-animation-duration: 8s;
+	-webkit-animation-iteration-count: infinite;
+}
+
+/*추가된부분*/
+
+@keyframes bodyAction01 {
+	40% {
+		transform: translateY(0);
+	}
+	52% {
+		transform: translateY(-10px);
+	}
+	56% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes halfActiona01 {
+	40% {
+		height: 60px;
+	}
+	52% {
+		height: 70px;
+	}
+	56% {
+		height: 60px;
+	}
+}
+
+@keyframes halfActionb01 {
+	40% {
+		height: 50px;
+	}
+	52% {
+		height: 60px;
+	}
+	56% {
+		height: 50px;
+	}
+}
+
+@keyframes halfActionc01 {
+	40% {
+		height: 53px;
+	}
+	52% {
+		height: 63px;
+	}
+	56% {
+		height: 53px;
+	}
+}
+/*추가된부분*/
+
+@keyframes eyesAction01 {
+	0% {
+		opacity: 0;
+	}
+	3%{
+		opacity: 1;
+	}
+	7%{
+		opacity: 0;
+	}
+	8%{
+		opacity: 1;
+	}
+	9%{
+		opacity: 0;
+	}
+	10%{
+		opacity: 1;
+	}
+	18%{
+		opacity: 0;
+	}
+}
+
+
+@keyframes dashAction01 {
+	0% {
+		opacity: 1;
+	}
+	3%{
+		opacity: 0;
+	}
+	7%{
+		opacity: 1;
+	}
+	8%{
+		opacity: 0;
+	}
+	9%{
+		opacity: 1;
+	}
+	10%{
+		opacity: 0;
+	}
+	18%{
+		opacity: 1;
+	}
+}
+
+
+@keyframes noseAction01 {
+	20% {
+		top: -2px;
+	}
+	21% {
+		top: 0px;
+	}
+	22% {
+		top: -2px;
+	}
+	23% {
+		top: 0px;
+	}
+
+	74% {
+		top: -2px;
+	}
+	75% {
+		top: 0px;
+	}
+	76% {
+		top: -2px;
+	}
+	77% {
+		top: 0px;
+	}
+
+}
+
+
+
+@keyframes petAction02 {
+	0% {
+		
+	}
+	50% {
+		transform: scale(-1, 1)
+	}
+	100% {
+		
+	}
+}
+
+@keyframes bodyAction02 {
+	0% {
+		top: 0;
+	}
+	50% {
+		top: 9px;
+	}
+	100% {
+		top: 0;
+	}
+}
+
+@keyframes noseAction02 {
+	21% {
+		top: -2px;
+	}
+	22% {
+		top: 0px;
+	}
+	23% {
+		top: -2px;
+	}
+	24% {
+		top: 0px;
+	}
+
+	41% {
+		top: -2px;
+	}
+	42% {
+		top: 0px;
+	}
+	43% {
+		top: -2px;
+	}
+	44% {
+		top: 0px;
+	}
+
+	61% {
+		top: -2px;
+	}
+	62% {
+		top: 0px;
+	}
+	63% {
+		top: -2px;
+	}
+	64% {
+		top: 0px;
+	}
+
+	81% {
+		top: -2px;
+	}
+	82% {
+		top: 0px;
+	}
+	83% {
+		top: -2px;
+	}
+	84% {
+		top: 0px;
+	}
+
+}
+
+@keyframes eyesAction02 {
+	6% {
+		opacity: 0;
+	}
+	7% {
+		opacity: 1;
+	}
+	8% {
+		opacity: 0;
+	}
+	9% {
+		opacity: 1;
+	}
+	20% {
+		opacity: 0;
+	}
+}
+
+
+@keyframes dashAction02 {
+	6% {
+		opacity: 1;
+	}
+	7% {
+		opacity: 0;
+	}
+	8% {
+		opacity: 1;
+	}
+	9% {
+		opacity: 0;
+	}
+}
+
+@keyframes smileAction02 {
+	20% {
+		opacity: 1;
+	}
+}
+
+@keyframes petAction03 {
+	0% {
+		
+	}
+	50% {
+		transform: scale(-1, 1)
+	}
+	100% {
+		
+	}
+}
+
+
+@keyframes bodyAction03 {
+	0% {
+		top: 0;
+	}
+	50% {
+		top: 10px;
+	}
+	100% {
+		top: 0;
+	}
+}
+
+
+@keyframes eyesAction03 {
+	0% {
+		opacity: 0;
+	}
+	4%{
+		opacity: 1;
+	}
+	11% {
+		opacity: 0;
+	}
+	12% {
+		opacity: 1;
+	}
+	13% {
+		opacity: 0;
+	}
+	14%{
+		opacity: 1;
+	}
+	23%{
+		opacity: 0;
+	}
+}
+
+@keyframes smileAction03 {
+	0% {
+		opacity: 1;
+	}
+	4%{
+		opacity: 0;
+	}
+	23% {
+		opacity: 1;
+	}
+}
+
+
+@keyframes dashAction03 {
+	11% {
+		opacity: 1;
+	}
+	12% {
+		opacity: 0;
+	}
+	13% {
+		opacity: 1;
+	}
+	14% {
+		opacity: 0;
+	}
+}
+
+
+@keyframes mouthAction03 {
+	23% {
+		opacity: 1;
+	}
+	49%{
+		opacity: 0;
+	}
+	25% {
+		top: -2px;
+	}
+	26% {
+		top: 0px;
+	}
+	27% {
+		top: -2px;
+	}
+	28% {
+		top: 0px;
+	}
+
+	41% {
+		top: -2px;
+	}
+	42% {
+		top: 0px;
+	}
+	43% {
+		top: -2px;
+	}
+	44% {
+		top: 0px;
+	}
+
+	65% {
+		top: -2px;
+	}
+	66% {
+		top: 0px;
+	}
+	67% {
+		top: -2px;
+	}
+	68% {
+		top: 0px;
+	}
+
+	81% {
+		top: -2px;
+	}
+	82% {
+		top: 0px;
+	}
+	83% {
+		top: -2px;
+	}
+	84% {
+		top: 0px;
+	}
+
+}
+
+@keyframes noseAction03 {
+	25% {
+		top: -2px;
+	}
+	26% {
+		top: 0px;
+	}
+	27% {
+		top: -2px;
+	}
+	28% {
+		top: 0px;
+	}
+
+	41% {
+		top: -2px;
+	}
+	42% {
+		top: 0px;
+	}
+	43% {
+		top: -2px;
+	}
+	44% {
+		top: 0px;
+	}
+
+	65% {
+		top: -2px;
+	}
+	66% {
+		top: 0px;
+	}
+	67% {
+		top: -2px;
+	}
+	68% {
+		top: 0px;
+	}
+
+	81% {
+		top: -2px;
+	}
+	82% {
+		top: 0px;
+	}
+	83% {
+		top: -2px;
+	}
+	84% {
+		top: 0px;
+	}
+
+}
+
+@keyframes petAction04 {
+	0% {
+		
+	}
+	50% {
+		transform: scale(-1, 1)
+	}
+	100% {
+		
+	}
+}
+
+@keyframes bodyAction04 {
+	0% {
+		top: 0;
+	}
+	50% {
+		top: 24px;
+	}
+	100% {
+		top: 0;
+	}
+}
+
+@keyframes eyesAction04 {
+	0%{
+		opacity: 0;
+	}
+	25% {
+		opacity: 1;
+	}
+	35%{
+		opacity: 0;
+	}
+	65% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 0;
+	}
+}
+
+@keyframes smileAction04 {
+	0%{
+		opacity: 1;
+	}
+	25% {
+		opacity: 0;
+	}
+	35% {
+		opacity: 1;
+	}
+	65%{
+		opacity: 0;
+	}
+	75%{
+		opacity: 1;
+	}
+}
+
+@keyframes noseAction04 {
+	25% {
+		top: -2px;
+	}
+	26% {
+		top: 0px;
+	}
+	27% {
+		top: -2px;
+	}
+	28% {
+		top: 0px;
+	}
+
+	41% {
+		top: -2px;
+	}
+	42% {
+		top: 0px;
+	}
+	43% {
+		top: -2px;
+	}
+	44% {
+		top: 0px;
+	}
+
+	65% {
+		top: -2px;
+	}
+	66% {
+		top: 0px;
+	}
+	67% {
+		top: -2px;
+	}
+	68% {
+		top: 0px;
+	}
+
+	81% {
+		top: -2px;
+	}
+	82% {
+		top: 0px;
+	}
+	83% {
+		top: -2px;
+	}
+	84% {
+		top: 0px;
+	}
+
+}
+
+@keyframes petAction05 {
+	0% {
+		
+	}
+	50% {
+		transform: scale(-1, 1)
+	}
+	100% {
+		
+	}
+}
+
+
+@keyframes bodyAction05 {
+	0% {
+		top: 0;
+	}
+	50% {
+		top: 24px;
+	}
+	100% {
+		top: 0;
+	}
+}
+
+
+
+@keyframes mouthAction05 {
+	0% {
+		opacity: 1;
+	}
+	100%{
+		opacity: 1;
+	}
+	25% {
+		top: -2px;
+	}
+	26% {
+		top: 0px;
+	}
+	27% {
+		top: -2px;
+	}
+	28% {
+		top: 0px;
+	}
+
+	41% {
+		top: -2px;
+	}
+	42% {
+		top: 0px;
+	}
+	43% {
+		top: -2px;
+	}
+	44% {
+		top: 0px;
+	}
+
+	65% {
+		top: -2px;
+	}
+	66% {
+		top: 0px;
+	}
+	67% {
+		top: -2px;
+	}
+	68% {
+		top: 0px;
+	}
+
+	81% {
+		top: -2px;
+	}
+	82% {
+		top: 0px;
+	}
+	83% {
+		top: -2px;
+	}
+	84% {
+		top: 0px;
+	}
+
+}
+
+@keyframes noseAction05 {
+	25% {
+		top: -2px;
+	}
+	26% {
+		top: 0px;
+	}
+	27% {
+		top: -2px;
+	}
+	28% {
+		top: 0px;
+	}
+
+	41% {
+		top: -2px;
+	}
+	42% {
+		top: 0px;
+	}
+	43% {
+		top: -2px;
+	}
+	44% {
+		top: 0px;
+	}
+
+	65% {
+		top: -2px;
+	}
+	66% {
+		top: 0px;
+	}
+	67% {
+		top: -2px;
+	}
+	68% {
+		top: 0px;
+	}
+
+	81% {
+		top: -2px;
+	}
+	82% {
+		top: 0px;
+	}
+	83% {
+		top: -2px;
+	}
+	84% {
+		top: 0px;
+	}
+
+}
+
+@keyframes eyesAction05 {
+	0% {
+		opacity: 0;
+	}
+	1% {
+		opacity: 1;
+	}
+	7% {
+		opacity: 0;
+	}
+	8% {
+		opacity: 1;
+	}
+	9% {
+		opacity: 0;
+	}
+	10% {
+		opacity: 1;
+	}
+	20%{
+		opacity: 0;
+	}
+}
+
+@keyframes dashAction05 {
+	0% {
+		opacity: 1;
+	}
+	1% {
+		opacity: 0;
+	}
+	7% {
+		opacity: 1;
+	}
+	8% {
+		opacity: 0;
+	}
+	9% {
+		opacity: 1;
+	}
+	10% {
+		opacity: 0;
+	}
+}
+
+
+@keyframes smileAction05 {
+	0% {
+		opacity: 0;
+	}
+	20%{
+		opacity: 1;
+	}
+}
+
+
+@keyframes smokeAction {
+	53% {
+		opacity: 0;
+		margin-left: -116px
+	}
+	55% {
+		opacity: 1;
+	}
+	61% {
+		opacity: 1;
+	}
+	64%{
+		opacity: 0;
+		margin-left: -136px
+	}
+}
+
+@keyframes sweatAction {
+	10% {
+		opacity: 0;
+	}
+	12% {
+		opacity: 1;
+	}
+	20%{
+		top: 35px;
+	}
+	23% {
+		opacity: 1;
+	}
+	30% {
+		opacity: 0;
+		top: 68px;
+	}
+	60% {
+		opacity: 0;
+	}
+	62% {
+		opacity: 1;
+	}
+	70%{
+		top: 35px;
+	}
+	73% {
+		opacity: 1;
+	}
+	80% {
+		opacity: 0;
+		top: 68px;
+	}
+}
+
+@keyframes bubble1Action {
+	25%{
+		opacity: 0;
+		transform: scale(0,0);
+	}
+	32%{
+		opacity: 1;
+		transform: scale(1,1);
+	}
+	37%{
+		opacity: 1;
+		transform: translateY(0);
+	}
+	46%{
+		opacity: 0;
+		transform: translateY(-45px);
+	}
+}
+
+@keyframes bubble2Action {
+	26%{
+		opacity: 0;
+		transform: scale(0,0);
+	}
+	33%{
+		opacity: 1;
+		transform: scale(1,1);
+	}
+	38%{
+		opacity: 1;
+		transform: translateY(0);
+	}
+	47%{
+		opacity: 0;
+		transform: translateY(-33px);
+	}
+}
+
+@keyframes bubble3Action {
+	27%{
+		opacity: 0;
+		transform: scale(0,0);
+	}
+	34%{
+		opacity: 1;
+		transform: scale(1,1);
+	}
+	38%{
+		opacity: 1;
+		transform: translateY(0);
+	}
+	47%{
+		opacity: 0;
+		transform: translateY(-40px);
+	}
+}
+
+@keyframes bubble4Action {
+	28%{
+		opacity: 0;
+		transform: scale(0,0);
+	}
+	35%{
+		opacity: 1;
+		transform: scale(1,1);
+	}
+	39%{
+		opacity: 1;
+		transform: translateY(0);
+	}
+	48%{
+		opacity: 0;
+		transform: translateY(-28px);
+	}
+}
+
+.spc_wrapper {
+	text-align: center;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	padding: 220px 0 60px;
+	/*padding-left: 200px;*/
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	zoom: 0.82;
+}
+
+.spc_balloon {
+	padding: 44px 56px;
+	background: rgba(0,0,0,.5);
+	border-radius: 40px;
+	color: #ffffff;
+	display: inline-block;
+	font-size: 56px;
+	position: relative;
+	min-width: 150px;
+	max-width: 1440px;
+	font-family: 'NanumSquareRound', sans-serif;
+}
+
+.spc_balloon:after {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 60px solid rgba(0,0,0,.5);
+	border-bottom: 60px solid transparent;
+	bottom: -60px;
+	position: absolute;
+	left: 50%;
+	margin-left: calc(50% - 160px)
+}
+
+/* css 추가 */
+.spc_more {
+	display: inline-block;
+	width: 26px;
+	height: 26px;
+	border-right: 3px solid #ffffff;
+	border-top: 3px solid #ffffff;
+	transform: rotate(45deg);
+	vertical-align: middle;
+	position: relative;
+	top: -4px;
+	margin-left: 10px;
+}
+/* css 추가 */

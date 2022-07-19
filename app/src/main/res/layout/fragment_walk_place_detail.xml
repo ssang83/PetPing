@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.walk.WalkViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:elevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:background="@color/white">
+
+        <TextView
+            android:text="@{viewModel.placeDetail.place.poiDesc0}"
+            android:id="@+id/placeDesc1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            tools:text="동반 가능 카페"
+            android:textColor="@color/color_ff4857"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toTopOf="@+id/placeName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:text="@{viewModel.placeDetail.place.name}"
+            android:id="@+id/placeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            tools:text="개와 고양이의 시간"
+            android:textColor="@color/color_111111"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeDesc1" />
+
+        <TextView
+            android:text="@{viewModel.placeDetail.place.poiDesc1}"
+            android:id="@+id/placeDesc2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            tools:text="서울 월드컵로3길 14"
+            android:textColor="@color/color_111111"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeName" />
+
+        <TextView
+            android:text="@{viewModel.placeDetail.place.poiDesc2}"
+            android:id="@+id/placeDesc3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
+            tools:text="02-9887-9009"
+            android:textColor="@color/color_111111"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeDesc2" />
+
+        <TextView
+            android:text="@{viewModel.placeDetail.place.poiDesc3}"
+            android:id="@+id/placeDesc4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
+            tools:text="매일 11:00 - 21:00 (월요일 휴무)"
+            android:textColor="@color/color_111111"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeDesc3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

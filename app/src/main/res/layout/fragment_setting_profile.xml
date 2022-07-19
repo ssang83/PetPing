@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.profile.SettingProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="#f8f8f8"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_border"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="9dp"
+                    android:background="#f8f8f8" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        app:circleImageUrl="@{viewModel.profileImage}"
+                        android:layout_gravity="center_horizontal"
+                        android:adjustViewBounds="true"
+                        android:layout_marginTop="30dp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@{viewModel.name}"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="22dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:layout_marginTop="10dp"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        >
+
+                        <TextView
+                            android:id="@+id/tvGender"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_profile_gender"
+                            android:textColor="@color/greyscale_g_5_bbb"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:text="@{viewModel.gender}"
+                            tools:text="여"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toTopOf="@+id/tvGender"
+                            app:layout_constraintBottom_toBottomOf="@+id/tvGender"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvBreed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_profile_breed"
+                            android:textColor="@color/greyscale_g_5_bbb"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintTop_toTopOf="@+id/breed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/breed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:layout_marginTop="18dp"
+                            android:text="@{viewModel.breed}"
+                            tools:text="시츄"
+                            android:maxLength="20"
+                            android:maxLines="2"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toBottomOf="@+id/gender"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvBirth"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_profile_birth"
+                            android:textColor="@color/greyscale_g_5_bbb"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintTop_toTopOf="@id/birth"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/birth"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="@{viewModel.birth}"
+                            tools:text="2019년 05월 05일"
+                            android:layout_marginTop="18dp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toBottomOf="@id/breed"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvWeight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_profile_weight"
+                            android:textColor="@color/greyscale_g_5_bbb"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintTop_toTopOf="@+id/weight"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/weight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="@{viewModel.weight}"
+                            tools:text="2.0kg"
+                            android:layout_marginTop="18dp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toBottomOf="@+id/birth"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvWalk"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_profile_possible_walk"
+                            android:textColor="@color/greyscale_g_5_bbb"
+                            android:textSize="15dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintTop_toTopOf="@+id/walk"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/walk"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="@{viewModel.isWalk == true ? @string/walk_possible : @string/walk_impossible}"
+                            tools:text="가능"
+                            android:layout_marginTop="18dp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toBottomOf="@+id/weight"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvProfilePublic"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_profile_profile_status"
+                            android:textColor="@color/greyscale_g_5_bbb"
+                            android:textSize="15dp"
+                            android:layout_marginTop="18dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintTop_toBottomOf="@+id/tvWalk"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/profileStatus"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="@{viewModel.isPublic == true ? @string/mission_pet_not_setting : @string/mission_pet_setting}"
+                            tools:text="미설정"
+                            android:layout_marginTop="18dp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toBottomOf="@+id/walk"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvPetNumber"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_profile_rns"
+                            android:textColor="@color/greyscale_g_5_bbb"
+                            android:textSize="15dp"
+                            android:layout_marginTop="18dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toBottomOf="@+id/tvProfilePublic"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/petNumber"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            tools:text="410020204020"
+                            android:text='@{viewModel.regNo}'
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toTopOf="@+id/tvPetNumber"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:visibility='@{viewModel.regNo.equals("") || viewModel.regNo == null ? View.GONE : View.VISIBLE}'
+                            tools:visibility="gone"
+                            />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/petNumberLayer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/tvPetNumber"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:visibility='@{viewModel.regNo.equals("") || viewModel.regNo == null ? View.VISIBLE : View.GONE}'
+                            >
+
+                            <TextView
+                                android:id="@+id/tvPetRnsInput"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pet_rns_input"
+                                android:textSize="15dp"
+                                android:textColor="@color/primary_pink"
+                                android:fontFamily="@font/nanum_square_round"
+                                app:layout_constraintEnd_toStartOf="@+id/ivArrow1"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginEnd="8dp"
+                                app:onSafeClick="@{view -> viewModel.goToRegisterRNS()}"
+                                />
+
+                            <ImageView
+                                android:id="@+id/ivArrow1"
+                                android:layout_width="4dp"
+                                android:layout_height="8dp"
+                                android:src="@drawable/ic_arrow"
+                                android:adjustViewBounds="true"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/tvPetRnsInput"
+                                app:layout_constraintBottom_toBottomOf="@+id/tvPetRnsInput"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <TextView
+                            android:id="@+id/tvMissionPet1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/setting_profile_mission_pet"
+                            android:textColor="@color/greyscale_g_5_bbb"
+                            android:textSize="15dp"
+                            android:layout_marginTop="18dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            app:layout_constraintTop_toBottomOf="@+id/tvPetNumber"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/tvMissionPet1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:textSize="15dp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:text="@string/setting_profile_mission_pet_complete"
+                            android:visibility="@{viewModel.isMissionPet == true ? View.VISIBLE : View.GONE}"
+                            tools:visibility="gone"
+                            />
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/missionPetLayer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@+id/tvMissionPet1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:visibility="@{viewModel.isMissionPet == true ? View.GONE : View.VISIBLE}"
+                            tools:visibility="visible"
+                            >
+
+                            <TextView
+                                android:id="@+id/tvMissionPetSetting"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/mission_pet_go_setting"
+                                android:textSize="15dp"
+                                android:textColor="@color/primary_pink"
+                                android:fontFamily="@font/nanum_square_round"
+                                app:layout_constraintEnd_toStartOf="@+id/ivArrow"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_marginEnd="8dp"
+                                app:onSafeClick="@{view -> viewModel.goToMissionPet()}"
+                                />
+
+                            <ImageView
+                                android:id="@+id/ivArrow"
+                                android:layout_width="4dp"
+                                android:layout_height="8dp"
+                                android:src="@drawable/ic_arrow"
+                                android:adjustViewBounds="true"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/tvMissionPetSetting"
+                                app:layout_constraintBottom_toBottomOf="@+id/tvMissionPetSetting"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:text="@string/setting_profile_modify"
+                        android:background="@drawable/btn_outline"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:textSize="13dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="20dp"
+                        app:onSafeClick="@{view -> viewModel.goToEdit()}"
+                        android:textColor="@color/greyscale_9_111"
+                        style="?attr/materialButtonOutlinedStyle"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

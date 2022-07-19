@@ -1,0 +1,196 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.walk.WalkViewModel" />
+
+        <variable
+            name="data"
+            type="ai.comake.petping.data.vo.AudioGuideItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="46dp">
+
+        <ImageView
+            app:layout_constraintDimensionRatio="H,320:214"
+            android:id="@+id/petImage"
+            imageUrl="@{data.listThumbnailFileUrl}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/greyscale_ccc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/walk_guide_pet_image" />
+
+        <ImageView
+            android:background="@drawable/audio_guide_empty_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/petImage"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/soundTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/nanum_square_round_font"
+            android:includeFontPadding="false"
+            android:text="@{data.getRunningTime}"
+            android:textColor="#ffffff"
+            android:textSize="11dp"
+            app:layout_constraintBottom_toBottomOf="@+id/petImage"
+            app:layout_constraintStart_toStartOf="@+id/petImage"
+            tools:text="소요시간 · 30:00" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/trainerImage"
+            imageUrl="@{data.speakerThumbnailFileUrl}"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/walk_guide_trainer"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@+id/petImage"
+            app:layout_constraintEnd_toEndOf="@+id/petImage" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/tagLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            app:dividerDrawableHorizontal="@drawable/space_horizontal"
+            app:dividerDrawableVertical="@drawable/space_vertical"
+            app:flexWrap="wrap"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/petImage"
+            app:showDividerHorizontal="middle"
+            app:showDividerVertical="middle">
+
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <TextView
+            android:lineHeight="30dp"
+            android:paddingVertical="4dp"
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/nanum_square_round_b_font"
+            android:gravity="start|center_vertical"
+            android:includeFontPadding="false"
+            android:text="@{data.title}"
+            android:textColor="#111111"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tagLayout"
+            tools:text="댄싱 위드 마이 독 댄싱 위드 마이 독" />
+
+        <TextView
+            android:paddingVertical="2dp"
+            android:id="@+id/contentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/nanum_square_round_font"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:lineHeight="22dp"
+            android:text="@{data.description}"
+            android:textColor="#666666"
+            android:textSize="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleText"
+            tools:text="강아지도 춤을 좋아하는 거 아시나요? 댄서 가비와 함께 춤을 추듯 신나게 색다른 산책을 즐겨보세요." />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/walk_guide_download_button"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/walk_guide_download_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contentText">
+
+            <TextView
+                android:id="@+id/download_audio_guide_button_text"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:fontFamily="@font/nanum_square_round_b_font"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="오디오 가이드 다운로드"
+                android:textColor="#ffffff"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/download_audio_guide_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/walk_guide_download_image"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/walk_guide_downLoad_progressBar"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="16dp"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/audio_guide_progress_bg"
+                style="?android:attr/progressBarStyleHorizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:max="100"
+                tools:progress="50"
+                android:progress="0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/walk_guide_start_button"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/walk_start_button"
+            android:fontFamily="@font/nanum_square_round_b_font"
+            android:gravity="center"
+            android:text="산책 시작"
+            android:textColor="#ffffff"
+            android:textSize="15dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contentText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

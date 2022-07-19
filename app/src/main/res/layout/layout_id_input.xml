@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/id_focus_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주민등록번호 / 외국인등록번호"
+        android:textSize="14dp"
+        android:textColor="@color/greyscale_9_aaa"
+        android:fontFamily="@font/nanum_square_round"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/id_first_tv"
+            style="@style/CustomEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text_bg_sel"
+            android:hint="YYMMDD"
+            android:inputType="number"
+            android:paddingTop="16dp"
+            android:paddingBottom="9dp"
+            android:textColorHint="@color/greyscale_4_ddd"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/nanum_square_round"
+            android:text=" - "
+            android:textColor="@color/greyscale_4_ddd"
+            android:textSize="20dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/id_second_tv"
+            style="@style/CustomEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text_bg_sel"
+            android:hint="N******"
+            android:inputType="number"
+            android:maxLength="7"
+            android:paddingBottom="9dp"
+            android:textColorHint="@color/greyscale_4_ddd"
+            android:textSize="20dp" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/id_helper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="생년월일과 성별 확인을 위한 정보입니다."
+        android:textSize="12dp"
+        android:textColor="@color/greyscale_9_aaa"
+        android:fontFamily="@font/nanum_square_round"/>
+</FrameLayout>

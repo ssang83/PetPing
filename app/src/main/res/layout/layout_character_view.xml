@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="160dp"
+    android:layout_height="220dp">
+    <RelativeLayout
+        android:layout_width="160dp"
+        android:layout_height="162dp"
+        android:layout_marginTop="23dp">
+        <ai.comake.petping.ui.common.widget.character.CharacterFaceView
+            android:id="@+id/character_face_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_shadow" />
+
+</RelativeLayout>

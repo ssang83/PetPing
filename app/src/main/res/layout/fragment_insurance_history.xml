@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.insurance.InsuranceHistoryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/layout_back"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="@{viewModel.insuranceDataList.size() != 0 ? View.VISIBLE : View.GONE}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/buttonLayer"
+            >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:lineHeight="34sp"
+                android:textColor="#111111"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:textSize="24dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:htmlText="@{@string/pet_insurance_title_s}"
+                tools:text="가입한 펫보험을\n확인해 주세요"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_insurance"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="50dp"
+                android:paddingBottom="30dp"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_pet_insurance"
+                app:viewModel="@{viewModel}"
+                app:insurnaceItem="@{viewModel.insuranceDataList}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RelativeLayout
+            android:visibility="@{viewModel.insuranceDataList.size() != 0 ? View.GONE : View.VISIBLE}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="150dp"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_ping"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="21dp"
+                    android:text="@string/pet_insurance_join_desc"
+                    android:textColor="@color/greyscale_g_5_bbb"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/nanum_square_round_b"/>
+
+                <TextView
+                    android:id="@+id/insurance_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    app:htmlText="@{@string/insurance_content}"
+                    tools:text="펫보험 전용 미션에 도전하고 리워드를 받을 수 있어요.\n스몰티켓에서 가입하신 경우 인증이 필요해요."
+                    android:lineSpacingExtra="8dp"
+                    android:textColor="@color/greyscale_g_5_bbb"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:textSize="14dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonLayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/pet_insurance_auth"
+                android:textSize="14dp"
+                android:textColor="@color/greyscale_9_111"
+                android:fontFamily="@font/nanum_square_round"
+                android:background="@drawable/bg_pet_insurance_auth"
+                android:gravity="center"
+                app:onSafeClick="@{view -> viewModel.findCandidate()}"
+                />
+            <Button
+                style="@style/BottomBarButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/pet_insurance_join"
+                app:onSafeClick="@{view -> viewModel.petJoinInsurance()}"
+                />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

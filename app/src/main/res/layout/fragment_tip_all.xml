@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.dashboard.tip.TipAllViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_ffffff"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/back_arrow_svg"
+            android:padding="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ping_tip"
+            android:textSize="17dp"
+            android:textColor="@color/greyscale_9_111"
+            android:fontFamily="@font/nanum_square_round_b"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnBack"
+            app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greyscale_e4_e4_e4"
+            app:layout_constraintTop_toBottomOf="@+id/btnBack"
+            android:visibility="@{viewModel.isScroll == true ? View.VISIBLE : View.GONE, default = gone}"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_ping_tip_all"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:viewModel="@{viewModel}"
+            app:tipAllItem="@{viewModel.tipList}"
+            app:addOnScrollListener="@{viewModel.scrollListener}"
+            android:scrollbars="none"
+            app:layout_constraintTop_toBottomOf="@+id/btnBack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

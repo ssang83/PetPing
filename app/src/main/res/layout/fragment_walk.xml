@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="ai.comake.petping.ui.home.walk.WalkBottomUi" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.walk.WalkViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingBottom="56dp"
+        android:id="@+id/walkMainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ViewFlipper
+            android:id="@+id/walkViewFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/walkTracker"
+                layout="@layout/viewflipper_walk_tracker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:viewModel="@{viewModel}" />
+
+            <include
+                android:id="@+id/walkAudio"
+                layout="@layout/viewflipper_walk_audio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:viewModel="@{viewModel}" />
+
+        </ViewFlipper>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

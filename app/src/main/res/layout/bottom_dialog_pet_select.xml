@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/mission_pet_select_dialog_title"
+            android:layout_gravity="center"
+            android:textColor="@color/greyscale_9_111"
+            android:textSize="20dp"
+            android:fontFamily="@font/nanum_square_round_b"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="36dp"
+            android:layout_marginTop="20dp"
+            android:textSize="14dp"
+            android:lineSpacingExtra="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/greyscale_9_777"
+            android:fontFamily="@font/nanum_square_round"
+            android:text="@string/mission_pet_select_dialog_desc"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_height="1dp"
+            android:background="@color/greyscale_3_f_0"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/petList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+        <Button
+            android:id="@+id/walk_btn"
+            style="@style/BottomBarButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="설정 완료" />
+    </LinearLayout>
+</layout>

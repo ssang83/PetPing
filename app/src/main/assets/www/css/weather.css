@@ -1,0 +1,298 @@
+@charset "utf-8";
+
+/* 날씨 액션 */
+
+#svg_canvas [class^="w_"] {
+	opacity: 0;
+	position: absolute;
+}
+
+#svg_canvas.sunny .w_sunny {
+	opacity: 1;
+	-webkit-animation: sunnyAction 10s linear infinite;
+	-moz-animation: sunnyAction 10s linear infinite;
+	-ms-animation: sunnyAction 10s linear infinite;
+	-o-animation: sunnyAction 10s linear infinite;
+	animation: sunnyAction 10s linear infinite;
+	transform-origin:45% 45%;
+	top: 20px;
+	left: 50%;
+	margin-left: 40px;
+}
+
+@keyframes sunnyAction {
+	from {
+		-ms-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	to {
+		-ms-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+#svg_canvas.cloudy .w_cloudy {
+	opacity: 1;
+	top: 20px;
+	left: 50%;
+	margin-left: 40px;
+}
+
+
+#svg_canvas.night .w_night {
+	opacity: 1;
+	top: 20px;
+	left: 50%;
+	margin-left: 40px;
+}
+
+
+#svg_canvas.rainy .w_rainy {
+	opacity: 1;
+	-webkit-animation: rainyAction 4s linear infinite;
+	-moz-animation: rainyAction 4s linear infinite;
+	-ms-animation: rainyAction 4s linear infinite;
+	-o-animation: rainyAction 4s linear infinite;
+	animation: rainyAction 4s linear infinite;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+@keyframes rainyAction {
+	from{
+		transform: translate(0, 0px);
+	}
+	to {
+		transform: translate(0, 320px);
+	}
+}
+
+
+#svg_canvas.rainy .w_rainy2 {
+	opacity: 1;
+	-webkit-animation: rainy2Action 4s linear infinite;
+	-moz-animation: rainy2Action 4s linear infinite;
+	-ms-animation: rainy2Action 4s linear infinite;
+	-o-animation: rainy2Action 4s linear infinite;
+	animation: rainy2Action 4s linear infinite;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	transform: translate(0, -320px);
+}
+
+@keyframes rainy2Action {
+	from{
+		transform: translate(0, -320px);
+	}
+	to {
+		transform: translate(0, 0px);
+	}
+}
+
+
+
+#svg_canvas.snow .w_snow {
+	opacity: 1;
+	-webkit-animation: snowAction 10s	 linear infinite;
+	-moz-animation: snowAction 10s	 linear infinite;
+	-ms-animation: snowAction 10s	 linear infinite;
+	-o-animation: snowAction 10s	 linear infinite;
+	animation: snowAction 10s	 linear infinite;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+@keyframes snowAction {
+	from{
+		transform: translate(0, 0px);
+	}
+	to {
+		transform: translate(0, 320px);
+	}
+}
+
+
+#svg_canvas.snow .w_snow2 {
+	opacity: 1;
+	-webkit-animation: snow2Action 10s	 linear infinite;
+	-moz-animation: snow2Action 10s	 linear infinite;
+	-ms-animation: snow2Action 10s	 linear infinite;
+	-o-animation: snow2Action 10s	 linear infinite;
+	animation: snow2Action 10s	 linear infinite;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	transform: translate(0, -320px);
+	width: 100%;
+}
+
+@keyframes snow2Action {
+	from{
+		transform: translate(0, -320px);
+	}
+	to {
+		transform: translate(0, 0px);
+	}
+}
+
+#svg_canvas.snow .snowdrop1 {
+	-webkit-animation: drop1Action 4s linear infinite;
+	-moz-animation: drop1Action 4s linear infinite;
+	-ms-animation: drop1Action 4s linear infinite;
+	-o-animation: drop1Action 4s linear infinite;
+	animation: drop1Action 4s linear infinite;	
+}
+
+@keyframes drop1Action {
+	0%{
+		transform: translate(0, 0);
+	}
+	50%{
+		transform: translate(30px, 0);
+	}
+	100% {
+		transform: translate(00px, 0);
+	}
+}
+
+
+#svg_canvas.snow .snowdrop2 {
+	-webkit-animation: drop2Action 4s linear infinite;
+	-moz-animation: drop2Action 4s linear infinite;
+	-ms-animation: drop2Action 4s linear infinite;
+	-o-animation: drop2Action 4s linear infinite;
+	animation: drop2Action 4s linear infinite;	
+}
+
+@keyframes drop2Action {
+	0%{
+		transform: translate(0, 0);
+	}
+	50%{
+		transform: translate(-20px, 0);
+	}
+	100% {
+		transform: translate(00px, 0);
+	}
+}
+
+
+
+#svg_canvas.snow .snowdrop3 {
+	-webkit-animation: drop3Action 4s linear infinite;
+	-moz-animation: drop3Action 4s linear infinite;
+	-ms-animation: drop3Action 4s linear infinite;
+	-o-animation: drop3Action 4s linear infinite;
+	animation: drop3Action 4s linear infinite;	
+}
+
+@keyframes drop3Action {
+	0%{
+		transform: translate(0, 0);
+	}
+	50%{
+		transform: translate(40px, 0);
+	}
+	100% {
+		transform: translate(00px, 0);
+	}
+}
+
+
+#svg_canvas.snow .snowdrop4 {
+	-webkit-animation: drop4Action 4s linear infinite;
+	-moz-animation: drop4Action 4s linear infinite;
+	-ms-animation: drop4Action 4s linear infinite;
+	-o-animation: drop4Action 4s linear infinite;
+	animation: drop4Action 4s linear infinite;	
+}
+
+@keyframes drop4Action {
+	0%{
+		transform: translate(0, 0);
+	}
+	50%{
+		transform: translate(-30px, 0);
+	}
+	100% {
+		transform: translate(00px, 0);
+	}
+}
+
+
+#svg_canvas.snow .snowdrop5 {
+	-webkit-animation: drop5Action 4s linear infinite;
+	-moz-animation: drop5Action 4s linear infinite;
+	-ms-animation: drop5Action 4s linear infinite;
+	-o-animation: drop5Action 4s linear infinite;
+	animation: drop5Action 4s linear infinite;	
+}
+
+@keyframes drop5Action {
+	0%{
+		transform: translate(0, 0);
+	}
+	50%{
+		transform: translate(30px, 0);
+	}
+	100% {
+		transform: translate(00px, 0);
+	}
+}
+
+
+
+
+#svg_canvas.snow .snowdrop6 {
+	-webkit-animation: drop6Action 4s linear infinite;
+	-moz-animation: drop6Action 4s linear infinite;
+	-ms-animation: drop6Action 4s linear infinite;
+	-o-animation: drop6Action 4s linear infinite;
+	animation: drop6Action 4s linear infinite;	
+}
+
+@keyframes drop6Action {
+	0%{
+		transform: translate(0, 0);
+	}
+	50%{
+		transform: translate(-20px, 0);
+	}
+	100% {
+		transform: translate(00px, 0);
+	}
+}
+
+
+
+#svg_canvas.snow .snowdrop7 {
+	-webkit-animation: drop7Action 4s linear infinite;
+	-moz-animation: drop7Action 4s linear infinite;
+	-ms-animation: drop7Action 4s linear infinite;
+	-o-animation: drop7Action 4s linear infinite;
+	animation: drop7Action 4s linear infinite;	
+}
+
+@keyframes drop7Action {
+	0%{
+		transform: translate(0, 0);
+	}
+	50%{
+		transform: translate(30px, 0);
+	}
+	100% {
+		transform: translate(00px, 0);
+	}
+}

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.profile.make.pet.ProfileSharedViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/layout_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scrollbars="none"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnLayer"
+            >
+
+            <LinearLayout
+                android:id="@+id/outSide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:lineHeight="40sp"
+                    android:textColor="#111111"
+                    android:textSize="30dp"
+                    android:layout_marginTop="20dp"
+                    app:htmlText="@{@string/new_profile_third_title_s}"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="24dp"
+                    >
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/tag_outline"
+                        android:paddingVertical="6dp"
+                        android:paddingHorizontal="13dp"
+                        app:onSafeClick="@{view -> viewModel.goToNewProfileFirst()}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:tagText="@{viewModel.petName}"
+                            android:textSize="14sp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"/>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/tag_outline"
+                        android:layout_marginStart="6dp"
+                        android:paddingVertical="6dp"
+                        android:paddingHorizontal="13dp"
+                        app:onSafeClick="@{view -> viewModel.goToNewProfileFirst()}">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:tagText="@{viewModel.petGender}"
+                            android:textSize="14sp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"/>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/tag_outline"
+                        android:layout_marginStart="6dp"
+                        android:paddingVertical="6dp"
+                        android:paddingHorizontal="13dp"
+                        app:onSafeClick="@{view -> viewModel.goToNewProfileSecond()}">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:tagText="@{viewModel.petAge}"
+                            android:textSize="14sp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"/>
+                    </FrameLayout>
+                </LinearLayout>
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    app:flexWrap="wrap"
+                    app:flexDirection="row"
+                    app:showDivider="middle"
+                    app:dividerDrawable="@drawable/flex_divider">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/tag_outline"
+                        android:paddingVertical="6dp"
+                        android:paddingHorizontal="13dp"
+                        app:onSafeClick="@{view -> viewModel.goToNewProfileSecond()}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            app:tagText="@{viewModel.breed}"
+                            android:textSize="14sp"
+                            android:textColor="@color/greyscale_9_111"
+                            android:fontFamily="@font/nanum_square_round"/>
+                    </FrameLayout>
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="155dp"
+                    android:layout_marginTop="46dp"
+                    >
+
+                    <FrameLayout
+                        android:id="@+id/profile_region"
+                        android:layout_width="151dp"
+                        android:layout_height="151dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:onSafeClick="@{view -> viewModel.pickPicture()}"
+                        android:layout_centerHorizontal="true">
+
+                        <ImageView
+                            android:id="@+id/profile_empty"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_profile_image"/>
+
+                        <ImageView
+                            android:id="@+id/profile_img"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:circleImageUrl="@{viewModel.imageSrc}"/>
+                    </FrameLayout>
+
+                    <ImageButton
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_alignBottom="@+id/profile_region"
+                        android:layout_alignEnd="@id/profile_region"
+                        android:layout_marginBottom="-5dp"
+                        android:layout_marginEnd="-10dp"
+                        android:background="@drawable/btn_camera"
+                        app:onSafeClick="@{view -> viewModel.pickPicture()}"
+                        />
+                </RelativeLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/CustomTextInputLayout"
+                    android:id="@+id/pet_weight_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="47dp"
+                    android:hint="@string/new_profile_pet_weight_hint"
+                    app:endIconMode="clear_text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/CustomEditText"
+                        android:id="@+id/pet_weight_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.weight}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/btnLayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/btn_bg"
+                android:enabled="@{viewModel.validation(viewModel.weight) ? true : false}"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="@string/new_profile_save_and_complete"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:onSafeClick="@{view -> viewModel.saveAndComplete(context)}" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:layout_centerVertical="true"
+                android:elevation="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:textColor="@color/greyscale_1_fff"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:alpha="0.5"
+                    android:text=" / 3"
+                    android:fontFamily="@font/nanum_square_round"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

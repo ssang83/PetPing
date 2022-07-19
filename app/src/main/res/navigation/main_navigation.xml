@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainScreen">
+
+    <fragment
+        android:id="@+id/mainScreen"
+        android:name="ai.comake.petping.MainFragment"
+        android:label="mainScreen"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_main_to_home"
+            app:destination="@id/homeScreen"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/mainScreen"
+            app:popUpToInclusive="true" />
+        <!--        <action-->
+        <!--            android:id="@+id/action_main_to_dashBoard"-->
+        <!--            app:destination="@id/dashBoardScreen"-->
+        <!--            app:launchSingleTop="true"-->
+        <!--            app:popUpTo="@+id/mainScreen"-->
+        <!--            app:popUpToInclusive="true" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeScreen"
+        android:name="ai.comake.petping.ui.home.HomeFragment"
+        android:label="homeScreen"
+        tools:layout="@layout/fragment_home">
+
+        <argument
+            android:name="menulink"
+            android:defaultValue="@null"
+            app:argType="ai.comake.petping.data.vo.MenuLink"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_home_to_walkrecordattach"
+            app:destination="@id/walkRecordAttachScreen"
+            app:launchSingleTop="true" />
+
+        <action
+            android:id="@+id/action_home_to_signup"
+            app:destination="@id/signUpScreen"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_homeScreen_to_rewardHistoryFragment"
+            app:destination="@id/rewardHistoryFragment"
+            app:launchSingleTop="true"/>
+        <action
+            android:id="@+id/action_homeScreen_to_godoMallFragment"
+            app:destination="@id/godoMallFragment"
+            app:launchSingleTop="true"/>
+        <action
+            android:id="@+id/action_homeScreen_to_rewardWebFragment"
+            app:destination="@id/rewardWebFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_eventWebFragment"
+            app:destination="@id/eventWebFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_missionPetFragment"
+            app:destination="@id/missionPetFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_etcFragment"
+            app:destination="@id/etcFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_loginGraph"
+            app:destination="@id/loginGraph" />
+        <action
+            android:id="@+id/action_homeScreen_to_tipAllFragment"
+            app:destination="@id/tipAllFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_profileGraph"
+            app:destination="@id/profileGraph" />
+        <action
+            android:id="@+id/action_homeScreen_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_certificationFragment"
+            app:destination="@id/certificationFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_dogProfileFragment"
+            app:destination="@id/dogProfileFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/walkRecordAttachScreen"
+        android:name="ai.comake.petping.ui.history.WalkRecordAttachFragment"
+        android:label="walkRecordAttachScreen"
+        tools:layout="@layout/fragment_walk_record_attach">
+
+        <action
+            android:id="@+id/action_walkrecordattach_to_home"
+            app:destination="@id/homeScreen"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/homeScreen"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpScreen"
+        android:name="ai.comake.petping.ui.signup.SignUpFragment"
+        android:label="signUpScreen"
+        tools:layout="@layout/fragment_signup">
+
+        <action
+            android:id="@+id/action_signup_home"
+            app:destination="@id/homeScreen"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/homeScreen"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <action
+        android:id="@+id/action_main_to_home"
+        app:destination="@id/homeScreen"
+        app:launchSingleTop="true"
+        />
+    <fragment
+        android:id="@+id/rewardHistoryFragment"
+        android:name="ai.comake.petping.ui.history.reward.RewardHistoryFragment"
+        android:label="RewardHistoryFragment"
+        tools:layout="@layout/fragment_reward_history"
+        />
+    <fragment
+        android:id="@+id/godoMallFragment"
+        android:name="ai.comake.petping.ui.godomall.GodoMallFragment"
+        android:label="GodoMallFragment"
+        tools:layout="@layout/fragment_godomall">
+
+        <argument
+            android:name="config"
+            app:argType="ai.comake.petping.data.vo.GodoMallConfig" />
+        <action
+            android:id="@+id/action_godoMallFragment_to_loginGraph"
+            app:destination="@id/loginGraph" />
+    </fragment>
+    <fragment
+        android:id="@+id/rewardWebFragment"
+        android:name="ai.comake.petping.ui.common.webview.reward.RewardWebFragment"
+        android:label="RewardWebFragment"
+        tools:layout="@layout/fragment_reward_webview">
+
+        <argument
+            android:name="mission"
+            app:argType="ai.comake.petping.data.vo.OngoingMission" />
+    </fragment>
+    <fragment
+        android:id="@+id/contentsWebFragment"
+        android:name="ai.comake.petping.ui.common.webview.content.ContentsWebFragment"
+        android:label="ContentsWebFragment"
+        tools:layout="@layout/fragment_content_webview">
+
+        <argument
+            android:name="config"
+            app:argType="ai.comake.petping.data.vo.WebConfig" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_loginGraph"
+            app:destination="@id/loginGraph" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_homeScreen"
+            app:destination="@id/homeScreen" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_etcFragment"
+            app:destination="@id/etcFragment" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_rewardHistoryFragment"
+            app:destination="@id/rewardHistoryFragment" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_profileGraph"
+            app:destination="@id/profileGraph" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_missionPetFragment"
+            app:destination="@id/missionPetFragment" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_insuranceHistoryFragment"
+            app:destination="@id/insuranceHistoryFragment" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_appSettingFragment"
+            app:destination="@id/appSettingFragment" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+        <action
+            android:id="@+id/action_contentsWebFragment_to_noticeFragment"
+            app:destination="@id/noticeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventWebFragment"
+        android:name="ai.comake.petping.ui.common.webview.event.EventWebFragment"
+        android:label="EventWebFragment"
+        tools:layout="@layout/fragment_event_webview"
+        >
+
+        <argument
+            android:name="config"
+            app:argType="ai.comake.petping.data.vo.WebConfig" />
+        <action
+            android:id="@+id/action_eventWebFragment_to_loginGraph"
+            app:destination="@id/loginGraph" />
+        <action
+            android:id="@+id/action_eventWebFragment_to_missionPetFragment"
+            app:destination="@id/missionPetFragment" />
+        <action
+            android:id="@+id/action_eventWebFragment_to_insuranceHistoryFragment"
+            app:destination="@id/insuranceHistoryFragment" />
+        <action
+            android:id="@+id/action_eventWebFragment_to_rewardHistoryFragment"
+            app:destination="@id/rewardHistoryFragment" />
+        <action
+            android:id="@+id/action_eventWebFragment_to_appSettingFragment"
+            app:destination="@id/appSettingFragment" />
+        <action
+            android:id="@+id/action_eventWebFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+        <action
+            android:id="@+id/action_eventWebFragment_to_noticeFragment"
+            app:destination="@id/noticeFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/missionPetFragment"
+        android:name="ai.comake.petping.ui.etc.mission_pet.MissionPetFragment"
+        android:label="MissionPetFragment"
+        tools:layout="@layout/fragment_mission_pet"
+        >
+        <action
+            android:id="@+id/action_missionPetFragment_to_certificationFragment"
+            app:destination="@id/certificationFragment" />
+        <action
+            android:id="@+id/action_missionPetFragment_to_RNSFragment"
+            app:destination="@id/RNSFragment" />
+        <action
+            android:id="@+id/action_missionPetFragment_to_insuranceHistoryFragment"
+            app:destination="@id/insuranceHistoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/etcFragment"
+        android:name="ai.comake.petping.ui.etc.EtcFragment"
+        android:label="EtcFragment"
+        tools:layout="@layout/fragment_etc"
+        >
+        <action
+            android:id="@+id/action_etcFragment_to_noticeFragment"
+            app:destination="@id/noticeFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_left"
+            />
+        <action
+            android:id="@+id/action_etcFragment_to_missionPetFragment"
+            app:destination="@id/missionPetFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_left"
+            />
+        <action
+            android:id="@+id/action_etcFragment_to_memberInfoFragment"
+            app:destination="@id/memberInfoFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_left"
+            />
+        <action
+            android:id="@+id/action_etcFragment_to_questionFragment"
+            app:destination="@id/questionFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_left"
+            />
+        <action
+            android:id="@+id/action_etcFragment_to_appSettingFragment"
+            app:destination="@id/appSettingFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_left"
+            />
+        <action
+            android:id="@+id/action_etcFragment_to_welcomKitGuideFragment"
+            app:destination="@id/welcomKitGuideFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_left"
+            />
+        <action
+            android:id="@+id/action_etcFragment_to_dogProfileFragment"
+            app:destination="@id/dogProfileFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_left"
+            />
+        <action
+            android:id="@+id/action_etcFragment_to_profileGraph"
+            app:destination="@id/profileGraph" />
+    </fragment>
+    <fragment
+        android:id="@+id/noticeFragment"
+        android:name="ai.comake.petping.ui.etc.notice.NoticeFragment"
+        android:label="NoticeFragment"
+        tools:layout="@layout/fragment_notice"
+        >
+        <action
+            android:id="@+id/action_noticeFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/memberInfoFragment"
+        android:name="ai.comake.petping.ui.etc.member_info.MemberInfoFragment"
+        android:label="MemberInfoFragment"
+        tools:layout="@layout/fragment_member_info"
+        >
+        <action
+            android:id="@+id/action_memberInfoFragment_to_changeEmailFragment"
+            app:destination="@id/changeEmailFragment" />
+        <action
+            android:id="@+id/action_memberInfoFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_memberInfoFragment_to_homeScreen"
+            app:destination="@id/homeScreen" />
+        <action
+            android:id="@+id/action_memberInfoFragment_to_changePhoneNumberFragment"
+            app:destination="@id/changePhoneNumberFragment" />
+        <action
+            android:id="@+id/action_memberInfoFragment_to_withdrawalFragment"
+            app:destination="@id/withdrawalFragment" />
+        <action
+            android:id="@+id/action_memberInfoFragment_to_certWebFragment"
+            app:destination="@id/certWebFragment" />
+        <action
+            android:id="@+id/action_memberInfoFragment_to_locationHistoryFragment"
+            app:destination="@id/locationHistoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="ai.comake.petping.ui.etc.inquiry.QuestionFragment"
+        android:label="QuestionFragment"
+        tools:layout="@layout/fragment_question"
+        >
+        <action
+            android:id="@+id/action_questionFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+        <action
+            android:id="@+id/action_questionFragment_to_inquriyFragment"
+            app:destination="@id/inquriyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/appSettingFragment"
+        android:name="ai.comake.petping.ui.etc.setting.AppSettingFragment"
+        android:label="AppSettingFragment"
+        tools:layout="@layout/fragment_app_setting"
+        >
+        <action
+            android:id="@+id/action_appSettingFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+        <action
+            android:id="@+id/action_appSettingFragment_to_policyFragment"
+            app:destination="@id/policyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/welcomKitGuideFragment"
+        android:name="ai.comake.petping.ui.etc.welcome_kit.WelcomKitGuideFragment"
+        android:label="WelcomKitGuideFragment"
+        tools:layout="@layout/fragment_welcom_kit_guide"
+        >
+        <action
+            android:id="@+id/action_welcomKitGuideFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+        <action
+            android:id="@+id/action_welcomKitGuideFragment_to_missionPetFragment"
+            app:destination="@id/missionPetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/policyFragment"
+        android:name="ai.comake.petping.ui.etc.setting.policy.PolicyFragment"
+        android:label="PolicyFragment"
+        tools:layout="@layout/fragment_policy"
+        >
+
+        <argument
+            android:name="info"
+            app:argType="ai.comake.petping.data.vo.AppInfo" />
+
+        <action
+            android:id="@+id/action_policyFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dogProfileFragment"
+        android:name="ai.comake.petping.ui.profile.DogProfileFragment"
+        android:label="DogProfileFragment"
+        tools:layout="@layout/fragment_dog_profile">
+
+        <argument
+            android:name="config"
+            app:argType="ai.comake.petping.data.vo.PetProfileConfig" />
+        <action
+            android:id="@+id/action_dogProfileFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeEmailFragment"
+        android:name="ai.comake.petping.ui.etc.member_info.change.ChangeEmailFragment"
+        android:label="ChangeEmailFragment"
+        tools:layout="@layout/fragment_change_email"
+        />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="ai.comake.petping.ui.etc.member_info.change.ChangePasswordFragment"
+        android:label="ChangePasswordFragment"
+        tools:layout="@layout/fragment_change_password"
+        />
+    <navigation android:id="@+id/loginGraph"
+        app:startDestination="@id/loginFragment">
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="ai.comake.petping.ui.login.LoginFragment"
+            android:label="LoginFragment"
+            tools:layout="@layout/fragment_login">
+            <action
+                android:id="@+id/action_loginFragment_to_emailLoginFragment"
+                app:destination="@id/emailLoginFragment" />
+            <action
+                android:id="@+id/action_loginFragment_to_agreementFragment"
+                app:destination="@id/agreementFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/emailLoginFragment"
+            android:name="ai.comake.petping.ui.login.EmailLoginFragment"
+            android:label="EmailLoginFragment"
+            tools:layout="@layout/fragment_email_login" >
+            <action
+                android:id="@+id/action_emailLoginFragment_to_findPasswordFragment"
+                app:destination="@id/findPasswordFragment" />
+            <action
+                android:id="@+id/action_emailLoginFragment_to_signUpEmailFragment"
+                app:destination="@id/signUpEmailFragment" />
+        </fragment>
+        <action
+            android:id="@+id/action_global_homeScreen"
+            app:destination="@id/homeScreen" />
+        <fragment
+            android:id="@+id/agreementFragment"
+            android:name="ai.comake.petping.ui.login.AgreementFragment"
+            android:label="AgreementFragment"
+            tools:layout="@layout/fragment_agreement">
+
+            <argument
+                android:name="config"
+                app:argType="ai.comake.petping.data.vo.AgreementConfig" />
+        </fragment>
+        <action
+            android:id="@+id/action_global_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+        <fragment
+            android:id="@+id/findPasswordFragment"
+            android:name="ai.comake.petping.ui.login.FindPasswordFragment"
+            android:label="FindPasswordFragment"
+            tools:layout="@layout/fragment_find_password"
+            >
+            <action
+                android:id="@+id/action_findPasswordFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/signUpEmailFragment"
+            android:name="ai.comake.petping.ui.login.SignUpEmailFragment"
+            android:label="SignUpEmailFragment"
+            tools:layout="@layout/fragment_signup_email"
+            >
+            <action
+                android:id="@+id/action_signUpEmailFragment_to_agreementFragment"
+                app:destination="@id/agreementFragment" />
+        </fragment>
+    </navigation>
+    <fragment
+        android:id="@+id/changePhoneNumberFragment"
+        android:name="ai.comake.petping.ui.etc.member_info.change.ChangePhoneNumberFragment"
+        android:label="ChangePhoneNumberFragment"
+        tools:layout="@layout/fragment_change_phone_number"
+        >
+
+        <argument
+            android:name="config"
+            app:argType="ai.comake.petping.data.vo.ChangePhoneNumberConfig" />
+        <action
+            android:id="@+id/action_changePhoneNumberFragment_to_certWebFragment"
+            app:destination="@id/certWebFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/certWebFragment"
+        android:name="ai.comake.petping.ui.etc.CertWebFragment"
+        android:label="CertWebFragment"
+        tools:layout="@layout/fragment_cert_web"
+        >
+
+        <argument
+            android:name="config"
+            app:argType="ai.comake.petping.data.vo.CertWebConfig" />
+    </fragment>
+    <fragment
+        android:id="@+id/withdrawalFragment"
+        android:name="ai.comake.petping.ui.etc.member_info.withdrawal.WithdrawalFragment"
+        android:label="WithdrawalFragment"
+        tools:layout="@layout/fragment_withdrawal"
+        >
+        <action
+            android:id="@+id/action_withdrawalFragment_to_homeScreen"
+            app:destination="@id/homeScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationHistoryFragment"
+        android:name="ai.comake.petping.ui.etc.member_info.LocationHistoryFragment"
+        android:label="LocationHistoryFragment"
+        tools:layout="@layout/fragment_location_history"
+        />
+    <fragment
+        android:id="@+id/certificationFragment"
+        android:name="ai.comake.petping.ui.etc.CertificationFragment"
+        android:label="CertificationFragment"
+        tools:layout="@layout/fragment_certification"
+        >
+        <action
+            android:id="@+id/action_certificationFragment_to_certWebFragment"
+            app:destination="@id/certWebFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/RNSFragment"
+        android:name="ai.comake.petping.ui.etc.RNSFragment"
+        android:label="RNSFragment"
+        tools:layout="@layout/fragment_rns"
+        >
+
+        <argument
+            android:name="petId"
+            app:argType="integer"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/insuranceHistoryFragment"
+        android:name="ai.comake.petping.ui.insurance.InsuranceHistoryFragment"
+        android:label="InsuranceHistoryFragment"
+        tools:layout="@layout/fragment_insurance_history"
+        >
+        <action
+            android:id="@+id/action_insuranceHistoryFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+        <action
+            android:id="@+id/action_insuranceHistoryFragment_to_certificationFragment"
+            app:destination="@id/certificationFragment" />
+        <action
+            android:id="@+id/action_insuranceHistoryFragment_to_memberInfoFragment"
+            app:destination="@id/memberInfoFragment" />
+        <action
+            android:id="@+id/action_insuranceHistoryFragment_to_connectFragment"
+            app:destination="@id/connectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectFragment"
+        android:name="ai.comake.petping.ui.insurance.ConnectFragment"
+        android:label="ConnectFragment"
+        tools:layout="@layout/fragment_connect"
+        >
+
+        <argument
+            android:name="petId"
+            app:argType="integer"
+            />
+
+        <action
+            android:id="@+id/action_connectFragment_to_certWebFragment"
+            app:destination="@id/certWebFragment" />
+        <action
+            android:id="@+id/action_connectFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="ai.comake.petping.ui.profile.SettingFragment"
+        android:label="SettingFragment"
+        tools:layout="@layout/fragment_setting"
+        >
+
+        <argument
+            android:name="petId"
+            app:argType="integer"
+            />
+        <action
+            android:id="@+id/action_settingFragment_to_RNSFragment"
+            app:destination="@id/RNSFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_missionPetFragment"
+            app:destination="@id/missionPetFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_characterEditFragment"
+            app:destination="@id/characterEditFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterEditFragment"
+        android:name="ai.comake.petping.ui.profile.edit.CharacterEditFragment"
+        android:label="CharacterEditFragment"
+        tools:layout="@layout/fragment_character_edit"
+        >
+
+        <argument
+            android:name="config"
+            app:argType="ai.comake.petping.data.vo.PetCharacterConfig" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="ai.comake.petping.ui.profile.edit.ProfileEditFragment"
+        android:label="ProfileEditFragment"
+        tools:layout="@layout/fragment_profile_edit"
+        >
+
+        <argument
+            android:name="petId"
+            app:argType="integer"
+            />
+        <action
+            android:id="@+id/action_profileEditFragment_to_homeScreen"
+            app:destination="@id/homeScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/tipAllFragment"
+        android:name="ai.comake.petping.ui.home.dashboard.tip.TipAllFragment"
+        android:label="TipAllFragment"
+        tools:layout="@layout/fragment_tip_all"
+        >
+        <action
+            android:id="@+id/action_tipAllFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+    </fragment>
+    <navigation android:id="@+id/profileGraph"
+        app:startDestination="@id/profileFragment">
+
+        <argument
+            android:name="needBack"
+            app:argType="boolean"
+            />
+
+        <fragment
+            android:id="@+id/profileFragment"
+            android:name="ai.comake.petping.ui.profile.make.ProfileFragment"
+            android:label="ProfileFragment"
+            tools:layout="@layout/fragment_profile">
+            <action
+                android:id="@+id/action_profileFragment_to_familyFragment"
+                app:destination="@id/familyFragment" />
+            <action
+                android:id="@+id/action_profileFragment_to_newProfileFirstFragment"
+                app:destination="@id/newProfileFirstFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/familyFragment"
+            android:name="ai.comake.petping.ui.profile.make.family.FamilyFragment"
+            android:label="FamilyFragment"
+            tools:layout="@layout/fragment_family"
+            >
+            <action
+                android:id="@+id/action_familyFragment_to_familyConfirmFragment"
+                app:destination="@id/familyConfirmFragment" />
+        </fragment>
+        <action
+            android:id="@+id/action_family_code_guide_contentsWebFragment"
+            app:destination="@id/contentsWebFragment" />
+        <fragment
+            android:id="@+id/familyConfirmFragment"
+            android:name="ai.comake.petping.ui.profile.make.family.FamilyConfirmFragment"
+            android:label="FamilyConfirmFragment"
+            tools:layout="@layout/fragment_family_confirm"
+            >
+
+            <argument
+                android:name="config"
+                app:argType="ai.comake.petping.data.vo.FamilyConfrimConfig" />
+        </fragment>
+        <action
+            android:id="@+id/action_profile_to_home"
+            app:destination="@id/homeScreen" />
+        <fragment
+            android:id="@+id/newProfileFirstFragment"
+            android:name="ai.comake.petping.ui.profile.make.pet.NewProfileFirstFragment"
+            android:label="NewProfileFirstFragment"
+            tools:layout="@layout/fragment_new_profile_first"
+            >
+            <action
+                android:id="@+id/action_newProfileFirstFragment_to_newProfileSecondFragment"
+                app:destination="@id/newProfileSecondFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/newProfileSecondFragment"
+            android:name="ai.comake.petping.ui.profile.make.pet.NewProfileSecondFragment"
+            android:label="NewProfileSecondFragment"
+            tools:layout="@layout/fragment_new_profile_second"
+            >
+            <action
+                android:id="@+id/action_newProfileSecondFragment_to_newProfileThirdFragment"
+                app:destination="@id/newProfileThirdFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/newProfileThirdFragment"
+            android:name="ai.comake.petping.ui.profile.make.pet.NewProfileThirdFragment"
+            android:label="NewProfileThirdFragment"
+            tools:layout="@layout/fragment_new_profile_third"
+            />
+    </navigation>
+    <fragment
+        android:id="@+id/inquriyFragment"
+        android:name="ai.comake.petping.ui.etc.inquiry.InquriyFragment"
+        android:label="InquriyFragment"
+        tools:layout="@layout/fragment_inquiry"
+        />
+
+</navigation>

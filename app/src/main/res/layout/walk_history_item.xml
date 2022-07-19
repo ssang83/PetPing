@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="item"
+            type="ai.comake.petping.data.vo.WalkRecord" />
+        
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.history.walk.WalkHistoryViewModel" />
+        
+        <import type="android.view.View"/>
+    </data>
+    
+    <LinearLayout
+        android:background="@drawable/card_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:layout_marginBottom="11dp"
+        android:orientation="vertical"
+        app:onSafeClick="@{view -> viewModel.goToRoute(item.id)}"
+        >
+
+        <!-- 산책 기록 정보 영역 -->
+        <LinearLayout
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+            android:visibility="@{item.walkImagesURL.size() == 0 ? View.VISIBLE : View.GONE}"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                >
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/profile_image_view"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    app:circleImageUrl="@{item.pet.profileImageURL}"
+                    tools:src="@mipmap/ic_launcher"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/pet_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@{item.pet.name}"
+                    tools:text="택수"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    app:layout_constraintTop_toTopOf="@+id/profile_image_view"
+                    app:layout_constraintStart_toEndOf="@+id/profile_image_view"
+                    android:layout_marginStart="8dp"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center_vertical"
+                    tools:text="2020-03-02"
+                    android:text="@{item.walkDate}"
+                    android:textSize="12dp"
+                    android:textColor="@color/greyscale_9_aaa"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_image_view"
+                    app:layout_constraintStart_toStartOf="@+id/pet_name"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnTrash"
+                    android:layout_width="35dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_trash"
+                    android:adjustViewBounds="true"
+                    android:visibility="@{viewModel.isDelete == true ? View.VISIBLE : View.GONE}"
+                    app:onSafeClick="@{view -> viewModel.delete(item.id)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/profile_image_view"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="15dp"
+                android:lineHeight="23dp"
+                android:text="@{item.review}"
+                android:visibility="@{item.review.length() == 0 ? View.GONE : View.VISIBLE}"
+                tools:text="오늘 보리는 심드렁, 택수는 기분이 좋았어요.가로수길을 지나 한강까지 가는길이 너무 좋았던 하루"
+                android:fontFamily="@font/nanum_square_round"
+                android:textColor="@color/greyscale_9_111"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/walkDetailLayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="70dp"
+                android:paddingTop="12dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="33dp"
+                android:paddingBottom="13dp"
+                android:background="@drawable/bg_fafafa_6"
+                android:visibility="@{viewModel.viewMode.equals(`other`) ? View.GONE : View.VISIBLE}"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStartTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/walk_record_start_time"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="11dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/walkStartTime"
+                    app:layout_constraintHorizontal_weight="1"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/walkStartTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="2020-03-02 19:00"
+                    android:text="@{item.walkStartDatetime}"
+                    android:textSize="11dp"
+                    android:textColor="@color/greyscale_9_666"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintStart_toEndOf="@+id/tvStartTime"
+                    app:layout_constraintTop_toTopOf="@+id/tvStartTime"
+                    app:layout_constraintBottom_toBottomOf="@id/tvStartTime"
+                    app:layout_constraintHorizontal_weight="1"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEndTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/walk_record_end_time"
+                    android:textColor="@color/greyscale_9_111"
+                    android:layout_marginTop="10dp"
+                    android:textSize="11dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    app:layout_constraintTop_toBottomOf="@+id/tvStartTime"
+                    app:layout_constraintStart_toStartOf="@+id/tvStartTime"
+                    app:layout_constraintEnd_toStartOf="@+id/walkEndTime"
+                    app:layout_constraintHorizontal_weight="1"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/walkEndTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="2020-03-02 19:00"
+                    android:text="@{item.walkEndDatetime}"
+                    android:textSize="11dp"
+                    android:textColor="@color/greyscale_9_666"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintStart_toEndOf="@+id/tvEndTime"
+                    app:layout_constraintTop_toTopOf="@+id/tvEndTime"
+                    app:layout_constraintBottom_toBottomOf="@id/tvEndTime"
+                    app:layout_constraintHorizontal_weight="1"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvWithParent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/with_parent"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="11dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEndTime"
+                    app:layout_constraintStart_toStartOf="@+id/tvEndTime"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/withParent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="이단비 님"
+                    app:withParent="@{item}"
+                    android:textSize="11dp"
+                    android:textColor="@color/greyscale_9_666"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintStart_toStartOf="@+id/walkEndTime"
+                    app:layout_constraintTop_toTopOf="@+id/tvWithParent"
+                    app:layout_constraintBottom_toBottomOf="@id/tvWithParent"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvWithPets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/with_pets"
+                    android:textColor="@color/greyscale_9_111"
+                    android:layout_marginTop="10dp"
+                    android:textSize="11dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWithParent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="@{item.withPets.size() == 0 ? View.GONE : View.VISIBLE}"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/withPets"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="사랑이, 보리"
+                    app:withPets="@{item}"
+                    android:textSize="11dp"
+                    android:lineSpacingExtra="5dp"
+                    android:textColor="@color/greyscale_9_666"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintStart_toStartOf="@+id/walkEndTime"
+                    app:layout_constraintTop_toTopOf="@+id/tvWithPets"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvWithPets"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/tvWithPets"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/info_region"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/component_icon_record_time"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="20dp"
+                        android:textColor="@color/greyscale_9_111"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        tools:text="00:00"
+                        android:text="@{item.realWalkTime}"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/component_icon_record_distance"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="20dp"
+                        android:textColor="@color/greyscale_9_111"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        tools:text="999km"
+                        android:text="@{item.distance}"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/component_icon_record_marking"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/marking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/greyscale_9_111"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        tools:text="111"
+                        android:text="@{String.valueOf(item.markingCount)}"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 산책 기록 사진 영역 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/photo_region"
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            app:layoutParam="@{viewModel}"
+            android:visibility="@{item.walkImagesURL.size() == 0 ? View.GONE : View.VISIBLE}"
+            >
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/image_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:viewModel="@{viewModel}"
+                app:pagerAdapter="@{item}"
+                app:onPageChangeCallback="@{viewModel}"
+                />
+
+            <LinearLayout
+                android:id="@+id/index_region"
+                android:layout_width="35dp"
+                android:layout_height="26dp"
+                android:background="@drawable/index_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/index_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    tools:text="1"
+                    android:text="@{viewModel.selectPage.length() == 0 ? `1` : viewModel.selectPage}"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/length_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    tools:text="/3"
+                    app:lenghText="@{item}"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/bg_gradient"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/component_icon_record_time"
+                        app:tint="@color/greyscale_1_fff"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/inner_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="20dp"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        tools:text="00:00"
+                        android:text="@{item.realWalkTime}"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/component_icon_record_distance"
+                        app:tint="@color/greyscale_1_fff"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/inner_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:textSize="20dp"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        tools:text="999km"
+                        android:text="@{item.distance}"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/component_icon_record_marking"
+                        app:tint="@color/greyscale_1_fff"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/inner_marking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="20dp"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        tools:text="111"
+                        android:text="@{String.valueOf(item.markingCount)}"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

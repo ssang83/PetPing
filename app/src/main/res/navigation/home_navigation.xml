@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_dashBoard"
+    app:startDestination="@id/dashBoardScreen">
+
+    <bottom
+        android:id="@+id/dashBoardScreen"
+        android:name="ai.comake.petping.ui.home.dashboard.DashboardFragment"
+        android:label="dashBoardScreen"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <bottom
+        android:id="@+id/walkScreen"
+        android:name="ai.comake.petping.ui.home.walk.WalkFragment"
+        android:label="walkScreen"
+        tools:layout="@layout/fragment_walk" />
+    <bottom
+        android:id="@+id/rewardScreen"
+        android:name="ai.comake.petping.ui.home.reward.RewardFragment"
+        android:label="RewardFragment"
+        tools:layout="@layout/fragment_reward" />
+    <bottom
+        android:id="@+id/shopScreen"
+        android:name="ai.comake.petping.ui.home.shop.ShopFragment"
+        android:label="ShopFragment"
+        tools:layout="@layout/fragment_shop" />
+    <bottom
+        android:id="@+id/insuranceScreen"
+        android:name="ai.comake.petping.ui.home.insurance.InsuranceFragment"
+        android:label="InsuranceFragment"
+        tools:layout="@layout/fragment_insurance" />
+
+</navigation>

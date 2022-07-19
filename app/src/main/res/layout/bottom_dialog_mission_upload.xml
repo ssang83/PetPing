@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_mission_popup_title"
+            android:layout_gravity="center"
+            android:textColor="@color/greyscale_9_111"
+            android:textSize="20dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:layout_marginTop="25dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_mission_popup_desc"
+            android:textSize="14dp"
+            android:textColor="@color/color_777777"
+            android:fontFamily="@font/nanum_square_round"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            />
+
+        <Button
+            android:id="@+id/add_image"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/upload_mission_popup_add_image"
+            android:background="@drawable/btn_outline_666"
+            android:fontFamily="@font/nanum_square_round"
+            android:textSize="14sp"
+            android:textColor="@color/greyscale_9_111"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/image_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            />
+
+        <Button
+            android:id="@+id/btn"
+            style="@style/BottomBarButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="30dp"
+            />
+    </LinearLayout>
+</layout>

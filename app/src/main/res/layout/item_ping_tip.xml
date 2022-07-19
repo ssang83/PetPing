@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.dashboard.DashboardViewModel" />
+        <variable
+            name="item"
+            type="ai.comake.petping.data.vo.Tip" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="272dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="2dp"
+            app:onSafeClick="@{view -> viewModel.goToPingTip(item.webViewURL)}"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="5dp"
+            android:outlineSpotShadowColor="#90000000">
+
+            <ImageView
+                android:layout_width="272dp"
+                android:layout_height="138dp"
+                android:adjustViewBounds="true"
+                app:imageUrl="@{item.thumbnailURL}" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:lineSpacingExtra="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginHorizontal="4dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:fontFamily="@font/nanum_square_round"
+            android:text="@{item.mainText}"
+            android:textColor="@color/greyscale_9_111"
+            android:textSize="15dp" />
+    </LinearLayout>
+</layout>

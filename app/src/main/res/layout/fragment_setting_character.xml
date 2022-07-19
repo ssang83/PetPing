@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.profile.SettingCharacterViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                >
+
+                <FrameLayout
+                    android:layout_width="160dp"
+                    android:layout_height="221dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_gravity="center_horizontal"
+                    >
+
+                    <ai.comake.petping.ui.common.widget.character.CharacterView
+                        android:id="@+id/character"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        />
+                </FrameLayout>
+
+                <Button
+                    android:layout_marginTop="50dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:text="@string/setting_character_modify"
+                    android:background="@drawable/btn_outline"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:textSize="13dp"
+                    app:onSafeClick="@{view -> viewModel.goToEditCharacter()}"
+                    android:textColor="@color/greyscale_9_111"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_marginBottom="20dp"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

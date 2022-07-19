@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.etc.RNSViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/layout_back" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:scrollbars="none"
+            >
+
+            <LinearLayout
+                android:id="@+id/outSide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                >
+
+                <TextView
+                    android:id="@+id/rns_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:lineHeight="40sp"
+                    android:textColor="#111111"
+                    android:textSize="30dp"
+                    app:htmlText="@{@string/mission_pet_rns_title_s}"
+                    tools:text="동물등록번호를\n입력해요 주세요"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/rns_input_guide"
+                    android:textColor="@color/greyscale_9_777"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:textSize="14dp"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/nCustomTextInputLayout"
+                    android:id="@+id/name_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/pet_owner_name_input_hint"
+                    android:layout_marginTop="62dp"
+                    app:endIconMode="clear_text">
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/CustomEditText"
+                        android:id="@+id/name_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:inputType="text"
+                        android:onTextChanged="@{(text, start, before, count) -> viewModel.onNameTextChanged(text)}"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/family_code_wrapper"
+                    style="@style/nCustomTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/rns_input_hint"
+                    android:layout_marginTop="90dp"
+                    app:endIconMode="clear_text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/CustomEditText"
+                        android:id="@+id/family_code_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:inputType="numberDecimal"
+                        android:maxLength="15"
+                        android:text="@={viewModel.registerNumber}"
+                        app:addTextChangedListener="@{viewModel.familyCodeEditTextWatcher}"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="42dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/checkAgree"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:background="@drawable/check_selector"
+                        app:imageSelector="@{viewModel.agree}"
+                        app:onSafeClick="@{view -> viewModel.onAgreeClicked()}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pet_register_number_agree_desc"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:lineSpacingExtra="7dp"
+                        android:textSize="14dp"
+                        android:textColor="@color/greyscale_9_111"
+                        android:fontFamily="@font/nanum_square_round"
+                        app:layout_constraintTop_toTopOf="@+id/checkAgree"
+                        app:layout_constraintStart_toEndOf="@+id/checkAgree"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="@string/pet_register_number_access"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="13dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:background="@drawable/btn_outline_ddd"
+                    android:gravity="center"
+                    android:layout_marginTop="38dp"
+                    android:layout_marginBottom="150dp"
+                    app:onSafeClick="@{view -> viewModel.onOutLinkClicked()}"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnTitle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/btn_bg"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/nanum_square_round_b"
+            app:onSafeClick="@{view -> viewModel.confirmRegisterNumber()}"
+            android:enabled="@{viewModel.isValidRNS &amp;&amp; viewModel.petOwnName.length() != 0 &amp;&amp; viewModel.agree &amp;&amp; viewModel.petOwnNameValidation == true}"
+            android:text="@string/pet_register_number_save_and_confirm"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

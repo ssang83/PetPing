@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:orientation="vertical">
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"/>
+        <Button
+            android:id="@+id/more_btn"
+            android:background="@drawable/btn_item_more"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:text="더 보기"
+            android:textColor="@color/greyscale_9_111"
+            android:textSize="13dp"
+            android:fontFamily="@font/nanum_square_round"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"/>
+    </LinearLayout>
+</layout>

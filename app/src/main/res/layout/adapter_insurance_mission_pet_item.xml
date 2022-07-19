@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="ai.comake.petping.data.vo.PetInsuranceMissionPet" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.etc.mission_pet.MissionPetViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/petImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            tools:src="@mipmap/ic_launcher"
+            app:circleImageUrl="@{item.profileImageURL}"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@+id/petImage"
+            app:layout_constraintTop_toTopOf="@+id/petImage"
+            app:layout_constraintBottom_toBottomOf="@+id/petImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="20dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/petName"
+                tools:text="보리수"
+                android:text="@{item.petName}"
+                android:textSize="17dp"
+                android:textColor="@color/greyscale_9_111"
+                android:fontFamily="@font/nanum_square_round"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                tools:text="한화 라이프플러스 댕댕이"
+                android:text="@{item.insuProductStr}"
+                android:textColor="@color/greyscale_9_777"
+                android:textSize="14dp"
+                android:fontFamily="@font/nanum_square_round"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mission_pet_period"
+                    android:textSize="12dp"
+                    android:textColor="@color/greyscale_9_777"
+                    android:fontFamily="@font/nanum_square_round"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    tools:text="2019-07-01 ~ 2020-06-30"
+                    app:dateTextMissionPet="@{item}"
+                    android:textColor="@color/greyscale_9_aaa"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

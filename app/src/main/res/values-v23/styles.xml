@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/greyscale_4_ddd</item>
+        <item name="colorAccent">@color/greyscale_9_222</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+    </style>
+
+    <style name="LoginActivityTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/greyscale_fa_fa_fa</item>
+    </style>
+
+    <style name="OtherLoginActivityTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@android:color/white</item>
+    </style>
+
+    <style name="CharacterTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">#f8f8f8</item>
+    </style>
+
+    <style name="FeatureActivityTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@android:color/white</item>
+    </style>
+
+    <style name="HomeActivityTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/greyscale_fa_fa_fa</item>
+    </style>
+
+    <style name="WalkActivityTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+    </style>
+
+    <style name="TransparentBottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item> <!-- This is important -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+    <style name="TransparentBottomSheetModal"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="CustomBottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item> <!-- This is important -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/border_radius_top</item>
+    </style>
+</resources>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.etc.setting.policy.PolicyViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_1_fff"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/layout_back"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/terms_and_policy"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:lineSpacingExtra="10dp"
+            android:textColor="#111111"
+            android:textSize="24dp"
+            android:layout_marginStart="20dp"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="33dp"
+            android:background="@color/greyscale_3_f_0"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="30dp"
+            app:onSafeClick="@{view -> viewModel.goToServicePolicy()}"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/service_policy"
+                android:textSize="17dp"
+                android:textColor="@color/greyscale_9_111"
+                android:fontFamily="@font/nanum_square_round"
+                app:layout_constraintTop_toTopOf="@+id/ivServiceGo"
+                app:layout_constraintBottom_toBottomOf="@+id/ivServiceGo"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivServiceGo"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/ic_go"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="21dp"
+            app:onSafeClick="@{view -> viewModel.goToLocationPolicy()}"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location_service_policy"
+                android:textSize="17dp"
+                android:textColor="@color/greyscale_9_111"
+                android:fontFamily="@font/nanum_square_round"
+                app:layout_constraintTop_toTopOf="@+id/ivServiceGo1"
+                app:layout_constraintBottom_toBottomOf="@+id/ivServiceGo1"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivServiceGo1"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/ic_go"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="21dp"
+            app:onSafeClick="@{view -> viewModel.goToPrivacyPolicy()}"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/privacy_policy"
+                android:textSize="17dp"
+                android:textColor="@color/greyscale_9_111"
+                android:fontFamily="@font/nanum_square_round"
+                app:layout_constraintTop_toTopOf="@+id/ivServiceGo2"
+                app:layout_constraintBottom_toBottomOf="@+id/ivServiceGo2"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivServiceGo2"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/ic_go"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</layout>

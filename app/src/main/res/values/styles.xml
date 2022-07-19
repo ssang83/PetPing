@@ -1,0 +1,143 @@
+<resources>
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="CustomDialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+        <item name="android:statusBarColor">@color/greyscale_fa_fa_fa</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="DarkStatusBarTheme" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+        <item name="android:statusBarColor">@color/greyscale_9_111</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="TabText" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+        <item name="android:textColor">@color/greyscale_9_111</item>
+    </style>
+
+    <style name="AppTheme.TabLayout" parent="">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSurface">@color/greyscale_9_111</item>
+        <item name="colorOnSurface">@color/colorPrimary</item>
+        <item name="tabTextAppearance">@style/AppTheme.TabItemButton</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="AppTheme.TabItemButton" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/nanum_square_round_b</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="BottomBarButton">
+        <item name="android:textColor">@color/greyscale_1_fff</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:background">@drawable/btn_bg</item>
+        <item name="android:fontFamily">@font/nanum_square_round_b</item>
+    </style>
+
+    <style name="CustomBottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item> <!-- This is important -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/border_radius_top</item>
+    </style>
+
+    <style name="Header">
+        <item name="android:background">@drawable/card_border</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="TransparentBottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item> <!-- This is important -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+    <style name="TransparentBottomSheetModal"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="CustomTextInputLayout">
+        <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
+        <item name="helperTextTextColor">@color/greyscale_9_aaa</item>
+        <item name="errorTextAppearance">@style/AlertTextAppearance</item>
+        <item name="errorTextColor">@color/primary_pink</item>
+        <item name="hintTextAppearance">@style/HintTextAppearance</item>
+        <item name="hintTextColor">@color/greyscale_9_aaa</item>
+        <item name="android:textColorHint">@color/greyscale_4_ddd</item>
+        <item name="endIconTint">@color/greyscale_4_ddd</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="nCustomTextInputLayout">
+        <item name="helperTextTextAppearance">@style/HelperTextAppearance</item>
+        <item name="helperTextTextColor">@color/greyscale_9_aaa</item>
+        <item name="errorTextAppearance">@style/AlertTextAppearance</item>
+        <item name="errorTextColor">@color/primary_pink</item>
+        <item name="hintTextAppearance">@style/HintTextAppearance</item>
+        <item name="hintTextColor">@color/greyscale_4_ddd</item>
+        <item name="android:textColorHint">@color/greyscale_4_ddd</item>
+        <item name="endIconTint">@color/greyscale_4_ddd</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="HintTextAppearance">
+        <item name="android:textSize">14dp</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="HelperTextAppearance">
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="AlertTextAppearance">
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="CustomEditText">
+        <item name="android:background">@drawable/edit_text_bg_sel</item>
+        <item name="android:textCursorDrawable">@drawable/black_cursor</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="nCustomInputEditText">
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:background">@drawable/edit_text_bg_sel</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+        <item name="android:textCursorDrawable">@drawable/black_cursor</item>
+    </style>
+
+    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+
+    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">@font/nanum_square_round_b</item>
+    </style>
+
+    <style name="OutlineBtn">
+        <item name="android:background">@drawable/btn_outline</item>
+        <item name="android:textColor">@color/greyscale_9_111</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:fontFamily">@font/nanum_square_round</item>
+    </style>
+</resources>

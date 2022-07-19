@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="item"
+            type="ai.comake.petping.data.vo.PersonalLocationInformationInquiryLog"/>
+        <variable name="viewmodel"
+            type="ai.comake.petping.ui.etc.member_info.LocationHistoryViewModel"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_root"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp"
+        android:orientation="vertical"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="15dp"
+            android:textColor="@color/greyscale_9_111"
+            android:fontFamily="@font/nanum_square_round"
+            tools:text="김하나 님이 확인했어요"
+            app:boldText4="@{item.inquiredMemberName}"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location_history_record"
+                android:textColor="@color/greyscale_9_aaa"
+                android:textSize="13dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2020-09-15 23:54 (종료 시간)"
+                app:locationWalkEndTime="@{item.walkEndDatetime}"
+                android:textSize="13dp"
+                android:textColor="@color/greyscale_9_aaa"
+                android:fontFamily="@font/nanum_square_round"
+                app:layout_constraintStart_toEndOf="@+id/tvRecord"
+                app:layout_constraintTop_toTopOf="@+id/tvRecord"
+                app:layout_constraintBottom_toBottomOf="@+id/tvRecord"
+                android:layout_marginStart="12dp"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location_history_date"
+                android:textColor="@color/greyscale_9_aaa"
+                android:textSize="13dp"
+                android:fontFamily="@font/nanum_square_round_b"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2021-09-15 23:54"
+                android:text="@{item.createDatetime}"
+                android:textSize="13dp"
+                android:textColor="@color/greyscale_9_aaa"
+                android:fontFamily="@font/nanum_square_round"
+                app:layout_constraintStart_toEndOf="@+id/tvTime"
+                app:layout_constraintTop_toTopOf="@+id/tvTime"
+                app:layout_constraintBottom_toBottomOf="@+id/tvTime"
+                android:layout_marginStart="12dp"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

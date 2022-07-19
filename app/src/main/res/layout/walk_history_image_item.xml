@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="url"
+            type="String" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.history.walk.WalkHistoryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_view"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:imageUrl="@{url}"
+            app:onSafeClick="@{view -> viewModel.showPopupImage(url)}"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

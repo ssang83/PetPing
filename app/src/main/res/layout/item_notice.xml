@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="item"
+            type="ai.comake.petping.data.vo.NoticeResponseData"/>
+        <variable name="viewmodel"
+            type="ai.comake.petping.ui.etc.notice.NoticeViewModel"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_root"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@{item.fixingPin == true ? @color/primary_pink_alpah_8 : @color/greyscale_1_fff}"
+        app:onSafeClick="@{view -> viewmodel.goToNoticePage(item.url)}"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="5dp"
+            android:maxLines="2"
+            android:textSize="16dp"
+            android:textColor="@color/greyscale_9_111"
+            android:fontFamily="@font/nanum_square_round"
+            tools:text="[안내] iOS11 미만 버전의 앱 지원 중단 안내"
+            android:text="@{item.title}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="2020-04-28"
+            android:text="@{item.createDateTime}"
+            android:maxLength="10"
+            android:textSize="13dp"
+            android:layout_marginBottom="17dp"
+            android:textColor="@color/greyscale_9_aaa"
+            android:fontFamily="@font/nanum_square_round"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

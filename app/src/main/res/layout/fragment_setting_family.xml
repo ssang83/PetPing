@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.profile.SettingFamilyViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f8f8f8"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_border"
+                android:paddingBottom="50dp"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="9dp"
+                    android:background="#f8f8f8" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="32dp"
+                        android:text="@string/setting_family_title"
+                        android:textSize="22dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:textColor="@color/greyscale_9_111"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:text="@string/setting_family_desc"
+                        android:textSize="14dp"
+                        android:lineSpacingExtra="6dp"
+                        android:textColor="@color/greyscale_9_111"
+                        android:fontFamily="@font/nanum_square_round"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="60dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="@string/family_invited"
+                            android:textColor="@color/greyscale_9_111"
+                            android:textSize="16dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvFamilyInvited"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/family_invited_method"
+                            android:textSize="13dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:textColor="@color/greyscale_9_777"
+                            android:layout_marginEnd="4dp"
+                            app:layout_constraintEnd_toStartOf="@+id/ivInvited"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:onSafeClick="@{view -> viewModel.methodFamilyInvited()}"
+                            />
+
+                        <ImageView
+                            android:id="@+id/ivInvited"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_family_invited"
+                            android:adjustViewBounds="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/tvFamilyInvited"
+                            app:layout_constraintBottom_toBottomOf="@+id/tvFamilyInvited"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:background="@drawable/btn_outline_666"
+                        android:layout_marginTop="18dp"
+                        app:onSafeClick="@{view -> viewModel.copyToClipboard(viewModel.familyCode)}">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:textColor="@color/primary_pink"
+                                android:text="@{viewModel.familyCode}"
+                                tools:text="asdfadsfads"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:layout_marginStart="10dp"
+                                android:textColor="@color/greyscale_9_111"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:text="@string/family_code_copy"/>
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="60dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/family_register"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/nanum_square_round_b"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="6dp"
+                        android:layout_height="1dp"
+                        android:background="@color/greyscale_9_222"
+                        android:visibility="@{viewModel.memberInfos.size() == 0 ? View.GONE : View.VISIBLE, default = gone}"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="6dp"
+                        android:gravity="center_vertical"
+                        android:visibility="@{viewModel.memberInfos.size() == 0 ? View.VISIBLE : View.GONE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:text="@string/no_family_register"
+                        android:textSize="14dp"
+                        android:lineSpacingExtra="6dp"
+                        android:textColor="@color/greyscale_9_777"
+                        android:fontFamily="@font/nanum_square_round_font"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/familyList"
+                        android:visibility="@{viewModel.memberInfos.size() != 0 ? View.VISIBLE : View.GONE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_family_view"
+                        app:viewModel="@{viewModel}"
+                        app:familyItems="@{viewModel.memberInfos}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:scrollbars="none"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

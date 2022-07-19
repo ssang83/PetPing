@@ -1,0 +1,61 @@
+package ai.comake.petping
+
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
+import java.util.concurrent.atomic.AtomicBoolean
+
+/**
+ * android-petping-2
+ * Class: EventFlow
+ * Created by cliff on 2022/06/29.
+ *
+ * Description: Event가 발생했을때 이를 캐시하고 있다가 event의 consume 여부에 따라서
+ * 새로 구독하는 observer가 있을때 event를 전파할지 여부를 결정해주는 별도의 EventFlow
+ */
+interface EventFlow<out T> : Flow<T> {
+
+    companion object {
+
+        const val DEFAULT_REPLAY: Int = 3
+    }
+}
+
+interface MutableEventFlow<T> : EventFlow<T>, FlowCollector<T>
+
+@Suppress("FunctionName")
+fun <T> MutableEventFlow(
+    replay: Int = EventFlow.DEFAULT_REPLAY
+): MutableEventFlow<T> = EventFlowImpl(replay)
+
+fun <T> MutableEventFlow<T>.asEventFlow(): EventFlow<T> = ReadOnlyEventFlow(this)
+
+private class ReadOnlyEventFlow<T>(flow: EventFlow<T>) : EventFlow<T> by flow
+
+private class EventFlowImpl<T>(
+    replay: Int
+) : MutableEventFlow<T> {
+
+    private val flow: MutableSharedFlow<EventFlowSlot<T>> = MutableSharedFlow(replay = replay)
+
+    @InternalCoroutinesApi
+    override suspend fun collect(collector: FlowCollector<T>) = flow
+        .collect { slot ->
+            if (!slot.markConsumed()) {
+                collector.emit(slot.value)
+            }
+        }
+
+    override suspend fun emit(value: T) {
+        flow.emit(EventFlowSlot(value))
+    }
+}
+
+private class EventFlowSlot<T>(val value: T) {
+
+    private val consumed: AtomicBoolean = AtomicBoolean(false)
+
+    fun markConsumed(): Boolean = consumed.getAndSet(true)
+}

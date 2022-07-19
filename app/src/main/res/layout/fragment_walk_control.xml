@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.walk.WalkViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:background="@color/white">
+
+        <TextView
+            android:text="@{viewModel.walkTimeSeconds}"
+            android:id="@+id/walkTimeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/color_111111"
+            android:textSize="26dp"
+            app:layout_constraintEnd_toStartOf="@+id/verticalLine1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="00:00" />
+
+        <TextView
+            android:id="@+id/walkTimelabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:text="@string/walk_time"
+            android:textColor="@color/color_aaaaaa"
+            android:textSize="13dp"
+            app:layout_constraintEnd_toEndOf="@+id/walkTimeValue"
+            app:layout_constraintStart_toStartOf="@+id/walkTimeValue"
+            app:layout_constraintTop_toBottomOf="@+id/walkTimeValue" />
+
+        <View
+            android:id="@+id/verticalLine1"
+            android:layout_width="1dp"
+            android:layout_height="46dp"
+            android:background="@color/color_f0f0f0"
+            app:layout_constraintBottom_toBottomOf="@+id/walkDistanceLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/walkTimeValue" />
+
+        <TextView
+            android:id="@+id/walkDistanceValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/color_111111"
+            android:textSize="26dp"
+            android:text="@{viewModel.walkDistanceKm}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/verticalLine1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="0.01" />
+
+        <TextView
+            android:id="@+id/walkDistanceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/distanceKm"
+            android:textColor="@color/color_aaaaaa"
+            android:textSize="13dp"
+            app:layout_constraintEnd_toEndOf="@+id/walkDistanceValue"
+            app:layout_constraintStart_toStartOf="@+id/walkDistanceValue"
+            app:layout_constraintTop_toBottomOf="@+id/walkDistanceValue" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="94dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/walkPauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:foreground="@drawable/ic_walk_pause_oval"
+            android:src="@drawable/ic_walk_pause"
+            app:elevation="5dp"
+            app:fabCustomSize="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline1"
+            app:maxImageSize="20dp"
+            tools:ignore="MissingConstraints" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/walkMarkingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:backgroundTint="@android:color/white"
+            android:src="@drawable/ic_walk_marking"
+            app:borderWidth="0dp"
+            app:elevation="5dp"
+            app:fabCustomSize="70dp"
+            app:layout_constraintBottom_toBottomOf="@+id/walkPauseButton"
+            app:layout_constraintEnd_toStartOf="@+id/walkPauseButton"
+            app:layout_constraintTop_toBottomOf="@id/guideline1"
+            app:maxImageSize="35dp"
+            tools:ignore="MissingConstraints" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/walkPhotoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:backgroundTint="@android:color/white"
+            android:src="@drawable/ic_walk_photo"
+            app:borderWidth="0dp"
+            app:elevation="5dp"
+            app:fabCustomSize="70dp"
+            app:layout_constraintBottom_toBottomOf="@+id/walkPauseButton"
+            app:layout_constraintStart_toEndOf="@id/walkPauseButton"
+            app:layout_constraintTop_toBottomOf="@id/guideline1"
+            app:maxImageSize="35dp"
+            tools:ignore="MissingConstraints" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/walkPlayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@android:color/white"
+            android:foreground="@drawable/ic_walk_start_oval"
+            android:src="@drawable/ic_walk_play"
+            app:elevation="5dp"
+            app:fabCustomSize="80dp"
+            app:layout_constraintEnd_toStartOf="@+id/verticalLine1"
+            app:layout_constraintTop_toBottomOf="@id/guideline1"
+            app:maxImageSize="20dp"
+            tools:ignore="MissingConstraints" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/walkStopButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="@color/color_ff4857"
+            android:src="@drawable/ic_walk_stop"
+            app:borderWidth="0dp"
+            app:elevation="5dp"
+            app:fabCustomSize="80dp"
+            app:layout_constraintStart_toEndOf="@+id/verticalLine1"
+            app:layout_constraintTop_toBottomOf="@id/guideline1"
+            app:maxImageSize="20dp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/walkPhotoCount"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="-5dp"
+            android:layout_marginEnd="-5dp"
+            android:background="@drawable/shape_badge_red"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:outlineProvider="none"
+            android:textColor="@android:color/white"
+            android:textSize="13dp"
+            app:layout_constraintEnd_toEndOf="@+id/walkPhotoButton"
+            app:layout_constraintTop_toTopOf="@+id/walkPhotoButton"
+            tools:text="3" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/walkStartGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isPauseWalk? View.GONE : View.VISIBLE}"
+            app:constraint_referenced_ids="walkPauseButton,walkMarkingButton,walkPhotoButton, walkPhotoCount" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/walkPauseGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isPauseWalk? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="walkPlayButton,walkStopButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

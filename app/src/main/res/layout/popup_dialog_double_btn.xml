@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/greyscale_g_dimd"
+    >
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="40dp"
+        android:background="@android:color/white"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+            <View
+                android:layout_width="1dp"
+                android:layout_height="26dp"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="20dp"
+                android:textSize="17sp"
+                android:textColor="@color/greyscale_9_111"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:text="제 목"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="10dp"/>
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center"
+                android:lineSpacingExtra="8dp"
+                android:textSize="14sp"
+                android:textColor="@color/greyscale_9_777"
+                android:fontFamily="@font/nanum_square_round"
+                android:text="내용 설명 내용 설명내용 설명 내용설명내용 설명 내용 설명내용 설명 내용설명내용 설명 내용 설명내용 설명 내용설명내용 설명 내용 설명내용 설명 내용설명"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="26dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/greyscale_g_dimd"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:text="아니오"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="16sp" />
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="@color/greyscale_g_dimd"/>
+                <Button
+                    android:id="@+id/btn_ok"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:text="네"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</FrameLayout>

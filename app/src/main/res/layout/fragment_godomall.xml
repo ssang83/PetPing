@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="viewModel"
+            type="ai.comake.petping.ui.godomall.GodoMallViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerLayer"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/greyscale_9_111"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/pingAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="112,000"
+                android:text="@{viewModel.pingAmount}"
+                android:textSize="20dp"
+                android:textColor="@color/greyscale_1_fff"
+                android:fontFamily="@font/nanum_square_round_e_b"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ping"
+                android:textSize="12dp"
+                android:textColor="@color/greyscale_9_aaa"
+                android:fontFamily="@font/nanum_square_round"
+                android:layout_marginStart="4dp"
+                app:layout_constraintStart_toEndOf="@+id/pingAmount"
+                app:layout_constraintBottom_toBottomOf="@+id/pingAmount"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/refresh"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_ping_refresh_normal"
+                android:adjustViewBounds="true"
+                android:layout_marginStart="6dp"
+                app:layout_constraintStart_toEndOf="@+id/tvPing"
+                app:layout_constraintTop_toTopOf="@+id/pingAmount"
+                app:layout_constraintBottom_toBottomOf="@+id/pingAmount"
+                app:animation="@{viewModel.refreshAnimation}"
+                app:onSafeClick="@{view -> viewModel.getPingPoint(false)}"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnClose"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:src="@drawable/ic_close_white"
+                android:adjustViewBounds="true"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ai.comake.petping.ui.common.webview.GodoMallWebView
+            android:id="@+id/webview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:webViewListener="@{viewModel.webViewListener}"
+            app:webChromeClient="@{viewModel}"
+            app:layout_constraintTop_toBottomOf="@+id/headerLayer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

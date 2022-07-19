@@ -1,0 +1,228 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.walk.WalkViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/walkGuideHeader"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:background="@color/white"
+        android:clickable="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/walk_guide_ready"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.audioGuideStatus.playing ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone">
+
+                <TextView
+                    android:id="@+id/audio_guide_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/nanum_square_round_font"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:text="오늘은 색다른 산책 어때요?"
+                    android:textColor="#111111"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/audio_guide_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_b_font"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:padding="20dp"
+                    android:text="오디오 가이드"
+                    android:textColor="#FF4857"
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_14000000" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/walk_guide_progress"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:visibility="@{viewModel.audioGuideStatus.playing ? View.VISIBLE : View.GONE}"
+                tools:visibility="visible">
+
+                <com.gauravbhola.ripplepulsebackground.RipplePulseLayout
+                    android:id="@+id/layout_ripplepulse"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:clipChildren="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    ripple:duration="1000"
+                    ripple:endRadius="20dp"
+                    ripple:rippleColor="#CCFF4857"
+                    ripple:rippleType="fill"
+                    ripple:startRadius="5dp"
+                    ripple:strokeWidth="2dp">
+
+                </com.gauravbhola.ripplepulsebackground.RipplePulseLayout>
+
+                <ImageView
+                    android:id="@+id/speakerRoundBg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/circle_border_gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/speakerImage"
+                    android:layout_width="20.8dp"
+                    android:layout_height="20.8dp"
+                    android:background="@drawable/walk_guide_trainer"
+                    app:imageUrl="@{viewModel.audioGuideStatus.speakerImageUrl}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/speakerRoundBg"
+                    app:layout_constraintStart_toStartOf="@+id/speakerRoundBg"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/audio_guide_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nanum_square_round_b_font"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:text="@{viewModel.audioGuideStatus.titleName}"
+                    android:textColor="@color/greyscale_9_111"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/audioRunningTime"
+                    app:layout_constraintStart_toEndOf="@+id/speakerRoundBg"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="댄싱 위드 마이" />
+
+                <TextView
+                    android:id="@+id/audio_guide_title_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:fontFamily="@font/nanum_square_round_font"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:text="오디오 가이드가 종료되었어요"
+                    android:textColor="#444444"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/speakerRoundBg"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/audioRunningTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/nanum_square_round_b_font"
+                    android:includeFontPadding="false"
+                    android:text="@{viewModel.audioGuideStatus.progressTime}"
+                    android:textColor="#777777"
+                    android:textSize="11dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/audioTimeDivider"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="00:00" />
+
+                <View
+                    android:id="@+id/audioTimeDivider"
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@color/greyscale_4_ddd"
+                    android:fontFamily="@font/nanum_square_round_font"
+                    android:textColor="@color/greyscale_9_aaa"
+                    app:layout_constraintBottom_toBottomOf="@+id/audioTotalTime"
+                    app:layout_constraintEnd_toStartOf="@+id/audioTotalTime"
+                    app:layout_constraintTop_toTopOf="@+id/audioTotalTime" />
+
+                <TextView
+                    android:id="@+id/audioTotalTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nanum_square_round_font"
+                    android:includeFontPadding="false"
+                    android:text="@{viewModel.audioGuideStatus.totalTime}"
+                    android:textColor="@color/greyscale_9_aaa"
+                    android:textSize="11dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="00:30" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="audioTimeDivider, audioRunningTime" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/progress_bottom_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_14000000" />
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
