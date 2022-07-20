@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="ai.comake.petping.ui.home.dashboard.DashboardViewModel" />
@@ -14,85 +15,76 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootView"
-        android:paddingBottom="56dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_ffffff"
-        >
+        android:paddingBottom="56dp">
 
         <include
             android:id="@+id/noProfileLayer"
             layout="@layout/layout_no_profile"
-            bind:isVisible="@{viewModel.profileList.size() == 0}"
-            />
+            bind:isVisible="@{viewModel.profileList.size() == 0}" />
 
         <include
             android:id="@+id/noLoginLayer"
             layout="@layout/layout_no_login"
-            bind:isVisible="@{viewModel.loginIsVisible}"
-            />
+            bind:isVisible="@{viewModel.loginIsVisible}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/petImage"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
-                app:circleImageUrl="@{viewModel.petImage}"
-                tools:src="@mipmap/ic_launcher_round"
-                android:adjustViewBounds="true"
                 android:layout_marginStart="20dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:adjustViewBounds="true"
+                app:circleImageUrl="@{viewModel.petImage}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@mipmap/ic_launcher_round" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="34dp"
                 android:layout_height="34dp"
-                android:src="@drawable/ic_profile"
                 android:layout_marginStart="8dp"
+                android:src="@drawable/ic_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/petImage"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:onSafeClick="@{view -> viewModel.showProfilePopup()}"
-                />
+                app:onSafeClick="@{view -> viewModel.showProfilePopup()}" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/etc"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
-                android:src="@drawable/ic_mypage"
-                android:adjustViewBounds="true"
                 android:layout_marginEnd="20dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_mypage"
+                android:visibility="@{viewModel.loginIsVisible == true ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="@{viewModel.loginIsVisible == true ? View.GONE : View.VISIBLE}"
-                app:onSafeClick="@{view -> viewModel.goToMyPage()}"
-                />
+                app:onSafeClick="@{view -> viewModel.goToMyPage()}" />
 
             <View
                 android:layout_width="4dp"
                 android:layout_height="4dp"
                 android:background="@drawable/orange_circle"
-                app:layout_constraintEnd_toEndOf="@+id/etc"
-                app:layout_constraintTop_toTopOf="@+id/etc"
                 android:visibility="@{viewModel.isBadge == true ? View.VISIBLE : View.GONE, default = visible}"
-                />
+                app:layout_constraintEnd_toEndOf="@+id/etc"
+                app:layout_constraintTop_toTopOf="@+id/etc" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/color_e4e4e4"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:visibility="@{viewModel.isScroll == true ? View.VISIBLE : View.GONE, default = gone}"
-                />
+                app:layout_constraintBottom_toBottomOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
@@ -100,18 +92,16 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:overScrollMode="never"
-            app:scrollChangeListener="@{viewModel.scrollChangeListener}"
-            app:layout_constraintTop_toBottomOf="@+id/header"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:scrollChangeListener="@{viewModel.scrollChangeListener}">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/title"
@@ -124,14 +114,13 @@
                     android:lineHeight="40sp"
                     android:text="@{viewModel.petMessage}"
                     android:textColor="@color/greyscale_9_111"
-                    android:textSize="30dp"
-                    />
+                    android:textSize="30dp" />
 
                 <RelativeLayout
                     android:id="@+id/web_view_wrapper"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="21dp"
-                    android:layout_height="320dp">
+                    android:layout_height="320dp"
+                    android:layout_marginTop="21dp">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -192,50 +181,55 @@
                         android:visibility="invisible" />
                 </RelativeLayout>
 
+                <include
+                    bind:viewModel="@{viewModel}"
+                    android:id="@+id/fragment_dashboard_walk_report"
+                    layout="@layout/fragment_dashboard_walk_report"
+                    android:layout_width="match_parent"
+                    android:layout_height="144dp">
+
+                </include>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="30dp"
-                    android:paddingEnd="20dp"
                     android:layout_marginTop="30dp"
-                    >
+                    android:paddingStart="30dp"
+                    android:paddingEnd="20dp">
 
                     <TextView
                         android:id="@+id/tvPingTip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ping_tip"
-                        android:textSize="18dp"
-                        android:textColor="@color/greyscale_9_111"
                         android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@string/ping_tip"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="18dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ping_tip_all"
-                        android:textSize="13dp"
-                        android:textColor="@color/greyscale_8_444"
+                        android:layout_marginEnd="6dp"
                         android:fontFamily="@font/nanum_square_round"
-                        app:layout_constraintTop_toTopOf="@+id/tvPingTip"
+                        android:text="@string/ping_tip_all"
+                        android:textColor="@color/greyscale_8_444"
+                        android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="@+id/tvPingTip"
                         app:layout_constraintEnd_toStartOf="@+id/ivArrow"
-                        android:layout_marginEnd="6dp"
-                        app:onSafeClick="@{view -> viewModel.goToPinTipAll()}"
-                        />
+                        app:layout_constraintTop_toTopOf="@+id/tvPingTip"
+                        app:onSafeClick="@{view -> viewModel.goToPinTipAll()}" />
 
                     <ImageView
                         android:id="@+id/ivArrow"
                         android:layout_width="4dp"
                         android:layout_height="8dp"
-                        android:src="@drawable/ic_right_arrow"
                         android:adjustViewBounds="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tvPingTip"
+                        android:src="@drawable/ic_right_arrow"
                         app:layout_constraintBottom_toBottomOf="@+id/tvPingTip"
-                        />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tvPingTip" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -243,9 +237,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    app:viewModel="@{viewModel}"
                     app:tipItem="@{viewModel.tipList}"
-                    />
+                    app:viewModel="@{viewModel}" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

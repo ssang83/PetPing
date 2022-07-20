@@ -43,6 +43,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -565,5 +567,6 @@ class LocationUpdatesService() : LifecycleService() {
         val _cameraPosition = MutableStateFlow(LatLng(37.566573, 126.978179))
 
         val _walkTimeSeconds = MutableStateFlow("00:00")
+        var serviceMapFragment : MapFragment? = null
     }
 }

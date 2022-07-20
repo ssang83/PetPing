@@ -6,6 +6,7 @@ import ai.comake.petping.data.repository.AppDataRepository
 import ai.comake.petping.data.repository.PetRepository
 import ai.comake.petping.data.vo.*
 import ai.comake.petping.util.Coroutines
+import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.encrypt
 import android.app.Application
 import android.content.Context
@@ -53,7 +54,7 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
     private val _petMessage = MutableLiveData<String>()
     val petMessage:LiveData<String> get() = _petMessage
 
-    private val _walkDayCount = MutableLiveData<Int>()
+    private val _walkDayCount = MutableLiveData(0)
     val walkDayCount:LiveData<Int> get() = _walkDayCount
 
     private val _walkTotalTime = MutableLiveData<String>()
@@ -80,8 +81,17 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
     private val _petId = MutableLiveData<Int>()
     val petId:LiveData<Int> get() = _petId
 
-    private val _isWalkablePet = MutableLiveData<Boolean>().apply { value = true }
+    private val _isWalkablePet = MutableLiveData(false)
     val isWalkablePet: LiveData<Boolean> get() = _isWalkablePet
+
+    private val _invitationWalk = MutableLiveData(false)
+    val invitationWalk: LiveData<Boolean> get() = _invitationWalk
+
+    private val _walkablePetSetting = MutableLiveData(false)
+    val walkablePetSetting: LiveData<Boolean> get() = _walkablePetSetting
+
+    private val _walkRecommend = MutableLiveData(false)
+    val walkRecommend: LiveData<Boolean> get() = _walkRecommend
 
     private val _tipList = MutableLiveData<List<Tip>>()
     val tipList:LiveData<List<Tip>> get() = _tipList
@@ -369,9 +379,17 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
         }
 
         _isWalkablePet.value = dashboardData.pet.isPossibleWalk
+        _walkablePetSetting.value = !dashboardData.pet.isPossibleWalk
+        _invitationWalk.value = dashboardData.pet.isPossibleWalk && dashboardData.walk.dayCount.toInt() == 0
+
         _petName.value = dashboardData.pet.name
         _petId.value = dashboardData.pet.id
         _petImage.value = dashboardData.pet.profileImageURL
+
+        LogUtil.log("TAG", "isWalkablePet: ${isWalkablePet.value}")
+        LogUtil.log("TAG", "walkDayCount: ${walkDayCount.value}")
+        LogUtil.log("TAG", "walkTotalTime: ${walkTotalTime.value}")
+        LogUtil.log("TAG", "walkTotalDistance: ${walkTotalDistance.value}")
 
         val skyState = dashboardData.weather.skyState ?: 3
         _updateAnimation.emit(DashboardAnimationInfo(skyState, dashboardData))

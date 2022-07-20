@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="viewModel"
+            type="ai.comake.petping.ui.home.dashboard.DashboardViewModel"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:outlineSpotShadowColor="#4A000000"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/arrow_right" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@{viewModel.walkStatsType}"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="18dp"
+                        app:petWalkTitle="@{viewModel.walkDayCount}" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="23dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:gravity="center"
+                            android:text="@{viewModel.walkTotalTime}"
+                            android:textColor="@color/greyscale_9_111"
+                            android:textSize="26dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:gravity="center"
+                            android:text="시간(min)"
+                            android:textColor="@color/greyscale_9_aaa"
+                            android:textSize="13dp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/greyscale_3_f_0" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:gravity="center"
+                            android:text="@{viewModel.walkTotalDistance}"
+                            android:textColor="@color/greyscale_9_111"
+                            android:textSize="26dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:gravity="center"
+                            android:text="거리(km)"
+                            android:textColor="@color/greyscale_9_aaa"
+                            android:textSize="13dp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/invitationWalk"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.invitationWalk ? View.VISIBLE : View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:lineSpacingExtra="8dp"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="18sp"
+                    app:petWalkTitle="@{viewModel.petName}" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="23dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:text="건강을 위해 오늘은 꼭 산책을 해보세요."
+                    android:textColor="@color/greyscale_9_777"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/walkablePetSetting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.walkablePetSetting ? View.VISIBLE : View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:lineSpacingExtra="8dp"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="18dp"
+                    app:petWalkNotPossibleTitle="@{viewModel.petName}" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="23dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:text="산책이 가능할 때 프로필에서 설정해 주세요."
+                    android:textColor="@color/greyscale_9_777"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

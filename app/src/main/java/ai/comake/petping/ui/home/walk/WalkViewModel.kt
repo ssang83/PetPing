@@ -189,8 +189,8 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
         }
     }
 
-    fun asyncPOIs() {
-        LogUtil.log("TAG", "asyncPOIs")
+    fun asyncAllPOIs() {
+        LogUtil.log("TAG", "")
         viewModelScope.launch() {
             var markingPoiList = emptyList<MarkingPoi>()
             var placePoiList = emptyList<PlacePoi.Places>()

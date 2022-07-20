@@ -1,6 +1,8 @@
 package ai.comake.petping.ui.history
 
+import ai.comake.petping.R
 import ai.comake.petping.databinding.FragmentWalkRecordBinding
+import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.home.walk.adapter.WalkRecordPictureAdapter
 import ai.comake.petping.util.*
@@ -11,9 +13,11 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -31,6 +35,12 @@ class WalkRecordFragment :
     private val viewModel: WalkRecordViewModel by viewModels()
     private var walkId = 0
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            LogUtil.log("TAG", "handleOnBackPressed : ")
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
@@ -39,6 +49,7 @@ class WalkRecordFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         LogUtil.log("TAG", "")
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
@@ -107,7 +118,11 @@ class WalkRecordFragment :
         viewModel.markingCount.value = walkFinish?.walk?.markingCount.toString() + "개"
 
         val markingDetail = walkFinish?.pets?.joinToString { pet ->
-            "${pet.name} ${pet.markingCount}개"
+            if(pet.markingCount > 0) {
+                "${pet.name} ${pet.markingCount}개"
+            } else {
+                ""
+            }
         }
 
         LogUtil.log("TAG", "markingDetail: $markingDetail")
@@ -130,7 +145,10 @@ class WalkRecordFragment :
     }
 
     private fun setUpObserver() {
-
+        viewModel.isSucceedSave.observeEvent(viewLifecycleOwner) {
+            requireActivity().findNavController(R.id.nav_main)
+                .navigate(R.id.action_walkrecordattach_to_home)
+        }
     }
 
     private fun setUpClickListener() {

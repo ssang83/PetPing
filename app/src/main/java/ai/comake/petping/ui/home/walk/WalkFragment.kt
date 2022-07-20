@@ -24,7 +24,6 @@ import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.P
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._audioGuideStatus
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraPosition
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraZoom
-import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isStartWalk
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._lastLocation
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._myMarkingList
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._picturePaths
@@ -47,6 +46,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.ActivityCompat
@@ -115,12 +115,13 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        LogUtil.log("TAG", "")
         binding = FragmentWalkBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        LogUtil.log("TAG", "_isStartWalk ${_isStartWalk.value}")
+        LogUtil.log("TAG", "")
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -160,11 +161,11 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                             "Failed to get location."
                         )
                     }
-                    asyncPOIs()
+                    asyncAllPOIs()
                     setUpCameraPosition()
                 }
         } catch (unlikely: SecurityException) {
-            asyncPOIs()
+            asyncAllPOIs()
             setUpCameraPosition()
             LogUtil.log(
                 TAG,
@@ -281,7 +282,12 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         LogUtil.log("TAG", "type: $type")
 
         val myMarkingPoi =
-            MyMarkingPoi(petId, type, _lastLocation.latitude.encrypt(), _lastLocation.longitude.encrypt())
+            MyMarkingPoi(
+                petId,
+                type,
+                _lastLocation.latitude.encrypt(),
+                _lastLocation.longitude.encrypt()
+            )
 
         viewModel.asyncRegisterMarking(localWalkData.walkId, myMarkingPoi)
 
@@ -457,9 +463,9 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         setUpNaverMapEvent()
     }
 
-    private fun asyncPOIs() {
+    private fun asyncAllPOIs() {
         unSelectPreviousPOI()
-        viewModel.asyncPOIs()
+        viewModel.asyncAllPOIs()
     }
 
     private fun setUpNaverMapUi() {
@@ -487,9 +493,9 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             _cameraZoom.value = mNaverMap.cameraPosition.zoom
             _cameraPosition.value = mNaverMap.cameraPosition.target
 
-//            if (mCameraChangeReason == REASON_GESTURE) {
-            asyncPOIs()
-//            }
+            if (mCameraChangeReason == REASON_GESTURE) {
+                asyncAllPOIs()
+            }
         }
     }
 

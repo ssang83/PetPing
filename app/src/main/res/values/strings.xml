@@ -563,4 +563,30 @@
     <string name="mission_pet_guide_next"><u>다음에 할래요</u></string>
     <string name="mission_pet_guide_go_setting">지금 설정하기</string>
 
+    <string name="dashboard_walk_info_title_walk_s">
+        <![CDATA[
+            <span>
+            에 <font color="#ff4857">%1$d일</font> 산책했어요
+            <span>
+        ]]>
+    </string>
+
+    <string name="dashboard_walk_info_title_not_walk_s">
+        <![CDATA[
+            <span>
+            최근 <font color="#ff4857">%1$s</font>의<br>
+            산책 기록이 없어요
+            <span>
+        ]]>
+    </string>
+
+    <string name="dashboard_walk_info_title_not_possible_walk_s">
+        <![CDATA[
+            <span>
+            <font color="#ff4857">%1$s</font>의 사정으로<br>
+            산책을 할 수 없어요
+            <span>
+        ]]>
+    </string>
+
 </resources>

@@ -46,8 +46,11 @@ class BottomNavigator(
                     ClassLoader.getSystemClassLoader(),
                     className
                 )
+
+                LogUtil.log("TAG2", "fragment: $fragment")
                 add(fragmentContainerId, fragment, tag)
             } else {
+                LogUtil.log("TAG2", "current: $current")
                 show(current)
             }
 

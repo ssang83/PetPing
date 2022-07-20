@@ -70,12 +70,46 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 
-
 object BindingUtils {
+    @JvmStatic
+    @BindingAdapter("petWalkTitle")
+    fun setPetWalkTitle(textView: TextView, count: Int) {
+        if (count > 0) {
+            textView.text = Html.fromHtml(
+                String.format(
+                    textView.context.getString(R.string.dashboard_walk_info_title_walk_s),
+                    count
+                )
+            )
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("petWalkTitle")
+    fun setPetWalkTitle(textView: TextView, name: String?) {
+        textView.text = Html.fromHtml(
+            String.format(
+                textView.context.getString(R.string.dashboard_walk_info_title_not_walk_s),
+                name
+            )
+        )
+    }
+
+    @JvmStatic
+    @BindingAdapter("petWalkNotPossibleTitle")
+    fun setPetWalkNotPossibleTitle(textView: TextView, name: String?) {
+        textView.text = Html.fromHtml(
+            String.format(
+                textView.context.getString(R.string.dashboard_walk_info_title_not_possible_walk_s),
+                name
+            )
+        )
+    }
+
     @JvmStatic
     @BindingAdapter("imageUrl")
     fun setImageUrl(imageView: ImageView, url: String?) {
-        LogUtil.log("TAG","url $url")
+        LogUtil.log("TAG", "url $url")
         if (!url.isNullOrEmpty()) {
             Glide.with(imageView.context).load(url).centerCrop().into(imageView)
         }
@@ -118,7 +152,8 @@ object BindingUtils {
         items?.let {
             recyclerView.apply {
                 adapter = ShopAdapter(viewModel).apply {
-                    stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                    stateRestorationPolicy =
+                        RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                     submitList(it)
                 }
             }
@@ -1123,7 +1158,7 @@ object BindingUtils {
 
     @JvmStatic
     @BindingAdapter("familyName")
-    fun setFamilyName(view: TextView, item:MemberInfoFamilyReg) {
+    fun setFamilyName(view: TextView, item: MemberInfoFamilyReg) {
         view.apply {
             text = item.memberName
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15f)
@@ -1188,7 +1223,8 @@ object BindingUtils {
                 }
 
                 adapter = TipAdapter(recyclerView.context, viewModel).apply {
-                    stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                    stateRestorationPolicy =
+                        RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                     submitList(it)
                 }
             }
@@ -1236,7 +1272,12 @@ object BindingUtils {
     @BindingAdapter("boldDescText1")
     fun setBoldDescText1(view: TextView, desc: String) {
         val ssb = SpannableStringBuilder(desc).apply {
-            setSpan(StyleSpan(Typeface.BOLD), 7, desc.length - 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            setSpan(
+                StyleSpan(Typeface.BOLD),
+                7,
+                desc.length - 3,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
 
         view.setText(ssb)
