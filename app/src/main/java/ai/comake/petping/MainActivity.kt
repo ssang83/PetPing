@@ -1,9 +1,12 @@
 package ai.comake.petping
 
+import ai.comake.petping.AppConstants.AUTH_KEY
+import ai.comake.petping.AppConstants.ID
 import ai.comake.petping.data.vo.LogoutEvent
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.data.vo.NetworkErrorEvent
 import ai.comake.petping.databinding.ActivityMainBinding
+import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.LogUtil
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +16,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -22,7 +28,7 @@ import org.greenrobot.eventbus.ThreadMode
 class MainActivity : AppCompatActivity() {
     private val mainShareViewModel: MainShareViewModel by viewModels()
     private var destinationScreen = "mainScreen"
-    lateinit var binding : ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +37,22 @@ class MainActivity : AppCompatActivity() {
         setUpNavigation(window.decorView)
         setUpObserver()
         LogUtil.log("TAG", "")
+
+        FirebaseApp.initializeApp(this)
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                LogUtil.log("TAG", "FCM token: $task.exception")
+//                return@OnCompleteListener
+//            }
+//            val token = task.result
+//            LogUtil.log("TAG" ,"FCM token $token")
+//            if (token != null) {
+//                AppConstants.FCM_TOKEN = token
+////                if (AppConstants.AUTH_KEY.isNotEmpty()) {
+////                    viewModel.registerFCMToken()
+////                }
+//            }
+//        })
     }
 
     private fun setUpNavigation(view: View) {
@@ -124,14 +146,27 @@ class MainActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: NetworkErrorEvent) {
-        LogUtil.log("TAG","")
+        LogUtil.log("TAG", "")
         Toast.makeText(this, "네트워크 에러", Toast.LENGTH_SHORT).show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: LogoutEvent) {
-        LogUtil.log("TAG","LogoutEvent")
-        Toast.makeText(this, "로그아웃 ${event.code}", Toast.LENGTH_SHORT).show()
+        LogUtil.log("TAG", "LogoutEvent")
+        SingleBtnDialog(
+            this,
+            getString(R.string.logout_title),
+            getString(R.string.auto_logout_desc)
+        ) {
+            AUTH_KEY = ""
+            ID = ""
+            findNavController(R.id.nav_main).navigate(R.id.loginGraph)
+        }.show()
+
+//        if (event.code == 401) { // 자동 로그아웃
+
+//        }
+
 //        if (event.code == 401) { // 자동 로그아웃
 //            SingleBtnDialog(
 //                this,

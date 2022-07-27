@@ -23,11 +23,7 @@ object AppConstants {
     var SHOP_UNIQUE_ID = ""
     var SHOP_EMP_NO = -1
 
-    var LOGIN_HEADER_IS_VISIBLE = true
-    var PROFILE_HEADER_IS_VISIBLE = true
-
     var closeMissionAlert = false
-    var closeWelcomeKitAlert = false
     var closeMissionPetAlert = false
 
     //기본 위도 경도 좌표 (시청)
@@ -43,9 +39,6 @@ object AppConstants {
     val clientSecret = "89mQW9Vkgz"
     val clientName = "펫핑"
 
-    val SYSTEM_CHECKING_INFO = "system_checking_info"
-    val SYSTEM_CHECKING_INFO_DEV = "system_checking_info_dev"
-
     //펫핑 기본 도메인
     val PETPING_URL = BuildConfig.PETPING_DOMAIN
 
@@ -54,6 +47,23 @@ object AppConstants {
 
     // 더블클릭 앱 종료 제한시간
     val DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT = 2000L
+
+    var SYSTEM_CHECKING_INFO = "system_checking_info"
+    var SYSTEM_CHECKING_INFO_DEV = "system_checking_info_dev"
+
+    val PREF_KEY_ACCESS_TOKEN = "ACCESS_TOKEN"
+    val PREF_KEY_USER_ID = "USER_ID"
+    val PREF_KEY_CURRENT_USER_NAME = "USER_NAME"
+    val PREF_KEY_CURRENT_USER_EMAIL = "USER_EMAIL"
+    val PREF_KEY_LOGIN_TYPE = "LOGIN_TYPE"
+    val PREF_KEY_TOPIC_LIST = "TOPIC_LIST"
+    val PREF_KEY_INITIAL = "TOPIC_INTIIAL"
+    val PREF_KEY_DO_NOT_SHOW = "DO_NOT_SHOW_POP_UP"
+    val PREF_KEY_CLOSE = "CLOSE_POP_UP"
+    val PREF_KEY_LAST_DATE = "LAST_DATE"
+    val PREF_KEY_UUID_KEY = "UUID_KEY"
+    val PREF_KEY_AUTHORITY_POP_UP = "AUTHORITY_POP_UP"
+    val PREF_KEY_GUIDE_POP_UP_SHOW = "GUIDE_POP_UP_SHOW"
 
     @SuppressLint("HardwareIds")
     fun getAndroidId(context: Context): String {

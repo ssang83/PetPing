@@ -18,6 +18,19 @@
             app:popUpTo="@id/mainScreen"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_main_to_login"
+            app:destination="@id/loginGraph"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/mainScreen"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_home_to_walkrecordattach"
+            app:destination="@id/walkRecordAttachScreen"
+            app:popUpTo="@id/mainScreen"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
     <fragment
@@ -340,8 +353,11 @@
             android:id="@+id/action_memberInfoFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment" />
         <action
-            android:id="@+id/action_memberInfoFragment_to_homeScreen"
-            app:destination="@id/homeScreen" />
+            app:launchSingleTop="true"
+            app:popUpTo="@id/loginGraph"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_memberInfoFragment_to_loginScreen"
+            app:destination="@id/loginGraph" />
         <action
             android:id="@+id/action_memberInfoFragment_to_changePhoneNumberFragment"
             app:destination="@id/changePhoneNumberFragment" />

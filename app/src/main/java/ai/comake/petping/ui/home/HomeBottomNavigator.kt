@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.core.content.res.use
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -16,14 +15,13 @@ import androidx.fragment.app.commit
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
-import java.util.*
 
 @Navigator.Name("bottom")
-class BottomNavigator(
+class HomeBottomNavigator(
     private val onBackPressedCallback: OnBackPressedCallback,
     @IdRes private val fragmentContainerId: Int,
     private val fragmentManager: FragmentManager
-) : Navigator<BottomNavigator.Destination>() {
+) : Navigator<HomeBottomNavigator.Destination>() {
 
     override fun createDestination(): Destination = Destination(this)
 
@@ -47,10 +45,8 @@ class BottomNavigator(
                     className
                 )
 
-                LogUtil.log("TAG2", "fragment: $fragment")
                 add(fragmentContainerId, fragment, tag)
             } else {
-                LogUtil.log("TAG2", "current: $current")
                 show(current)
             }
 
@@ -61,13 +57,12 @@ class BottomNavigator(
     }
 
     override fun popBackStack(): Boolean {
-        LogUtil.log("TAG", "onBackPressed()")
         onBackPressedCallback.handleOnBackPressed()
         return true
     }
 
     private fun FragmentTransaction.hideOthers(tag: String) {
-        val others = MainTab.otherTab(exceptTag = tag)
+        val others = HomeTab.otherTab(exceptTag = tag)
             .mapNotNull {
                 fragmentManager.findFragmentByTag(it.tag)
             }
@@ -77,7 +72,7 @@ class BottomNavigator(
     }
 
     @NavDestination.ClassType(Fragment::class)
-    class Destination(navigator: BottomNavigator) : NavDestination(navigator) {
+    class Destination(navigator: HomeBottomNavigator) : NavDestination(navigator) {
         internal var className: String? = null
             private set
 

@@ -6,10 +6,7 @@ import ai.comake.petping.databinding.FragmentInsuranceBinding
 import ai.comake.petping.databinding.FragmentRewardBinding
 import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.base.BaseFragment
-import ai.comake.petping.util.LogUtil
-import ai.comake.petping.util.setSafeOnClickListener
-import ai.comake.petping.util.updateBlackStatusBar
-import ai.comake.petping.util.updateWhiteStatusBar
+import ai.comake.petping.util.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +28,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class InsuranceFragment : Fragment() {
     private lateinit var binding: FragmentInsuranceBinding
     private val viewModel by viewModels<InsuranceViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        updateLightStatusBar(requireActivity().window)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,25 +56,6 @@ class InsuranceFragment : Fragment() {
             moveToInsurance.observeEvent(viewLifecycleOwner) {
                 //TODO : 펫보험 바로가기
             }
-        }
-
-        binding.noLoginLayer.login.setSafeOnClickListener {
-            requireActivity().findNavController(R.id.nav_main)
-                .navigate(R.id.action_homeScreen_to_loginGraph)
-        }
-
-        binding.noProfileLayer.makeProfile.setSafeOnClickListener {
-            Toast.makeText(requireContext(), "반려견 프로필 만들기로 이동", Toast.LENGTH_SHORT).show()
-        }
-
-        updateStatusBar()
-    }
-
-    private fun updateStatusBar() {
-        if (AppConstants.PROFILE_HEADER_IS_VISIBLE || AppConstants.LOGIN_HEADER_IS_VISIBLE) {
-            updateBlackStatusBar(requireActivity().window)
-        } else {
-            updateWhiteStatusBar(requireActivity().window)
         }
     }
 

@@ -11,10 +11,7 @@ import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.ui.history.reward.FROM_SHOP
 import ai.comake.petping.ui.home.HomeFragmentDirections
-import ai.comake.petping.util.LogUtil
-import ai.comake.petping.util.setSafeOnClickListener
-import ai.comake.petping.util.updateBlackStatusBar
-import ai.comake.petping.util.updateWhiteStatusBar
+import ai.comake.petping.util.*
 import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,6 +33,7 @@ class ShopFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        updateLightStatusBar(requireActivity().window)
         viewModel.loadData()
     }
 
@@ -123,26 +121,6 @@ class ShopFragment : Fragment(){
                     )
                 }
             }
-        }
-
-        binding.noLoginLayer.login.setSafeOnClickListener {
-            requireActivity().findNavController(R.id.nav_main)
-                .navigate(R.id.action_homeScreen_to_loginGraph)
-        }
-
-        binding.noProfileLayer.makeProfile.setSafeOnClickListener {
-            requireActivity().findNavController(R.id.nav_main)
-                .navigate(HomeFragmentDirections.actionHomeScreenToProfileGraph(false))
-        }
-
-        updateStatusBar()
-    }
-
-    private fun updateStatusBar() {
-        if (AppConstants.PROFILE_HEADER_IS_VISIBLE || AppConstants.LOGIN_HEADER_IS_VISIBLE) {
-            updateBlackStatusBar(requireActivity().window)
-        } else {
-            updateWhiteStatusBar(requireActivity().window)
         }
     }
 

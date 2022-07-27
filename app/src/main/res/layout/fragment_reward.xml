@@ -194,16 +194,6 @@
                 </LinearLayout>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:id="@+id/noProfileLayer"
-            layout="@layout/layout_no_profile"
-            bind:isVisible="@{viewModel.profileIsVisible}" />
-
-        <include
-            android:id="@+id/noLoginLayer"
-            layout="@layout/layout_no_login"
-            bind:isVisible="@{viewModel.loginIsVisible}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

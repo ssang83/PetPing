@@ -6,7 +6,7 @@ import ai.comake.petping.ui.home.reward.RewardFragment
 import ai.comake.petping.ui.home.shop.ShopFragment
 import ai.comake.petping.ui.home.walk.WalkFragment
 
-enum class MainTab(
+enum class HomeTab(
     val itemId: Int,
     val tag: String
 ) {
@@ -17,12 +17,12 @@ enum class MainTab(
     INSURANCEFRAGMENT(R.id.insuranceScreen, InsuranceFragment.TAG);
 
     companion object {
-        fun from(itemId: Int): MainTab? = values().firstOrNull { it.itemId == itemId }
+        fun from(itemId: Int): HomeTab? = values().firstOrNull { it.itemId == itemId }
     }
 }
 
-fun MainTab.Companion.otherTab(exceptTag: String): Sequence<MainTab> =
-    MainTab.values()
+fun HomeTab.Companion.otherTab(exceptTag: String): Sequence<HomeTab> =
+    HomeTab.values()
         .asSequence()
         .filter {
             it.tag != exceptTag

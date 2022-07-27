@@ -5,7 +5,9 @@ import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.LoginRepository
 import ai.comake.petping.data.vo.ErrorResponse
+import ai.comake.petping.data.vo.UserDataStore
 import ai.comake.petping.util.EMAIL_PATTERN
+import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.getErrorBodyConverter
 import android.content.Context
 import android.text.TextUtils
@@ -26,6 +28,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class EmailLoginViewModel @Inject constructor() : ViewModel() {
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     @Inject
     lateinit var loginRepository: LoginRepository
@@ -55,7 +59,10 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
                 uiState.emit(UiState.Success)
                 AppConstants.ID = response.value.data.id
                 AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
-                AppConstants.LOGIN_HEADER_IS_VISIBLE = false
+
+                sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
+                sharedPreferencesManager.saveLoginType(1)
+
                 moveToHome.emit()
             }
             is Resource.Failure -> {

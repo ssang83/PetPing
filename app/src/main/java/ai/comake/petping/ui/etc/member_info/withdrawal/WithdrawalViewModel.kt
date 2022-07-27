@@ -4,6 +4,7 @@ import ai.comake.petping.*
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.UserDataRepository
 import ai.comake.petping.data.vo.LeaveType
+import ai.comake.petping.util.SharedPreferencesManager
 import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +25,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class WithdrawalViewModel @Inject constructor() : ViewModel() {
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     @Inject
     lateinit var userDataRepository: UserDataRepository
@@ -80,10 +83,11 @@ class WithdrawalViewModel @Inject constructor() : ViewModel() {
                 Airbridge.trackEvent(event)
                 Airbridge.expireUser()
 
-                AppConstants.LOGIN_HEADER_IS_VISIBLE = true
-                AppConstants.PROFILE_HEADER_IS_VISIBLE = true
                 AppConstants.AUTH_KEY = ""
                 AppConstants.ID = ""
+
+                sharedPreferencesManager.deleteLoginDataStore()
+
                 moveToHome.emit()
             }
             else -> uiState.emit(UiState.Failure(null))

@@ -1,22 +1,25 @@
 package ai.comake.petping.ui.home.dashboard
 
-import ai.comake.petping.*
+import ai.comake.petping.AppConstants
+import ai.comake.petping.BuildConfig
+import ai.comake.petping.Event
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.AppDataRepository
 import ai.comake.petping.data.repository.PetRepository
 import ai.comake.petping.data.vo.*
+import ai.comake.petping.emit
 import ai.comake.petping.util.Coroutines
 import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.encrypt
-import android.app.Application
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.view.View
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import co.ab180.airbridge.Airbridge
 import co.ab180.airbridge.event.model.SemanticAttributes
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -27,17 +30,15 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class DashboardViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
-
+class DashboardViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var petRepository: PetRepository
 
     @Inject
     lateinit var dashboardRepo: AppDataRepository
 
-    private val preference by lazy {
-        App.getPrefernece(getApplication<Application>().applicationContext)
-    }
+    @Inject
+    lateinit var preferences: SharedPreferencesManager
 
     private val _mutableStateFlow = MutableStateFlow(false)
     val mutableStateFlow = _mutableStateFlow.asStateFlow()
@@ -78,9 +79,6 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
     private val _petName = MutableLiveData<String>()
     val petName: LiveData<String> get() = _petName
 
-    private val _petId = MutableLiveData<Int>()
-    val petId:LiveData<Int> get() = _petId
-
     private val _isWalkablePet = MutableLiveData(false)
     val isWalkablePet: LiveData<Boolean> get() = _isWalkablePet
 
@@ -99,9 +97,6 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
     private val _missionAlert = MutableLiveData<RewardMission?>()
     val missionAlert: LiveData<RewardMission?> get() = _missionAlert
 
-    private val _welcomeKitAlert = MutableLiveData<EventWelcomeKit?>()
-    val welcomeKitAlert:LiveData<EventWelcomeKit?> get() = _welcomeKitAlert
-
     private val _missionPetAlert = MutableLiveData<MissionPetSettingAlert?>()
     val missionPetAlert:LiveData<MissionPetSettingAlert?> get() = _missionPetAlert
 
@@ -110,12 +105,6 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
 
     private val _expandedAlert = MutableLiveData<Boolean>().apply { value = false }
     val expandedAlert:LiveData<Boolean> get() = _expandedAlert
-
-    private val _expandedWelcomeKitAlert = MutableLiveData<Boolean>().apply { value = false }
-    val expandedWelcomeKitAlert:LiveData<Boolean> get() = _expandedWelcomeKitAlert
-
-    private val _closeWelcomeKitAlert = MutableLiveData<Boolean>().apply { value = false }
-    val closeWelcomeKitAlert:LiveData<Boolean> get() = _closeWelcomeKitAlert
 
     private val _expandedMissionPetAlert = MutableLiveData<Boolean>().apply { value = false }
     val expandedMissionPetAlert:LiveData<Boolean> get() = _expandedMissionPetAlert
@@ -163,13 +152,22 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
     private val _moveToWalkHistory= MutableLiveData<Event<WalkHistory>>()
     val moveToWalkHistory:LiveData<Event<WalkHistory>> get() = _moveToWalkHistory
 
+    private val _moveToMissionPet= MutableLiveData<Event<Unit>>()
+    val moveToMissionPet:LiveData<Event<Unit>> get() = _moveToMissionPet
+
+    private val _moveToWalk= MutableLiveData<Event<Unit>>()
+    val moveToWalk:LiveData<Event<Unit>> get() = _moveToWalk
+
+    private val _moveToMission= MutableLiveData<Event<Unit>>()
+    val moveToMission:LiveData<Event<Unit>> get() = _moveToMission
+
     val profileList = MutableLiveData<List<Pet>>()
-    val profileHeaderVisibleEvent = MutableLiveData<Event<Boolean>>()
-    val loginIsVisible = MutableLiveData<Boolean>().apply { value = AppConstants.LOGIN_HEADER_IS_VISIBLE }
     val showHomePopup = MutableLiveData<Event<List<Popup>>>()
 
     var speechBubbleUrl = ""
     var petInfoList: List<DashboardPet> = listOf()
+
+    var petId : Int? = null
 
     val scrollChangeListener = object : View.OnScrollChangeListener {
         override fun onScrollChange(
@@ -220,13 +218,7 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
         when (response) {
             is Resource.Success -> {
                 profileList.value = response.value.data.pets
-                profileHeaderVisibleEvent.emit(false)
-                AppConstants.PROFILE_HEADER_IS_VISIBLE = false
                 _petListSuccess.emit()
-            }
-            is Resource.Error -> {
-                profileHeaderVisibleEvent.emit(true)
-                AppConstants.PROFILE_HEADER_IS_VISIBLE = true
             }
         }
     }
@@ -305,22 +297,8 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
         _expandedAlert.value = false
     }
 
-    fun closeAlertWelcomeKit() {
-        _closeWelcomeKitAlert.value = true
-        _expandedWelcomeKitAlert.value = false
-        AppConstants.closeWelcomeKitAlert = true
-    }
-
-    fun expandedAlertWelcomeKit() {
-        _expandedWelcomeKitAlert.value = true
-    }
-
     fun expandedAlertMissionPet() {
         _expandedMissionPetAlert.value = true
-    }
-
-    fun collapseAlertWelcomKit() {
-        _expandedWelcomeKitAlert.value = false
     }
 
     fun collapseAlertMissionPet() {
@@ -343,6 +321,18 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
         _closeMissionPetAlert.value = true
         _expandedMissionPetAlert.value = false
         AppConstants.closeMissionPetAlert = true
+    }
+
+    fun goToMissionPet() {
+        _moveToMissionPet.emit()
+    }
+
+    fun goToWalk() {
+        _moveToWalk.emit()
+    }
+
+    fun goToMission() {
+        _moveToMission.emit()
     }
 
     private fun processDashboardData(
@@ -382,24 +372,15 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
         _walkablePetSetting.value = !dashboardData.pet.isPossibleWalk
         _invitationWalk.value = dashboardData.pet.isPossibleWalk && dashboardData.walk.dayCount.toInt() == 0
 
+        petId = dashboardData.pet.id
         _petName.value = dashboardData.pet.name
-        _petId.value = dashboardData.pet.id
         _petImage.value = dashboardData.pet.profileImageURL
-
-        LogUtil.log("TAG", "isWalkablePet: ${isWalkablePet.value}")
-        LogUtil.log("TAG", "walkDayCount: ${walkDayCount.value}")
-        LogUtil.log("TAG", "walkTotalTime: ${walkTotalTime.value}")
-        LogUtil.log("TAG", "walkTotalDistance: ${walkTotalDistance.value}")
 
         val skyState = dashboardData.weather.skyState ?: 3
         _updateAnimation.emit(DashboardAnimationInfo(skyState, dashboardData))
 
         if (AppConstants.closeMissionAlert.not()) {
             _missionAlert.value = dashboardData.rewardMissionAlert
-        }
-
-        if (AppConstants.closeWelcomeKitAlert.not()) {
-            _welcomeKitAlert.value = dashboardData.eventWelcomeKitAlert
         }
 
         if (AppConstants.closeMissionPetAlert.not()) {
@@ -437,14 +418,14 @@ class DashboardViewModel @Inject constructor(application: Application) : Android
     }
 
     private fun processPopup(popupList: List<Popup>) {
-        var closeList = preference.getClosePopup()
-        val doNotShowList = preference.getDoNotShowPopupIdList()
-        val lastDate = preference.getLastDate()
+        var closeList = preferences.getClosePopup()
+        val doNotShowList = preferences.getDoNotShowPopupIdList()
+        val lastDate = preferences.getLastDate()
         val currentDate = LocalDate.now().toString()
 
         if (lastDate != currentDate) {
-            preference.removeAllClosePopup()
-            preference.setLastDate(currentDate)
+            preferences.removeAllClosePopup()
+            preferences.setLastDate(currentDate)
             closeList = listOf()
         }
 

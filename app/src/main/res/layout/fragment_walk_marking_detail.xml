@@ -90,7 +90,7 @@
 
         <TextView
             android:clickable="true"
-            android:onClick="@{() -> event.onClickNavWalkHistory(viewModel.markingDetail.pet.id)}"
+            android:onClick="@{() -> event.onClickNavWalkHistoryDetail(viewModel.markingDetail.pet.id)}"
             android:background="@drawable/shape_radius_3_dddddd"
             android:layout_marginBottom="20dp"
             android:textColor="@color/color_111111"

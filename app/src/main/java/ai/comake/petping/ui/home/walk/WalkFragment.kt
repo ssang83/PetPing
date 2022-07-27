@@ -6,7 +6,7 @@ import ai.comake.petping.R
 import ai.comake.petping.data.db.walk.Walk
 import ai.comake.petping.data.vo.*
 import ai.comake.petping.databinding.FragmentWalkBinding
-import ai.comake.petping.google.database.room.walk.WalkRepository
+import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.ui.home.HomeFragmentDirections
@@ -46,7 +46,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.ActivityCompat
@@ -82,7 +81,7 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class WalkFragment : Fragment(), OnMapReadyCallback {
     @Inject
-    lateinit var walkRepository: WalkRepository
+    lateinit var walkDBRepository: WalkDBRepository
 
     private lateinit var binding: FragmentWalkBinding
     private val viewModel by viewModels<WalkViewModel>()
@@ -98,6 +97,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     private var mCameraChangeReason = REASON_DEVELOPER
     var mMarkingMarkers = mutableListOf<Marker>()
     var mClusterPOIs: List<MarkingPoi> = emptyList()
+    var walkData = listOf<Walk>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -278,8 +278,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     fun onMarkingRegisterClick(petId: Int, type: Int) {
-        LogUtil.log("TAG", "petId: $petId")
-        LogUtil.log("TAG", "type: $type")
 
         val myMarkingPoi =
             MyMarkingPoi(
@@ -297,7 +295,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    fun onClickNavWalkHistory(petId: Int) {
+    fun onClickNavWalkHistoryDetail(petId: Int) {
         val config = PetProfileConfig(
             petId = petId,
             viewMode = "others"
@@ -316,7 +314,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 
         lifecycleScope.launch {
             viewModel.walkGuideListFlow.collectLatest { items ->
-                LogUtil.log("TAG", "walkGuideListFlow " + items?.size)
                 mAudioGuideListAdapter.submitList(items)
             }
         }
@@ -356,7 +353,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             if (isComplete) {
                 viewModel.startWalk(false)
                 requestWalkFinish()
-
 //                    activity?.findNavController(R.id.nav_main)
 //                        ?.navigate(R.id.action_home_to_walkrecordattach)
             }
@@ -364,12 +360,10 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.isSucceedWalkFinish.observeEvent(viewLifecycleOwner) { walkfinish ->
             LogUtil.log("TAG", "walkfinish: $walkfinish")
-
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                val walkData = walkRepository.selectAll()
+                LogUtil.log("TAG", "walkDBRepository: ${walkDBRepository.selectAll()}")
                 withContext(Dispatchers.Main) {
                     walkfinish.pictures = walkData[0].pictures
-                    LogUtil.log("TAG", "walkfinish: $walkfinish")
                     requireActivity().findNavController(R.id.nav_main).navigate(
                         HomeFragmentDirections.actionHomeToWalkrecordattach()
                             .setWalkFinish(walkfinish)
@@ -381,11 +375,11 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun requestWalkFinish() {
-        var walkData = listOf<Walk>()
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            walkData = walkRepository.selectAll()
+            walkData = walkDBRepository.selectAll()
             LogUtil.log("TAG", "walkData $walkData")
         }.invokeOnCompletion { throwable ->
+            LogUtil.log("TAG", "invokeOnCompletion")
             if (walkData.isNotEmpty()) {
                 when (throwable) {
                     is CancellationException -> {}
@@ -411,7 +405,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         viewModel.hasMoreWalkGuideItem = false
         viewModel.walkGuideListItem = arrayListOf()
 
-        mMarkingDetailClusterListAdapter = MarkingDetailClusterRecyclerViewAdapter(viewModel)
+        mMarkingDetailClusterListAdapter = MarkingDetailClusterRecyclerViewAdapter(viewModel,this::onClickNavWalkHistoryDetail)
         binding.walkTracker.clusterDetailView.clusterRecyclerView.apply {
             addItemDecoration(
                 SpaceItemDecoration(
@@ -915,6 +909,11 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             mContext.unbindService(serviceConnection)
             mBound = false
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        LogUtil.log("TAG", ": $")
     }
 
     override fun onDestroy() {

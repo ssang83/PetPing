@@ -4,17 +4,14 @@ import ai.comake.petping.AppConstants.PETPING_URL
 import ai.comake.petping.BuildConfig
 import ai.comake.petping.api.HeaderInterceptor
 import ai.comake.petping.api.WebService
-import ai.comake.petping.data.repository.DataStoreRepository
-import ai.comake.petping.data.repository.base.BaseDataStoreRepository
-import android.app.Application
+import ai.comake.petping.util.SharedPreferencesManager
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.preferencesDataStoreFile
-import androidx.datastore.preferences.core.Preferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -25,7 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -75,15 +71,27 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDataStore(application: Application): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create {
-            application.preferencesDataStoreFile("petping")
-        }
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("pref_petping", Context.MODE_PRIVATE)
     }
 
     @Provides
     @Singleton
-    fun provideDataStoreRepository(dataStore: DataStore<Preferences>) : BaseDataStoreRepository {
-        return DataStoreRepository(dataStore)
-    }
+    fun provideSharedPreferencesManager(sharedPreferences: SharedPreferences) =
+        SharedPreferencesManager(sharedPreferences)
+
+
+//    @Provides
+//    @Singleton
+//    fun provideDataStore(application: Application): DataStore<Preferences> {
+//        return PreferenceDataStoreFactory.create {
+//            application.preferencesDataStoreFile("petping")
+//        }
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideDataStoreRepository(dataStore: DataStore<Preferences>): BaseDataStoreRepository {
+//        return DataStoreRepository(dataStore)
+//    }
 }

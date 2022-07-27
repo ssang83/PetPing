@@ -64,9 +64,6 @@ class ShopViewModel @Inject constructor() : ViewModel() {
     val shopItemsErrorPopup:LiveData<Event<ErrorResponse>>
         get() = _shopItemsErrorPopup
 
-    val loginIsVisible = MutableLiveData<Boolean>().apply { value = AppConstants.LOGIN_HEADER_IS_VISIBLE }
-    val profileIsVisible = MutableLiveData<Boolean>().apply { value = AppConstants.PROFILE_HEADER_IS_VISIBLE }
-
     var godoUrl = ""
     var productUrl = ""
 

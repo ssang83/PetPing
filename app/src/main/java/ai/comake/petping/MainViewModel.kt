@@ -3,7 +3,11 @@ package ai.comake.petping
 import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.AppDataRepository
+import ai.comake.petping.data.repository.WalkRepository
 import ai.comake.petping.data.vo.AppVersionResponse
+import ai.comake.petping.data.vo.WalkFinish
+import ai.comake.petping.data.vo.WalkFinishRequest
+import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.util.Coroutines
 import ai.comake.petping.util.LogUtil
 import androidx.lifecycle.LiveData
@@ -22,6 +26,12 @@ class MainViewModel @Inject constructor() : ViewModel(
     @Inject
     lateinit var appDataRepository: AppDataRepository
 
+    @Inject
+    lateinit var walkRepository: WalkRepository
+
+    @Inject
+    lateinit var walkDBRepository: WalkDBRepository
+
     private val _processing = MutableStateFlow(false)
     val processing = _processing.asStateFlow()
 
@@ -38,6 +48,14 @@ class MainViewModel @Inject constructor() : ViewModel(
     // Event
     private val _eventFlow = MutableEventFlow<MainEvent>()
     val eventFlow = _eventFlow.asEventFlow()
+
+    private val _isSucceedWalkFinish = MutableLiveData<Event<WalkFinish>>()
+    val isSucceedWalkFinish: LiveData<Event<WalkFinish>>
+        get() = _isSucceedWalkFinish
+
+    private val _isFailedWalkFinish = MutableLiveData<Event<Boolean>>()
+    val isFailedWalkFinish: LiveData<Event<Boolean>>
+        get() = _isFailedWalkFinish
 
     //    private val _openWidzet = MutableStateFlow<Event<Boolean>>(Event(false))
 //    val openWidzet: StateFlow<Event<Boolean>> = _openWidzet
@@ -61,27 +79,30 @@ class MainViewModel @Inject constructor() : ViewModel(
         }
     }
 
-    fun testLogin() = viewModelScope.launch {
-        val body = makeTestLoginBody()
-        val response = appDataRepository.testLogin(SAPA_KEY, body)
-        when (response) {
-            is Resource.Success -> {
-                AppConstants.ID = response.value.data.id
-                AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
-                AppConstants.LOGIN_HEADER_IS_VISIBLE = false
-                _openHomeScreen.emit(true)
-            }
-            is Resource.Failure -> AppConstants.LOGIN_HEADER_IS_VISIBLE = true
-        }
-    }
+//    fun testLogin() = viewModelScope.launch {
+//        LogUtil.log("TAG", ": $")
+//        val body = makeTestLoginBody()
+//        val response = appDataRepository.testLogin(SAPA_KEY, body)
+//        when (response) {
+//            is Resource.Success -> {
+//                AppConstants.ID = response.value.data.id
+//                AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
+//                AppConstants.LOGIN_HEADER_IS_VISIBLE = false
+//                _openHomeScreen.emit(true)
+//            }
+//            is Resource.Failure -> AppConstants.LOGIN_HEADER_IS_VISIBLE = true
+//        }
+//    }
 
     fun checkAppVersion() = Coroutines.main(this) {
         val response = appDataRepository.getAppVersion(SAPA_KEY)
         when (response) {
             is Resource.Success -> {
                 val data = response.value.data
-                val selectVersion = data.appUpdateVersion.selectUpdateVerAos.replace("[^0-9]".toRegex(), "").toInt()
-                val forceVersion = data.appUpdateVersion.forceUpdateVerAos.replace("[^0-9]".toRegex(), "").toInt()
+                val selectVersion =
+                    data.appUpdateVersion.selectUpdateVerAos.replace("[^0-9]".toRegex(), "").toInt()
+                val forceVersion =
+                    data.appUpdateVersion.forceUpdateVerAos.replace("[^0-9]".toRegex(), "").toInt()
                 val version = BuildConfig.VERSION_NAME.replace("[^0-9]".toRegex(), "").toInt()
                 LogUtil.log("selectVersion : $selectVersion, forceVersion : $forceVersion")
 
@@ -94,6 +115,25 @@ class MainViewModel @Inject constructor() : ViewModel(
                 } else {
                     event(MainEvent.SystemCheck)
                 }
+            }
+        }
+    }
+
+    suspend fun asyncWalkFinish(authKey: String, walkId: Int, body: WalkFinishRequest) {
+        LogUtil.log("TAG", ": $")
+        val response = walkRepository.finishWalk(
+            authKey,
+            walkId,
+            body
+        )
+
+        when (response) {
+            is Resource.Success -> {
+                walkDBRepository.deleteAll()
+                _isSucceedWalkFinish.postValue(Event(response.value.data))
+            }
+            else -> {
+                _isFailedWalkFinish.postValue(Event(false))
             }
         }
     }

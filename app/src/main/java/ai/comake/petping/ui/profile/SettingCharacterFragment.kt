@@ -1,13 +1,11 @@
 package ai.comake.petping.ui.profile
 
 import ai.comake.petping.R
-import ai.comake.petping.UiState
 import ai.comake.petping.data.vo.PetCharacterConfig
 import ai.comake.petping.data.vo.PetProfileData
 import ai.comake.petping.databinding.FragmentSettingCharacterBinding
 import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.base.BaseFragment
-import ai.comake.petping.util.LogUtil
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels

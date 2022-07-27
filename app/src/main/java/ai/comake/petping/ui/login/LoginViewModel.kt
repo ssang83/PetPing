@@ -6,9 +6,12 @@ import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.LoginRepository
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.NaverData
+import ai.comake.petping.data.vo.UserDataStore
 import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.getErrorBodyConverter
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,6 +19,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,9 +32,14 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class LoginViewModel @Inject constructor() : ViewModel() {
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     @Inject
     lateinit var loginRepository: LoginRepository
+
+    private val _loginType = MutableLiveData<Int>().apply { value = -1 }
+    val loginType : LiveData<Int> get() = _loginType
 
     val moveToEmailLogin = MutableLiveData<Event<Unit>>()
     val moveToNaverLogin = MutableLiveData<Event<Unit>>()
@@ -49,6 +58,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     var naverToken = ""
     var kakaoUserData:User? = null
     var kakaoToken = ""
+
+    fun getLoginStatus() {
+        _loginType.value = sharedPreferencesManager.getLoginType()
+    }
 
     fun getKakaoUserInfo(context: Context, token: OAuthToken) {
         // 사용자 정보 요청 (기본)
@@ -92,7 +105,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                 uiState.emit(UiState.Success)
                 AppConstants.ID = response.value.data.id
                 AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
-                AppConstants.LOGIN_HEADER_IS_VISIBLE = false
+
+                sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
+                sharedPreferencesManager.saveLoginType(2)
+
                 moveToHome.emit()
             }
             is Resource.Failure -> {
@@ -123,7 +139,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                 uiState.emit(UiState.Success)
                 AppConstants.ID = response.value.data.id
                 AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
-                AppConstants.LOGIN_HEADER_IS_VISIBLE = false
+
+                sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
+                sharedPreferencesManager.saveLoginType(3)
+
                 moveToHome.emit()
             }
             is Resource.Failure -> {
@@ -156,7 +175,6 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                 uiState.emit(UiState.Success)
                 AppConstants.ID = response.value.data.id
                 AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
-                AppConstants.LOGIN_HEADER_IS_VISIBLE = false
                 moveToHome.emit()
             }
             is Resource.Failure -> {

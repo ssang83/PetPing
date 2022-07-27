@@ -5,8 +5,10 @@ import ai.comake.petping.data.vo.AgreementConfig
 import ai.comake.petping.data.vo.NaverData
 import ai.comake.petping.databinding.FragmentLoginBinding
 import ai.comake.petping.ui.base.BaseFragment
+import ai.comake.petping.ui.common.dialog.PermissionDialog
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.backStack
 import ai.comake.petping.util.updateWhiteStatusBar
 import android.app.Activity
@@ -30,6 +32,7 @@ import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import com.nhn.android.naverlogin.OAuthLogin
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * android-petping-2
@@ -41,6 +44,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
+    @Inject
+    lateinit var prefs: SharedPreferencesManager
+
     private val viewModel: LoginViewModel by viewModels()
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
 
@@ -50,7 +56,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        if (prefs.getAuthorityPopup()) {
+            PermissionDialog(requireContext()).show()
+            prefs.setAuthorityPopup(true)
+        }
+
         with(viewModel) {
+
+            getLoginStatus()
 
             uiState.observeEvent(viewLifecycleOwner) { state ->
                 when (state) {

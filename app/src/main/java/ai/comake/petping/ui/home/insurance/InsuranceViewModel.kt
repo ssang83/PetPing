@@ -25,9 +25,6 @@ class InsuranceViewModel @Inject constructor() : ViewModel() {
     val moveToInsurance:LiveData<Event<Unit>>
         get() = _moveToInsurance
 
-    val loginIsVisible = MutableLiveData<Boolean>().apply { value = AppConstants.LOGIN_HEADER_IS_VISIBLE }
-    val profileIsVisible = MutableLiveData<Boolean>().apply { value = AppConstants.PROFILE_HEADER_IS_VISIBLE }
-
     fun loadData() = viewModelScope.launch {
 
     }

@@ -6,6 +6,7 @@ import ai.comake.petping.Event
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.WalkRepository
 import ai.comake.petping.data.vo.*
+import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._audioGuideStatus
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraPosition
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraZoom
@@ -34,6 +35,9 @@ import javax.inject.Inject
 class WalkViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var walkRepository: WalkRepository
+
+    @Inject
+    lateinit var walkDBRepository: WalkDBRepository
 
     private val mContext by lazy { getApplication<Application>().applicationContext }
 
@@ -281,7 +285,8 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     }
 
     fun asyncWalkFinish(authKey: String, walkId: Int, body: WalkFinishRequest) {
-        viewModelScope.launch {
+        LogUtil.log("TAG", ": $")
+        viewModelScope.launch(Dispatchers.IO) {
             val response = walkRepository.finishWalk(
                 authKey,
                 walkId,
@@ -290,7 +295,8 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
 
             when (response) {
                 is Resource.Success -> {
-                    _isSucceedWalkFinish.value = Event(response.value.data)
+                    walkDBRepository.deleteAll()
+                    _isSucceedWalkFinish.postValue(Event(response.value.data))
                 }
                 else -> {
                     //Do Nothing

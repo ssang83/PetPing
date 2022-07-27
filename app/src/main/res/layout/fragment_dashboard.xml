@@ -18,17 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_ffffff"
-        android:paddingBottom="56dp">
-
-        <include
-            android:id="@+id/noProfileLayer"
-            layout="@layout/layout_no_profile"
-            bind:isVisible="@{viewModel.profileList.size() == 0}" />
-
-        <include
-            android:id="@+id/noLoginLayer"
-            layout="@layout/layout_no_login"
-            bind:isVisible="@{viewModel.loginIsVisible}" />
+        android:paddingBottom="56dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
@@ -65,7 +56,6 @@
                 android:layout_marginEnd="20dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_mypage"
-                android:visibility="@{viewModel.loginIsVisible == true ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -237,10 +227,302 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"
                     app:tipItem="@{viewModel.tipList}"
                     app:viewModel="@{viewModel}" />
             </LinearLayout>
         </ScrollView>
+
+        <!-- 미션 반려견 설정 팝업 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/missionPetPopupLayer"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="15dp"
+            android:alpha="0.95"
+            android:backgroundTint="@color/primary_pink"
+            android:elevation="10dp"
+            android:visibility="@{!viewModel.expandedMissionPetAlert &amp;&amp; viewModel.missionPetAlert != null &amp;&amp; !viewModel.closeMissionPetAlert ? View.VISIBLE : View.GONE}"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/missionPopupLayer"
+            app:onSafeClick="@{view -> viewModel.expandedAlertMissionPet()}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:maxLines="1"
+                    android:text="@{viewModel.missionPetAlert.alert.title}"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="15dp" />
+
+                <ImageButton
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:layout_gravity="right"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_close_w"
+                    app:onSafeClick="@{view -> viewModel.closeAlertMissionPet()}" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="15dp"
+            android:alpha="0.95"
+            android:backgroundTint="@color/primary_pink"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:visibility="@{viewModel.expandedMissionPetAlert &amp;&amp; viewModel.missionPetAlert != null &amp;&amp; !viewModel.closeMissionPetAlert ? View.VISIBLE : View.GONE}"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone"
+            app:onSafeClick="@{view -> viewModel.collapseAlertMissionPet()}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@{viewModel.missionPetAlert.detailAlert.title}"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:textSize="16dp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <ImageButton
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        android:layout_gravity="right"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_close_w"
+                        app:onSafeClick="@{view -> viewModel.closeAlertMissionPet()}" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@{viewModel.missionPetAlert.detailAlert.content}"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="15dp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="18dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#f43445" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:onClick="@{view -> viewModel.closeAlertMissionPet()}"
+                        android:text="@string/mission_pet_next"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:textSize="15dp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#f43445" />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:onClick="@{view -> viewModel.goToMissionPet()}"
+                        android:text="@string/mission_pet_set"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 산책미션 팝업 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/missionPopupLayer"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="15dp"
+            android:alpha="0.95"
+            android:backgroundTint="@color/primary_pink"
+            android:elevation="10dp"
+            android:visibility="@{!viewModel.expandedAlert &amp;&amp; viewModel.missionAlert != null &amp;&amp; !viewModel.closeMissionAlert ? View.VISIBLE : View.GONE}"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:onSafeClick="@{view -> viewModel.expandedAlert()}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:maxLines="1"
+                    android:text="@{viewModel.missionAlert.alert.title}"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="15dp" />
+
+                <ImageButton
+                    android:layout_width="54dp"
+                    android:layout_height="54dp"
+                    android:layout_gravity="right"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_close_w"
+                    app:onSafeClick="@{view -> viewModel.closeAlert()}" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="15dp"
+            android:alpha="0.95"
+            android:backgroundTint="@color/primary_pink"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:visibility="@{viewModel.expandedAlert &amp;&amp; viewModel.missionAlert != null &amp;&amp; !viewModel.closeMissionAlert ? View.VISIBLE : View.GONE}"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone"
+            app:onSafeClick="@{view -> viewModel.collapseAlert()}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@{viewModel.missionAlert.detailAlert.title}"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:textSize="16dp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <ImageButton
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        android:layout_gravity="right"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_close_w"
+                        app:onSafeClick="@{view -> viewModel.closeExpandedAlert()}" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:lineSpacingExtra="8dp"
+                    android:text="@{viewModel.missionAlert.detailAlert.content}"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="15dp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="18dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#f43445" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        app:onSafeClick="@{view -> viewModel.goToWalk()}"
+                        android:text="산책하기"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:textSize="15dp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#f43445" />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        app:onSafeClick="@{view -> viewModel.goToMission()}"
+                        android:text="확인하기"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

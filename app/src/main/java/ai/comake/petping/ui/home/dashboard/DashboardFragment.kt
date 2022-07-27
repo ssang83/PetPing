@@ -12,7 +12,9 @@ import ai.comake.petping.ui.common.dialog.HomePopupDialogFragment
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.ui.home.HomeFragmentDirections
 import ai.comake.petping.ui.home.HomeShareViewModel
-import ai.comake.petping.util.*
+import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.setSafeOnClickListener
+import ai.comake.petping.util.updateLightStatusBar
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
@@ -24,18 +26,15 @@ import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import co.ab180.airbridge.Airbridge
-import co.ab180.airbridge.event.model.SemanticAttributes
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DashboardFragment : Fragment() {
@@ -47,6 +46,7 @@ class DashboardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        updateLightStatusBar(requireActivity().window)
         viewModel.getPingTip()
     }
 
@@ -62,9 +62,11 @@ class DashboardFragment : Fragment() {
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        LogUtil.log("TAG","")
+        LogUtil.log("TAG", "")
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        setUpClickListener()
 
         with(viewModel) {
 
@@ -77,14 +79,6 @@ class DashboardFragment : Fragment() {
                     AppConstants.lastLocation.latitude,
                     AppConstants.lastLocation.longitude
                 )
-            }
-
-            profileHeaderVisibleEvent.observeEvent(viewLifecycleOwner) { isVisible ->
-                if (isVisible || AppConstants.LOGIN_HEADER_IS_VISIBLE) {
-                    updateBlackStatusBar(requireActivity().window)
-                } else {
-                    updateWhiteStatusBar(requireActivity().window)
-                }
             }
 
             updateAnimation.observeEvent(viewLifecycleOwner) { info ->
@@ -164,8 +158,20 @@ class DashboardFragment : Fragment() {
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(HomeFragmentDirections.actionHomeScreenToContentsWebFragment(config))
             }
-        }
 
+            moveToMissionPet.observeEvent(viewLifecycleOwner) {
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(R.id.action_homeScreen_to_missionPetFragment)
+            }
+
+            moveToWalk.observeEvent(viewLifecycleOwner) {
+                homeShareViewModel.goToWalk()
+            }
+
+            moveToMission.observeEvent(viewLifecycleOwner) {
+                homeShareViewModel.goToReward()
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.mutableStateFlow.collect {
@@ -174,6 +180,24 @@ class DashboardFragment : Fragment() {
         }
 
         setUpUi()
+    }
+
+    fun setUpClickListener() {
+        binding.fragmentDashboardWalkReport.walkHistoryDetail.setSafeOnClickListener {
+            viewModel.petId?.let { id ->
+                val config = PetProfileConfig(
+                    petId = id,
+                    viewMode = "others"
+                )
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(HomeFragmentDirections.actionHomeScreenToDogProfileFragment(config))
+
+            }
+        }
+    }
+
+    fun setUpObserver() {
+
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -186,7 +210,8 @@ class DashboardFragment : Fragment() {
 
             val webViewWrapper = webViewWrapper
             val layoutParams = webViewWrapper.layoutParams
-            layoutParams?.height = (resources.displayMetrics.widthPixels - 40 * resources.displayMetrics.densityDpi) * 9 / 8
+            layoutParams?.height =
+                (resources.displayMetrics.widthPixels - 40 * resources.displayMetrics.densityDpi) * 9 / 8
             webViewWrapper.layoutParams = layoutParams
             webViewWrapper.requestLayout()
 
@@ -216,18 +241,13 @@ class DashboardFragment : Fragment() {
                         )
 
                         requireActivity().findNavController(R.id.nav_main)
-                            .navigate(HomeFragmentDirections.actionHomeScreenToContentsWebFragment(config))
+                            .navigate(
+                                HomeFragmentDirections.actionHomeScreenToContentsWebFragment(
+                                    config
+                                )
+                            )
                     }
                 }, "AndroidBridge")
-            }
-
-            noLoginLayer.login.setSafeOnClickListener {
-                requireActivity().findNavController(R.id.nav_main)
-                    .navigate(R.id.action_homeScreen_to_loginGraph)
-            }
-
-            noProfileLayer.makeProfile.setSafeOnClickListener {
-                Toast.makeText(requireContext(), "반려견 프로필 만들기로 이동", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -278,4 +298,9 @@ class DashboardFragment : Fragment() {
     private abstract class WebViewBridge {
         abstract fun onClickBalloon()
     }
+
+    companion object {
+        const val TAG = "DashBoardFragment"
+    }
+
 }

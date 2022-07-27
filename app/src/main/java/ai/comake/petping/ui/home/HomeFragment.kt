@@ -1,14 +1,16 @@
 package ai.comake.petping.ui.home
 
-import ai.comake.petping.*
+import ai.comake.petping.AppConstants
 import ai.comake.petping.AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT
+import ai.comake.petping.MainShareViewModel
+import ai.comake.petping.R
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentHomeBinding
+import ai.comake.petping.observeEvent
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.readTextFromUri
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.AdaptiveIconDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -73,8 +75,6 @@ class HomeFragment : Fragment() {
             LogUtil.log("TAG", "args " + args.menulink)
             LogUtil.log("TAG", "userId : ${AppConstants.ID}")
             LogUtil.log("TAG", "token : ${AppConstants.AUTH_KEY}")
-            LogUtil.log("TAG", "loginHeader visible : ${AppConstants.LOGIN_HEADER_IS_VISIBLE}")
-            LogUtil.log("TAG", "profileHeader visible : ${AppConstants.PROFILE_HEADER_IS_VISIBLE}")
         }
     }
 
@@ -156,7 +156,7 @@ class HomeFragment : Fragment() {
 
         navController?.apply {
             navigatorProvider.addNavigator(
-                BottomNavigator(
+                HomeBottomNavigator(
                     onBackPressedCallback,
                     R.id.nav_host_home_fragment,
                     childFragmentManager
@@ -228,7 +228,6 @@ class HomeFragment : Fragment() {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            LogUtil.log("TAG", "handleOnBackPressed")
             finishApplication()
         }
     }
@@ -252,6 +251,16 @@ class HomeFragment : Fragment() {
 //                }
             })
 
+        homeShareViewModel.moveToWalk.observeEvent(viewLifecycleOwner) {
+            showWalkScreen()
+            changeUnSelectedMenuIcon(R.id.walkScreen)
+        }
+
+        homeShareViewModel.moveToReward.observeEvent(viewLifecycleOwner) {
+            showRewardScreen()
+            changeUnSelectedMenuIcon(R.id.rewardScreen)
+        }
+
         mainShareViewModel.menuLink.observeEvent(viewLifecycleOwner, { menuLink ->
             checkMenuLink(menuLink)
         })
@@ -269,7 +278,7 @@ class HomeFragment : Fragment() {
             if (result.resultCode == Activity.RESULT_OK) {
                 // There are no request codes
                 val data = result.data?.data
-                LogUtil.log("TAG", " " + readTextFromUri(context!!, data!!))
+                LogUtil.log("TAG", " " + readTextFromUri(requireContext(), data!!))
             }
         }
 

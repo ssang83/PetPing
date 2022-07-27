@@ -133,7 +133,6 @@ class IFirebaseMessaging : FirebaseMessagingService() {
                     }
                 })
         }
-
     }
 
     private fun registerToken() {

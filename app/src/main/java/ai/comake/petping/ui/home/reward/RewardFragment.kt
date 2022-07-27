@@ -9,10 +9,7 @@ import ai.comake.petping.databinding.FragmentShopBinding
 import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.home.HomeFragmentDirections
-import ai.comake.petping.util.LogUtil
-import ai.comake.petping.util.setSafeOnClickListener
-import ai.comake.petping.util.updateBlackStatusBar
-import ai.comake.petping.util.updateWhiteStatusBar
+import ai.comake.petping.util.*
 import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -44,6 +41,7 @@ class RewardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        updateLightStatusBar(requireActivity().window)
         AirbridgeManager.trackEvent(
             "point_category",
             "point_action",
@@ -153,7 +151,6 @@ class RewardFragment : Fragment() {
         }
 
         setUp()
-        updateStatusBar()
     }
 
     private fun setUp() {
@@ -162,15 +159,6 @@ class RewardFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext()).apply { orientation = LinearLayoutManager.VERTICAL }
             itemAnimator = DefaultItemAnimator()
             adapter = mAdapter
-        }
-
-        binding.noProfileLayer.makeProfile.setSafeOnClickListener {
-            Toast.makeText(requireContext(), "반려견 프로필 만들기로 이동", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.noLoginLayer.login.setSafeOnClickListener {
-            requireActivity().findNavController(R.id.nav_main)
-                .navigate(R.id.action_homeScreen_to_loginGraph)
         }
     }
 
@@ -189,14 +177,6 @@ class RewardFragment : Fragment() {
             }
 
             mAdapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun updateStatusBar() {
-        if (AppConstants.PROFILE_HEADER_IS_VISIBLE || AppConstants.LOGIN_HEADER_IS_VISIBLE) {
-            updateBlackStatusBar(requireActivity().window)
-        } else {
-            updateWhiteStatusBar(requireActivity().window)
         }
     }
 

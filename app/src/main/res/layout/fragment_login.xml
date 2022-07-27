@@ -6,6 +6,8 @@
         <variable
             name="viewModel"
             type="ai.comake.petping.ui.login.LoginViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,7 +63,9 @@
                     android:fontFamily="@font/nanum_square_round_b"
                     android:text="@string/naver_login"
                     android:textColor="@color/greyscale_1_fff"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:visibility="@{viewModel.loginType == 2 ? View.GONE : View.VISIBLE}"
+                    />
             </RelativeLayout>
 
             <RelativeLayout
@@ -87,7 +91,9 @@
                     android:fontFamily="@font/nanum_square_round_b"
                     android:text="@string/kakao_login"
                     android:textColor="@color/greyscale_9_111"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:visibility="@{viewModel.loginType == 3 ? View.GONE : View.VISIBLE}"
+                    />
             </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -119,7 +125,9 @@
                     android:layout_centerInParent="true"
                     android:fontFamily="@font/nanum_square_round_b"
                     android:textColor="@color/greyscale_9_111"
-                    android:text="@string/other_login"/>
+                    android:text="@string/other_login"
+                    android:visibility="@{viewModel.loginType == 1 ? View.GONE : View.VISIBLE}"
+                    />
             </RelativeLayout>
         </LinearLayout>
 

@@ -89,7 +89,6 @@ class WalkablePetRecyclerViewAdapter(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        LogUtil.log("TAG", "")
         return ViewHolder(
             BottomSheetDialogWalkPetListItemBinding.inflate(
                 LayoutInflater.from(parent.context),

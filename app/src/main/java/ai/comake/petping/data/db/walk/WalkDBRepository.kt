@@ -4,7 +4,7 @@ import ai.comake.petping.data.db.walk.Walk
 import ai.comake.petping.data.db.walk.WalkDao
 import javax.inject.Inject
 
-class WalkRepository @Inject constructor(private val waklDao: WalkDao) {
+class WalkDBRepository @Inject constructor(private val waklDao: WalkDao) {
     suspend fun insert(walk: Walk) = waklDao.insert(walk)
     suspend fun update(walk: Walk) = waklDao.update(walk)
     suspend fun delete(walk_id: Int) = waklDao.delete(walk_id)

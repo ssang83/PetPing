@@ -3,8 +3,6 @@ package ai.comake.petping
 import ai.comake.petping.AppConstants.clientId
 import ai.comake.petping.AppConstants.clientName
 import ai.comake.petping.AppConstants.clientSecret
-import ai.comake.petping.data.preference.Preference
-import ai.comake.petping.data.preference.PreferenceImpl
 import android.app.Application
 import android.content.Context
 import android.net.Uri
@@ -18,14 +16,6 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class App : Application() {
     lateinit var context : Context
-
-    companion object {
-
-        @JvmStatic
-        fun getPrefernece(context: Context) : Preference {
-            return PreferenceImpl(context, "pref_petping")
-        }
-    }
 
     override fun onCreate() {
         super.onCreate()

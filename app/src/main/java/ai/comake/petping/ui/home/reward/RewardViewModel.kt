@@ -60,9 +60,6 @@ class RewardViewModel @Inject constructor() : ViewModel() {
     val earningPoint:LiveData<String>
         get() = _earningPoint
 
-    val loginIsVisible = MutableLiveData<Boolean>().apply { value = AppConstants.LOGIN_HEADER_IS_VISIBLE }
-    val profileIsVisible = MutableLiveData<Boolean>().apply { value = AppConstants.PROFILE_HEADER_IS_VISIBLE }
-
     val ongoingMissionList = MutableLiveData<List<OngoingMission>>()
     val completionMissionList = MutableLiveData<List<CompletionMission>>()
 

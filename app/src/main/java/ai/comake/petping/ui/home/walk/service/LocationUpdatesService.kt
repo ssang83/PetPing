@@ -23,7 +23,7 @@ import ai.comake.petping.data.vo.AudioGuideItem
 import ai.comake.petping.data.vo.AudioGuideStatus
 import ai.comake.petping.data.vo.MyMarkingPoi
 import ai.comake.petping.data.vo.WalkPath
-import ai.comake.petping.google.database.room.walk.WalkRepository
+import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.ui.home.walk.EndState
 import ai.comake.petping.util.*
 import android.annotation.SuppressLint
@@ -44,7 +44,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.MapFragment
-import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -59,7 +58,7 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class LocationUpdatesService() : LifecycleService() {
     @Inject
-    lateinit var walkRepository: WalkRepository
+    lateinit var walkRepository: WalkDBRepository
     private val mBinder: IBinder = LocalBinder()
     private var mChangingConfiguration = false
     private var mNotificationManager: NotificationManager? = null
@@ -289,13 +288,15 @@ class LocationUpdatesService() : LifecycleService() {
 
     suspend fun saveLocalDatabase() {
 //        LogUtil.log("TAG", "mWalEndState ${mWalEndState.ordinal} ")
-        localWalkData.path = _walkPathList.value
-        localWalkData.endState = mWalEndState.ordinal
-        localWalkData.time = elapsedStartMilliSeconds.toHHMMSSFormat()
-        localWalkData.walkEndDatetimeMilli = Date().time
-        localWalkData.distance = _walkDistanceKm.value.toDouble()
-        localWalkData.pictures = _picturePaths.value
-        walkRepository.insert(localWalkData)
+        if(localWalkData.walkId != -1){
+            localWalkData.path = _walkPathList.value
+            localWalkData.endState = mWalEndState.ordinal
+            localWalkData.time = elapsedStartMilliSeconds.toHHMMSSFormat()
+            localWalkData.walkEndDatetimeMilli = Date().time
+            localWalkData.distance = _walkDistanceKm.value.toDouble()
+            localWalkData.pictures = _picturePaths.value
+            walkRepository.insert(localWalkData)
+        }
     }
 
     private fun updateWalkStatusBroadcast() {

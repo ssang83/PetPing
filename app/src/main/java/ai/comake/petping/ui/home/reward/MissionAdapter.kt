@@ -164,7 +164,6 @@ class MissionAdapter(private val viewModel: RewardViewModel) :
     }
 
     override fun getItemCount(): Int {
-        LogUtil.log("TAG", "viewList size : ${viewList.size}")
         return viewList.size
     }
 

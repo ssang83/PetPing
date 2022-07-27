@@ -7,6 +7,8 @@ import ai.comake.petping.data.repository.LoginRepository
 import ai.comake.petping.data.vo.AgreementConfig
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.PolicyData
+import ai.comake.petping.data.vo.UserDataStore
+import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.getErrorBodyConverter
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
@@ -28,6 +30,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AgreementViewModel @Inject constructor() : ViewModel() {
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     @Inject
     lateinit var loginRepository: LoginRepository
@@ -92,6 +96,8 @@ class AgreementViewModel @Inject constructor() : ViewModel() {
                 AppConstants.ID = response.value.data.id
                 AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
                 AppConstants.EMAIL = response.value.data.email
+
+                sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
 
                 if (config?.signUpType == 1) { // 이메일 가입
                     if (response.value.data.isEmailAuthSend) {

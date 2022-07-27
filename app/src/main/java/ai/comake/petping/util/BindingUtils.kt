@@ -109,7 +109,6 @@ object BindingUtils {
     @JvmStatic
     @BindingAdapter("imageUrl")
     fun setImageUrl(imageView: ImageView, url: String?) {
-        LogUtil.log("TAG", "url $url")
         if (!url.isNullOrEmpty()) {
             Glide.with(imageView.context).load(url).centerCrop().into(imageView)
         }

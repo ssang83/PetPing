@@ -1,13 +1,13 @@
 package ai.comake.petping.ui.common.dialog
 
 import ai.comake.petping.AirbridgeManager
-import ai.comake.petping.App
 import ai.comake.petping.R
 import ai.comake.petping.data.vo.Popup
 import ai.comake.petping.databinding.BottomDialogHomePopupBinding
 import ai.comake.petping.ui.home.EXTRA_IMAGE_URL
 import ai.comake.petping.ui.home.EXTRA_LINK_URL
 import ai.comake.petping.ui.home.PopupImageFragment
+import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.setSafeOnClickListener
 import android.app.Dialog
 import android.os.Bundle
@@ -19,12 +19,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import co.ab180.airbridge.Airbridge
-import co.ab180.airbridge.event.model.SemanticAttributes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * android-petping-2
@@ -33,15 +33,15 @@ import com.google.android.material.tabs.TabLayoutMediator
  *
  * Description:
  */
+@AndroidEntryPoint
 class HomePopupDialogFragment(
     popupList: List<Popup>
 ) : BottomSheetDialogFragment() {
 
-    private lateinit var binding: BottomDialogHomePopupBinding
+    @Inject
+    lateinit var preference : SharedPreferencesManager
 
-    private val preference by lazy {
-        App.getPrefernece(requireContext())
-    }
+    private lateinit var binding: BottomDialogHomePopupBinding
 
     private var homePopupList = popupList
 

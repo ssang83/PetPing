@@ -17,6 +17,7 @@ import co.ab180.airbridge.Airbridge
 import co.ab180.airbridge.event.Event
 import co.ab180.airbridge.event.StandardEventCategory
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * android-petping-2
@@ -27,7 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MemberInfoFragment : BaseFragment<FragmentMemberInfoBinding>(FragmentMemberInfoBinding::inflate) {
-
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
     private val viewModel: MemberInfoViewModel by viewModels()
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
 
@@ -122,13 +124,13 @@ class MemberInfoFragment : BaseFragment<FragmentMemberInfoBinding>(FragmentMembe
                 Airbridge.trackEvent(event)
                 Airbridge.expireUser()
 
-                AppConstants.LOGIN_HEADER_IS_VISIBLE = true
-                AppConstants.PROFILE_HEADER_IS_VISIBLE = true
                 AppConstants.AUTH_KEY = ""
                 AppConstants.ID = ""
 
+                sharedPreferencesManager.deleteLoginDataStore()
+
                 requireActivity().findNavController(R.id.nav_main)
-                    .navigate(R.id.action_memberInfoFragment_to_homeScreen)
+                    .navigate(R.id.action_memberInfoFragment_to_loginScreen)
             }
         }
 

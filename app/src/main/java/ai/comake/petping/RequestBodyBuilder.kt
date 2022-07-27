@@ -12,16 +12,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 
-fun makeTestLoginBody(): RequestBody {
-    return JSONObject().apply {
-        put("type", "1")
-        put("email", "jskim@smallticket.com")
-        put("authWord", "qwer1234!")
-        put("deviceId", "sadifjiadjf")
-        put("snsAuthToken", "")
-    }.toString().toRequestBody("application/json".toMediaTypeOrNull())
-}
-
 fun makeShopLoginBody(): RequestBody {
     val accessToken = AppConstants.AUTH_KEY.split(" ")[1]
     return JSONObject().apply {
