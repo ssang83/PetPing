@@ -14,7 +14,7 @@
     <string name="pet_ping_shop_go">펫핑샵 바로가기</string>
     <string name="pet_ping_avaiable">사용 가능 핑</string>
     <string name="pet_ping_shop_title">펫핑샵에서 반려견 웰니스 상품을 구매하세요.\n신용카드나 간편결제로 추가 결제도 할 수 있어요.</string>
-    <string name="pet_ping_used_record">사용 기록</string>
+    <string name="pet_ping_used_record">사용 핑</string>
     <string name="pet_ping_shop_no_auth_popup_title">본인 확인이 필요해요.</string>
     <string name="pet_ping_shop_no_auth_popup_desc">펫핑샵에서 사용 가능한 리워드 확인을 위해 휴대폰 본인인증을 진행해 주세요.</string>
     <string name="pet_ping_shop_service_check">서비스 점검 중</string>
@@ -282,6 +282,29 @@
     <string name="ping_tip_all">전체보기</string>
     <string name="home_setting_profile">프로필 설정</string>
     <string name="mission_pet_next">다음에</string>
+    <string name="petping_start">펫핑 시작하기</string>
+    <string name="guide_skip">건너뛰기</string>
+    <string name="guide_next">다음</string>
+    <string name="guide_01">건강 관리의 시작</string>
+    <string name="guide_title_01">반려견 산책</string>
+    <string name="guide_desc_01">산책 시간과 거리를 간편하게 기록하고\n주변 추천 장소와 반려견 친구를 만나보세요.</string>
+    <string name="guide_02">한눈에 보는</string>
+    <string name="guide_title_02">반려견 활동 데이터</string>
+    <string name="guide_desc_02">반려견의 산책 통계를 확인하세요.\n가족이 산책한 통계도 모아서 볼 수 있어요.</string>
+    <string name="guide_03">리워드 혜택</string>
+    <string name="guide_title_03">핑(포인트) 적립</string>
+    <string name="guide_desc_03">산책 미션을 달성하고 리워드를 받으세요.\n다양한 건강 미션을 준비하고 있어요.</string>
+    <string name="guide_04">리워드로 구매하는</string>
+    <string name="guide_title_04">반려견 웰니스 상품</string>
+    <string name="guide_desc_04">미션 달성으로 적립한 리워드 핑(포인트)으로\n엄선된 반려견 웰니스 상품을 구매하세요.</string>
+    <string name="guide_05">건강 증진을 위한</string>
+    <string name="guide_title_05">펫보험 리워드</string>
+    <string name="guide_desc_05">펫보험에 가입하면 전용 건강 미션을 달성해\n추가 리워드 핑(포인트)을 받을 수 있어요.</string>
+    <string name="pet_insurance_join_setting">펫보험 가입・설정</string>
+    <string name="pet_insurance_apply">펫보험 청구 신청</string>
+    <string name="etc_title">더 보기</string>
+    <string name="pet_ping_shop">펫핑샵</string>
+    <string name="shop_guide_ballon_title">펫핑샵에서 반려견 웰니스 상품을 구\n매하세요. 신용카드로 추가 결제도\n할 수 있어요.</string>
 
     <string name="mission_pet_setting_title">
         <![CDATA[
@@ -529,7 +552,7 @@
     <string name="new_profile_pet_birth_hint">YYMMDD 언제 태어났나요?</string>
     <string name="new_profile_pet_weight_hint">몸무게는 몇 kg인가요?</string>
 
-    <string name="home_popup_do_not_show">다시 보지 않기</string>
+    <string name="home_popup_do_not_show">오늘 하루 닫기</string>
     <string name="home_popup_close">닫기</string>
 
     <string name="inquiry_register">문의 보내기</string>

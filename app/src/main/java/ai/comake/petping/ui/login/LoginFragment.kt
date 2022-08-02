@@ -56,7 +56,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        if (prefs.getAuthorityPopup()) {
+        if (prefs.getAuthorityPopup().not()) {
             PermissionDialog(requireContext()).show()
             prefs.setAuthorityPopup(true)
         }
@@ -73,7 +73,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             }
 
             moveToHome.observeEvent(viewLifecycleOwner) {
-                requireActivity().backStack(R.id.nav_main)
+                mainShareViewModel.registFCMToken()
+                requireActivity().findNavController(R.id.nav_main).navigate(R.id.action_global_homeScreen)
+//                requireActivity().backStack(R.id.nav_main)
             }
 
             moveToEmailLogin.observeEvent(viewLifecycleOwner) {

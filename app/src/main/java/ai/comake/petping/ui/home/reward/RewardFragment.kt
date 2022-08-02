@@ -1,21 +1,17 @@
 package ai.comake.petping.ui.home.reward
 
 import ai.comake.petping.AirbridgeManager
-import ai.comake.petping.AppConstants
 import ai.comake.petping.R
 import ai.comake.petping.data.vo.WebConfig
 import ai.comake.petping.databinding.FragmentRewardBinding
-import ai.comake.petping.databinding.FragmentShopBinding
 import ai.comake.petping.observeEvent
-import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.home.HomeFragmentDirections
-import ai.comake.petping.util.*
-import android.Manifest
+import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.updateWhiteStatusBar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -41,14 +37,11 @@ class RewardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        updateLightStatusBar(requireActivity().window)
         AirbridgeManager.trackEvent(
             "point_category",
             "point_action",
             "point_label"
         )
-
-        viewModel.loadData()
     }
 
     override fun onCreateView(
@@ -62,11 +55,14 @@ class RewardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        LogUtil.log("TAG","")
+        LogUtil.log("TAG","onViewCreated")
+        updateWhiteStatusBar(requireActivity().window)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         with(viewModel) {
+
+            loadData()
 
             updateMission.observeEvent(viewLifecycleOwner) {
                 if (updateCompletion && updateOngoing) {

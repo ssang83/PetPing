@@ -17,13 +17,6 @@ interface WebService {
         @Header("Authorization") authKey: String
     ): AppVersionResponse
 
-    // 로그인
-    @POST("/v1/sapa/accounts/login")
-    suspend fun testLogin(
-        @Header("Authorization") sapaAuthKey: String,
-        @Body body: RequestBody
-    ): CommonResponse<LoginResponse>
-
     @GET("/v1/petping/shop/goods/recommendation")
     suspend fun getShopItemsList(
         @Header("Authorization") authKey: String,
@@ -683,4 +676,17 @@ interface WebService {
     suspend fun getAppVersion(
         @Header("Authorization") authKey: String
     ): AppVersionResponse
+
+    /**
+     * [가입/로그인] FCM Token 저장
+     *
+     * @param authKey
+     * @param requestBody
+     * @return
+     */
+    @POST("/v1/petping/fcm-tokens")
+    suspend fun registFcmToken(
+        @Header("Authorization") authKey: String,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

@@ -6,6 +6,8 @@ import ai.comake.petping.data.vo.MyPageData
 import ai.comake.petping.databinding.FragmentEtcBinding
 import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.base.BaseFragment
+import ai.comake.petping.util.backStack
+import ai.comake.petping.util.setSafeOnClickListener
 import ai.comake.petping.util.updateWhiteStatusBar
 import android.os.Bundle
 import android.view.View
@@ -153,10 +155,18 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
                     .navigate(R.id.action_etcFragment_to_questionFragment)
             }
 
-            moveToWelcomeKit.observeEvent(viewLifecycleOwner) {
-                requireActivity().findNavController(R.id.nav_main)
-                    .navigate(R.id.action_etcFragment_to_welcomKitGuideFragment)
+            moveToPetInsuranceApply.observeEvent(viewLifecycleOwner) {
+                // TODO : 펫보험 청구 신청 화면으로 이동
             }
+
+            moveToPetInsuranceJoin.observeEvent(viewLifecycleOwner) {
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(R.id.action_etcFragment_to_insuranceHistoryFragment)
+            }
+        }
+
+        binding.btnBack.setSafeOnClickListener {
+            requireActivity().backStack(R.id.nav_main)
         }
     }
 

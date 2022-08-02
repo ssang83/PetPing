@@ -131,9 +131,6 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
     private val _showProfilePopup = MutableLiveData<Event<Unit>>()
     val showProfilePopup:LiveData<Event<Unit>> get() = _showProfilePopup
 
-    private val _petListSuccess = MutableLiveData<Event<Unit>>()
-    val petListSuccess:LiveData<Event<Unit>> get() = _petListSuccess
-
     private val _moveToPingTipAll = MutableLiveData<Event<Unit>>()
     val moveToPingTipAll:LiveData<Event<Unit>> get() = _moveToPingTipAll
 
@@ -218,7 +215,6 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         when (response) {
             is Resource.Success -> {
                 profileList.value = response.value.data.pets
-                _petListSuccess.emit()
             }
         }
     }
@@ -389,7 +385,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
 
         processPopup(dashboardData.popup)
         updateCityName(context, lat, lng)
-        if(needUpdate) getPingZoneFriend(dashboardData.pet.id)
+//        if(needUpdate) getPingZoneFriend(dashboardData.pet.id)
     }
 
     /**
@@ -418,7 +414,6 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun processPopup(popupList: List<Popup>) {
-        var closeList = preferences.getClosePopup()
         val doNotShowList = preferences.getDoNotShowPopupIdList()
         val lastDate = preferences.getLastDate()
         val currentDate = LocalDate.now().toString()
@@ -426,17 +421,11 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         if (lastDate != currentDate) {
             preferences.removeAllClosePopup()
             preferences.setLastDate(currentDate)
-            closeList = listOf()
-        }
-
-        val submit = mutableListOf<String>().apply {
-            addAll(doNotShowList)
-            addAll(closeList)
         }
 
         val targetList = popupList.toMutableList()
         for (popup in popupList) {
-            for (id in submit) {
+            for (id in doNotShowList) {
                 if (popup.id == id.toInt()) {
                     targetList.remove(popup)
                     break
@@ -449,6 +438,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
 
     /**
      * 핑존에서 만난 친구
+     * 1.3.0 버전에는 포함 안되고 추후 개선 예정임.
      *
      * @param petId
      */

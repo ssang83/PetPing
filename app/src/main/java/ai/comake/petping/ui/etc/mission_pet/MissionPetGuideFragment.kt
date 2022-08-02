@@ -66,7 +66,7 @@ class MissionPetGuideFragment : Fragment() {
 
     private fun goToMissionPet() {
         requireActivity().findNavController(R.id.nav_main)
-            .navigate(MissionPetGuideFragmentDirections.actionProfileToMissionPetFragment(true))
+            .navigate(MissionPetGuideFragmentDirections.actionProfileToMissionPetFragment().setConfig(true))
     }
 
     private fun handleEvent(event: MissionPetGuideViewModel.MissionPetGuideEvent) = when (event) {

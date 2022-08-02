@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "956520437769",
+    "firebase_url": "https://smt-dev-3d2cf.firebaseio.com",
+    "project_id": "smt-dev-3d2cf",
+    "storage_bucket": "smt-dev-3d2cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956520437769:android:eef884146862f501b240d8",
+        "android_client_info": {
+          "package_name": "com.smallticket.petping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956520437769-3ircepm1ojd1bjq0iqrnfv6mrv3e23uf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smallticket.petping",
+            "certificate_hash": "7c82e64f5944eb1b1497d81c45cd79f617dbb063"
+          }
+        },
+        {
+          "client_id": "956520437769-tj7gpbofn4i5ql9thuqo6kg2ghjf57bb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smallticket.petping",
+            "certificate_hash": "b75f39fb6ff06b3ec91890005b5b02b351899916"
+          }
+        },
+        {
+          "client_id": "956520437769-9tsl7810g4uknqtkbjt0jr2ehc10s320.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_694ZzNCtcgCr6uvY-ITbLmQh8JI7JTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956520437769-9tsl7810g4uknqtkbjt0jr2ehc10s320.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "956520437769-12kbubr598q03kh46igvqopefuf00d94.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.smallticket.petping.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

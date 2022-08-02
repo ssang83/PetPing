@@ -30,6 +30,9 @@
             app:destination="@id/walkRecordAttachScreen"
             app:popUpTo="@id/mainScreen"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainScreen_to_userGuideFragment"
+            app:destination="@id/userGuideFragment" />
 
     </fragment>
 
@@ -53,48 +56,62 @@
         <action
             android:id="@+id/action_home_to_signup"
             app:destination="@id/signUpScreen"
-            app:launchSingleTop="true" />
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_homeScreen_to_rewardHistoryFragment"
             app:destination="@id/rewardHistoryFragment"
-            app:launchSingleTop="true"/>
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_homeScreen_to_godoMallFragment"
             app:destination="@id/godoMallFragment"
-            app:launchSingleTop="true"/>
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_homeScreen_to_rewardWebFragment"
-            app:destination="@id/rewardWebFragment" />
+            app:destination="@id/rewardWebFragment"
+            />
         <action
             android:id="@+id/action_homeScreen_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            />
         <action
             android:id="@+id/action_homeScreen_to_eventWebFragment"
-            app:destination="@id/eventWebFragment" />
+            app:destination="@id/eventWebFragment"
+            />
         <action
             android:id="@+id/action_homeScreen_to_missionPetFragment"
-            app:destination="@id/missionPetFragment" />
+            app:destination="@id/missionPetFragment"
+            />
         <action
             android:id="@+id/action_homeScreen_to_etcFragment"
-            app:destination="@id/etcFragment" />
+            app:destination="@id/etcFragment"
+            />
         <action
             android:id="@+id/action_homeScreen_to_loginGraph"
-            app:destination="@id/loginGraph" />
+            app:destination="@id/loginGraph"
+            />
         <action
             android:id="@+id/action_homeScreen_to_tipAllFragment"
-            app:destination="@id/tipAllFragment" />
+            app:destination="@id/tipAllFragment"
+            />
         <action
             android:id="@+id/action_homeScreen_to_profileGraph"
-            app:destination="@id/profileGraph" />
+            app:destination="@id/profileGraph"
+            />
         <action
             android:id="@+id/action_homeScreen_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            />
         <action
             android:id="@+id/action_homeScreen_to_certificationFragment"
-            app:destination="@id/certificationFragment" />
+            app:destination="@id/certificationFragment"
+            />
         <action
             android:id="@+id/action_homeScreen_to_dogProfileFragment"
-            app:destination="@id/dogProfileFragment" />
+            app:destination="@id/dogProfileFragment"
+            />
 
     </fragment>
 
@@ -108,14 +125,16 @@
             android:name="walkFinish"
             android:defaultValue="@null"
             app:argType="ai.comake.petping.data.vo.WalkFinish"
-            app:nullable="true"/>
+            app:nullable="true"
+            />
 
         <action
             android:id="@+id/action_walkrecordattach_to_home"
             app:destination="@id/homeScreen"
             app:launchSingleTop="true"
             app:popUpTo="@id/homeScreen"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 
@@ -156,7 +175,8 @@
             app:argType="ai.comake.petping.data.vo.GodoMallConfig" />
         <action
             android:id="@+id/action_godoMallFragment_to_loginGraph"
-            app:destination="@id/loginGraph" />
+            app:destination="@id/loginGraph"
+            />
     </fragment>
     <fragment
         android:id="@+id/rewardWebFragment"
@@ -179,34 +199,44 @@
             app:argType="ai.comake.petping.data.vo.WebConfig" />
         <action
             android:id="@+id/action_contentsWebFragment_to_loginGraph"
-            app:destination="@id/loginGraph" />
+            app:destination="@id/loginGraph"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_homeScreen"
-            app:destination="@id/homeScreen" />
+            app:destination="@id/homeScreen"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_etcFragment"
-            app:destination="@id/etcFragment" />
+            app:destination="@id/etcFragment"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_rewardHistoryFragment"
-            app:destination="@id/rewardHistoryFragment" />
+            app:destination="@id/rewardHistoryFragment"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_profileGraph"
-            app:destination="@id/profileGraph" />
+            app:destination="@id/profileGraph"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_missionPetFragment"
-            app:destination="@id/missionPetFragment" />
+            app:destination="@id/missionPetFragment"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_insuranceHistoryFragment"
-            app:destination="@id/insuranceHistoryFragment" />
+            app:destination="@id/insuranceHistoryFragment"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_appSettingFragment"
-            app:destination="@id/appSettingFragment" />
+            app:destination="@id/appSettingFragment"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_questionFragment"
-            app:destination="@id/questionFragment" />
+            app:destination="@id/questionFragment"
+            />
         <action
             android:id="@+id/action_contentsWebFragment_to_noticeFragment"
-            app:destination="@id/noticeFragment" />
+            app:destination="@id/noticeFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/eventWebFragment"
@@ -220,25 +250,32 @@
             app:argType="ai.comake.petping.data.vo.WebConfig" />
         <action
             android:id="@+id/action_eventWebFragment_to_loginGraph"
-            app:destination="@id/loginGraph" />
+            app:destination="@id/loginGraph"
+            />
         <action
             android:id="@+id/action_eventWebFragment_to_missionPetFragment"
-            app:destination="@id/missionPetFragment" />
+            app:destination="@id/missionPetFragment"
+            />
         <action
             android:id="@+id/action_eventWebFragment_to_insuranceHistoryFragment"
-            app:destination="@id/insuranceHistoryFragment" />
+            app:destination="@id/insuranceHistoryFragment"
+            />
         <action
             android:id="@+id/action_eventWebFragment_to_rewardHistoryFragment"
-            app:destination="@id/rewardHistoryFragment" />
+            app:destination="@id/rewardHistoryFragment"
+            />
         <action
             android:id="@+id/action_eventWebFragment_to_appSettingFragment"
-            app:destination="@id/appSettingFragment" />
+            app:destination="@id/appSettingFragment"
+            />
         <action
             android:id="@+id/action_eventWebFragment_to_questionFragment"
-            app:destination="@id/questionFragment" />
+            app:destination="@id/questionFragment"
+            />
         <action
             android:id="@+id/action_eventWebFragment_to_noticeFragment"
-            app:destination="@id/noticeFragment" />
+            app:destination="@id/noticeFragment"
+            />
 
     </fragment>
     <fragment
@@ -250,19 +287,31 @@
 
         <argument
             android:name="config"
-            app:argType="boolean" />
+            app:argType="boolean"
+            android:defaultValue="false"
+            />
         <action
             android:id="@+id/action_missionPetFragment_to_certificationFragment"
-            app:destination="@id/certificationFragment" />
+            app:destination="@id/certificationFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_missionPetFragment_to_RNSFragment"
-            app:destination="@id/RNSFragment" />
+            app:destination="@id/RNSFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_missionPetFragment_to_insuranceHistoryFragment"
-            app:destination="@id/insuranceHistoryFragment" />
+            app:destination="@id/insuranceHistoryFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_missionPetFragment_to_homeScreen"
-            app:destination="@id/homeScreen" />
+            app:destination="@id/homeScreen"
+            />
     </fragment>
     <fragment
         android:id="@+id/etcFragment"
@@ -274,61 +323,56 @@
             android:id="@+id/action_etcFragment_to_noticeFragment"
             app:destination="@id/noticeFragment"
             app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_missionPetFragment"
             app:destination="@id/missionPetFragment"
             app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_memberInfoFragment"
             app:destination="@id/memberInfoFragment"
             app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_questionFragment"
             app:destination="@id/questionFragment"
             app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_appSettingFragment"
             app:destination="@id/appSettingFragment"
             app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_welcomKitGuideFragment"
             app:destination="@id/welcomKitGuideFragment"
             app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_dogProfileFragment"
             app:destination="@id/dogProfileFragment"
             app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_left"
+            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_profileGraph"
-            app:destination="@id/profileGraph" />
+            app:destination="@id/profileGraph"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
+        <action
+            android:id="@+id/action_etcFragment_to_insuranceHistoryFragment"
+            app:destination="@id/insuranceHistoryFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/noticeFragment"
@@ -338,7 +382,10 @@
         >
         <action
             android:id="@+id/action_noticeFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/memberInfoFragment"
@@ -348,28 +395,49 @@
         >
         <action
             android:id="@+id/action_memberInfoFragment_to_changeEmailFragment"
-            app:destination="@id/changeEmailFragment" />
+            app:destination="@id/changeEmailFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_memberInfoFragment_to_changePasswordFragment"
-            app:destination="@id/changePasswordFragment" />
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             app:launchSingleTop="true"
             app:popUpTo="@id/loginGraph"
             app:popUpToInclusive="true"
             android:id="@+id/action_memberInfoFragment_to_loginScreen"
-            app:destination="@id/loginGraph" />
+            app:destination="@id/loginGraph"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_memberInfoFragment_to_changePhoneNumberFragment"
-            app:destination="@id/changePhoneNumberFragment" />
+            app:destination="@id/changePhoneNumberFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_memberInfoFragment_to_withdrawalFragment"
-            app:destination="@id/withdrawalFragment" />
+            app:destination="@id/withdrawalFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_memberInfoFragment_to_certWebFragment"
-            app:destination="@id/certWebFragment" />
+            app:destination="@id/certWebFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_memberInfoFragment_to_locationHistoryFragment"
-            app:destination="@id/locationHistoryFragment" />
+            app:destination="@id/locationHistoryFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/questionFragment"
@@ -379,10 +447,16 @@
         >
         <action
             android:id="@+id/action_questionFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_questionFragment_to_inquriyFragment"
-            app:destination="@id/inquriyFragment" />
+            app:destination="@id/inquriyFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/appSettingFragment"
@@ -392,10 +466,16 @@
         >
         <action
             android:id="@+id/action_appSettingFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
         <action
             android:id="@+id/action_appSettingFragment_to_policyFragment"
-            app:destination="@id/policyFragment" />
+            app:destination="@id/policyFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/welcomKitGuideFragment"
@@ -405,10 +485,12 @@
         >
         <action
             android:id="@+id/action_welcomKitGuideFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            />
         <action
             android:id="@+id/action_welcomKitGuideFragment_to_missionPetFragment"
-            app:destination="@id/missionPetFragment" />
+            app:destination="@id/missionPetFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/policyFragment"
@@ -423,7 +505,10 @@
 
         <action
             android:id="@+id/action_policyFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/dogProfileFragment"
@@ -436,7 +521,10 @@
             app:argType="ai.comake.petping.data.vo.PetProfileConfig" />
         <action
             android:id="@+id/action_dogProfileFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/changeEmailFragment"
@@ -459,10 +547,12 @@
             tools:layout="@layout/fragment_login">
             <action
                 android:id="@+id/action_loginFragment_to_emailLoginFragment"
-                app:destination="@id/emailLoginFragment" />
+                app:destination="@id/emailLoginFragment"
+                />
             <action
                 android:id="@+id/action_loginFragment_to_agreementFragment"
-                app:destination="@id/agreementFragment" />
+                app:destination="@id/agreementFragment"
+                />
         </fragment>
         <fragment
             android:id="@+id/emailLoginFragment"
@@ -471,14 +561,19 @@
             tools:layout="@layout/fragment_email_login" >
             <action
                 android:id="@+id/action_emailLoginFragment_to_findPasswordFragment"
-                app:destination="@id/findPasswordFragment" />
+                app:destination="@id/findPasswordFragment"
+                />
             <action
                 android:id="@+id/action_emailLoginFragment_to_signUpEmailFragment"
-                app:destination="@id/signUpEmailFragment" />
+                app:destination="@id/signUpEmailFragment"
+                />
         </fragment>
         <action
+            app:popUpTo="@id/homeScreen"
+            app:popUpToInclusive="true"
             android:id="@+id/action_global_homeScreen"
-            app:destination="@id/homeScreen" />
+            app:destination="@id/homeScreen"
+            />
         <fragment
             android:id="@+id/agreementFragment"
             android:name="ai.comake.petping.ui.login.AgreementFragment"
@@ -491,7 +586,8 @@
         </fragment>
         <action
             android:id="@+id/action_global_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            />
         <fragment
             android:id="@+id/findPasswordFragment"
             android:name="ai.comake.petping.ui.login.FindPasswordFragment"
@@ -500,7 +596,8 @@
             >
             <action
                 android:id="@+id/action_findPasswordFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                app:destination="@id/loginFragment"
+                />
         </fragment>
         <fragment
             android:id="@+id/signUpEmailFragment"
@@ -510,7 +607,8 @@
             >
             <action
                 android:id="@+id/action_signUpEmailFragment_to_agreementFragment"
-                app:destination="@id/agreementFragment" />
+                app:destination="@id/agreementFragment"
+                />
         </fragment>
     </navigation>
     <fragment
@@ -525,7 +623,8 @@
             app:argType="ai.comake.petping.data.vo.ChangePhoneNumberConfig" />
         <action
             android:id="@+id/action_changePhoneNumberFragment_to_certWebFragment"
-            app:destination="@id/certWebFragment" />
+            app:destination="@id/certWebFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/certWebFragment"
@@ -546,7 +645,8 @@
         >
         <action
             android:id="@+id/action_withdrawalFragment_to_homeScreen"
-            app:destination="@id/homeScreen" />
+            app:destination="@id/homeScreen"
+            />
     </fragment>
     <fragment
         android:id="@+id/locationHistoryFragment"
@@ -562,7 +662,8 @@
         >
         <action
             android:id="@+id/action_certificationFragment_to_certWebFragment"
-            app:destination="@id/certWebFragment" />
+            app:destination="@id/certWebFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/RNSFragment"
@@ -584,16 +685,20 @@
         >
         <action
             android:id="@+id/action_insuranceHistoryFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            />
         <action
             android:id="@+id/action_insuranceHistoryFragment_to_certificationFragment"
-            app:destination="@id/certificationFragment" />
+            app:destination="@id/certificationFragment"
+            />
         <action
             android:id="@+id/action_insuranceHistoryFragment_to_memberInfoFragment"
-            app:destination="@id/memberInfoFragment" />
+            app:destination="@id/memberInfoFragment"
+            />
         <action
             android:id="@+id/action_insuranceHistoryFragment_to_connectFragment"
-            app:destination="@id/connectFragment" />
+            app:destination="@id/connectFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/connectFragment"
@@ -609,10 +714,12 @@
 
         <action
             android:id="@+id/action_connectFragment_to_certWebFragment"
-            app:destination="@id/certWebFragment" />
+            app:destination="@id/certWebFragment"
+            />
         <action
             android:id="@+id/action_connectFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -627,19 +734,24 @@
             />
         <action
             android:id="@+id/action_settingFragment_to_RNSFragment"
-            app:destination="@id/RNSFragment" />
+            app:destination="@id/RNSFragment"
+            />
         <action
             android:id="@+id/action_settingFragment_to_missionPetFragment"
-            app:destination="@id/missionPetFragment" />
+            app:destination="@id/missionPetFragment"
+            />
         <action
             android:id="@+id/action_settingFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            />
         <action
             android:id="@+id/action_settingFragment_to_characterEditFragment"
-            app:destination="@id/characterEditFragment" />
+            app:destination="@id/characterEditFragment"
+            />
         <action
             android:id="@+id/action_settingFragment_to_profileEditFragment"
-            app:destination="@id/profileEditFragment" />
+            app:destination="@id/profileEditFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/characterEditFragment"
@@ -665,7 +777,8 @@
             />
         <action
             android:id="@+id/action_profileEditFragment_to_homeScreen"
-            app:destination="@id/homeScreen" />
+            app:destination="@id/homeScreen"
+            />
     </fragment>
     <fragment
         android:id="@+id/tipAllFragment"
@@ -675,7 +788,8 @@
         >
         <action
             android:id="@+id/action_tipAllFragment_to_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            />
     </fragment>
     <navigation android:id="@+id/profileGraph"
         app:startDestination="@id/profileFragment">
@@ -692,10 +806,12 @@
             tools:layout="@layout/fragment_profile">
             <action
                 android:id="@+id/action_profileFragment_to_familyFragment"
-                app:destination="@id/familyFragment" />
+                app:destination="@id/familyFragment"
+                />
             <action
                 android:id="@+id/action_profileFragment_to_newProfileFirstFragment"
-                app:destination="@id/newProfileFirstFragment" />
+                app:destination="@id/newProfileFirstFragment"
+                />
         </fragment>
         <fragment
             android:id="@+id/familyFragment"
@@ -705,11 +821,13 @@
             >
             <action
                 android:id="@+id/action_familyFragment_to_familyConfirmFragment"
-                app:destination="@id/familyConfirmFragment" />
+                app:destination="@id/familyConfirmFragment"
+                />
         </fragment>
         <action
             android:id="@+id/action_family_code_guide_contentsWebFragment"
-            app:destination="@id/contentsWebFragment" />
+            app:destination="@id/contentsWebFragment"
+            />
         <fragment
             android:id="@+id/familyConfirmFragment"
             android:name="ai.comake.petping.ui.profile.make.family.FamilyConfirmFragment"
@@ -732,7 +850,8 @@
             >
             <action
                 android:id="@+id/action_newProfileFirstFragment_to_newProfileSecondFragment"
-                app:destination="@id/newProfileSecondFragment" />
+                app:destination="@id/newProfileSecondFragment"
+                />
         </fragment>
         <fragment
             android:id="@+id/newProfileSecondFragment"
@@ -742,7 +861,8 @@
             >
             <action
                 android:id="@+id/action_newProfileSecondFragment_to_newProfileThirdFragment"
-                app:destination="@id/newProfileThirdFragment" />
+                app:destination="@id/newProfileThirdFragment"
+                />
         </fragment>
         <fragment
             android:id="@+id/newProfileThirdFragment"
@@ -752,7 +872,8 @@
             >
             <action
                 android:id="@+id/action_newProfileThirdFragment_to_missionPetGuideFragment"
-                app:destination="@id/missionPetGuideFragment" />
+                app:destination="@id/missionPetGuideFragment"
+                />
         </fragment>
         <fragment
             android:id="@+id/missionPetGuideFragment"
@@ -761,7 +882,8 @@
             tools:layout="@layout/fragment_mission_pet_guide"/>
         <action
             android:id="@+id/action_profile_to_missionPetFragment"
-            app:destination="@id/missionPetFragment" />
+            app:destination="@id/missionPetFragment"
+            />
     </navigation>
     <fragment
         android:id="@+id/inquriyFragment"
@@ -769,5 +891,20 @@
         android:label="InquriyFragment"
         tools:layout="@layout/fragment_inquiry"
         />
+    <fragment
+        android:id="@+id/userGuideFragment"
+        android:name="ai.comake.petping.ui.guide.UserGuideFragment"
+        android:label="UserGuideFragment"
+        tools:layout="@layout/fragment_user_guide"
+        >
+        <action
+            android:id="@+id/action_userGuideFragment_to_homeScreen"
+            app:destination="@id/homeScreen"
+            />
+        <action
+            android:id="@+id/action_userGuideFragment_to_loginGraph"
+            app:destination="@id/loginGraph"
+            />
+    </fragment>
 
 </navigation>

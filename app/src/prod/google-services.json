@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "964762664590",
+    "firebase_url": "https://petping-64dd7.firebaseio.com",
+    "project_id": "petping-64dd7",
+    "storage_bucket": "petping-64dd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964762664590:android:a0940b59bfdc0754cbd3df",
+        "android_client_info": {
+          "package_name": "com.smallticket.petping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964762664590-tbmpbiqtns75v6iq8enscjtoq8uemho4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTPcgKf_VmiERpHQNRaRy0k72w3gUnAvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964762664590-tbmpbiqtns75v6iq8enscjtoq8uemho4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

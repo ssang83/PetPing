@@ -6,6 +6,7 @@
         <variable
             name="viewModel"
             type="ai.comake.petping.ui.etc.inquiry.QuestionViewModel" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,13 +22,18 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_marginTop="54dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
+
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
-                android:background="@color/greyscale_1_fff">
+                android:background="@color/greyscale_1_fff"
+                app:appBarOffsetChangeListener="@{viewModel.appBarScrollListener}"
+                >
+
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,6 +44,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_e4e4e4"
+                            android:visibility="@{viewModel.isScroll == true ? View.VISIBLE : View.GONE, default = gone}"
+                            />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -64,6 +77,7 @@
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"

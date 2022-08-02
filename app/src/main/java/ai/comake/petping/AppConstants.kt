@@ -64,6 +64,7 @@ object AppConstants {
     val PREF_KEY_UUID_KEY = "UUID_KEY"
     val PREF_KEY_AUTHORITY_POP_UP = "AUTHORITY_POP_UP"
     val PREF_KEY_GUIDE_POP_UP_SHOW = "GUIDE_POP_UP_SHOW"
+    val PREF_FCM_TOKEN = "FCM_TOKEN"
 
     @SuppressLint("HardwareIds")
     fun getAndroidId(context: Context): String {

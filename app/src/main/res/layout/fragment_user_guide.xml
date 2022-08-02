@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.guide.UserGuideViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_1_fff"
+        >
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/guideIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@drawable/guide_indicator_selector"
+            android:layout_marginTop="38dp"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingStart="6dp"
+            app:tabPaddingEnd="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textLayer"
+            app:layout_constraintTop_toBottomOf="@+id/guideIndicator"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="건강 관리의 시작"
+                app:guideText1="@{viewModel.pagePosition}"
+                android:textSize="20dp"
+                android:textColor="@color/primary_pink"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:layout_gravity="center"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="반려견 산책"
+                app:guideText2="@{viewModel.pagePosition}"
+                android:textSize="30dp"
+                android:textColor="@color/greyscale_9_111"
+                android:fontFamily="@font/nanum_square_round"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="산책 시간과 거리를 간편하게 기록하고\n주변 추천 장소와 반려견 친구를 만나보세요."
+                app:guideText3="@{viewModel.pagePosition}"
+                android:textSize="14dp"
+                android:textColor="@color/greyscale_8_444"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:layout_gravity="center"
+                android:layout_marginTop="17dp"
+                android:lineSpacingExtra="7dp"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/userGuideViewPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/textLayer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/buttonLayer"
+            android:fadeScrollbars="false"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            app:pageChangeListener="@{viewModel.pageChangeListener}"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttonLayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/nextAndSkip"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/primary_pink"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="@{viewModel.lastPage == false ? View.VISIBLE : View.GONE}"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/guide_skip"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="15dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="30dp"
+                    app:onSafeClick="@{view -> viewModel.start()}"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/guide_next"
+                    android:textColor="@color/greyscale_1_fff"
+                    android:textSize="15dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="30dp"
+                    app:onSafeClick="@{view -> viewModel.next()}"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/goToLogin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/primary_pink"
+                app:onSafeClick="@{view -> viewModel.start()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:visibility="gone"
+                android:visibility="@{viewModel.lastPage == true ? View.VISIBLE : View.GONE}"
+                >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/petping_start"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/nanum_square_round_b"
+                    android:textColor="@color/greyscale_1_fff"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

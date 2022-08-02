@@ -111,10 +111,6 @@ class HomePopupDialogFragment(
                     "homeviewd_homepopup3_click_label"
                 )
 
-                homePopupList.forEach { popup ->
-                    preference.setClosePopup(popup.id)
-                }
-
                 dismiss()
             }
         }
@@ -126,9 +122,6 @@ class HomePopupDialogFragment(
         override fun createFragment(position: Int) =
             PopupImageFragment(
                 callback = {
-                    homePopupList.forEach { popup ->
-                        preference.setClosePopup(popup.id)
-                    }
                     dismiss()
                 }
             ).apply {

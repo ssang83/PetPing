@@ -4,6 +4,7 @@ import ai.comake.petping.*
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.AppDataRepository
 import ai.comake.petping.data.vo.AppInfo
+import android.view.View
 import android.widget.CompoundButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -48,6 +49,9 @@ class AppSettingViewModel @Inject constructor() : ViewModel() {
     private val _isUpdate = MutableLiveData<Boolean>()
     val isUpdate: LiveData<Boolean> get() = _isUpdate
 
+    private val _isScroll = MutableLiveData<Boolean>().apply { value = false }
+    val isScroll:LiveData<Boolean> get() = _isScroll
+
     val moveToStore = MutableLiveData<Event<Unit>>()
     val moveToPolicy = MutableLiveData<Event<AppInfo>>()
     val moveToLincense = MutableLiveData<Event<String>>()
@@ -55,6 +59,22 @@ class AppSettingViewModel @Inject constructor() : ViewModel() {
     val uiState = MutableLiveData<Event<UiState>>()
 
     var appInfo: AppInfo? = null
+
+    val scrollChangeListener = object : View.OnScrollChangeListener {
+        override fun onScrollChange(
+            v: View?,
+            scrollX: Int,
+            scrollY: Int,
+            oldScrollX: Int,
+            oldScrollY: Int
+        ) {
+            if (v?.scrollY == 0) {
+                _isScroll.value = false
+            } else {
+                _isScroll.value = true
+            }
+        }
+    }
 
     fun loadData() {
         _version.value = "v${BuildConfig.VERSION_NAME}"

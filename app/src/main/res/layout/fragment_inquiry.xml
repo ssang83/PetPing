@@ -20,6 +20,14 @@
             layout="@layout/layout_back"
             />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_e4e4e4"
+            android:visibility="@{viewModel.isScroll == true ? View.VISIBLE : View.GONE, default = gone}"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            />
+
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="0dp"
@@ -28,6 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/bottom_button"
+            app:scrollChangeListener="@{viewModel.scrollChangeListener}"
             >
 
             <LinearLayout

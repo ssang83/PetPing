@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,10 +41,6 @@ class ShopViewModel @Inject constructor() : ViewModel() {
     val scrollTopFlag:LiveData<Boolean>
         get() = _scrollTopFlag
 
-    private val _topBtnVisible = MutableLiveData<Boolean>().apply { value = false }
-    val topBtnVisible:LiveData<Boolean>
-        get() = _topBtnVisible
-
     private val _moveToGodoMall = MutableLiveData<Event<String>>()
     val moveToGodoMall:LiveData<Event<String>>
         get() = _moveToGodoMall
@@ -64,8 +61,32 @@ class ShopViewModel @Inject constructor() : ViewModel() {
     val shopItemsErrorPopup:LiveData<Event<ErrorResponse>>
         get() = _shopItemsErrorPopup
 
+    private val _isShowButton = MutableLiveData<Boolean>().apply { value = false }
+    val isShowButton:LiveData<Boolean> get() = _isShowButton
+
+    private val _isShowBanner = MutableLiveData<Boolean>().apply { value = false }
+    val isShowBanner:LiveData<Boolean> get() = _isShowBanner
+
+    val ballonStatus = MutableLiveData<Boolean>().apply { value = false }
+
     var godoUrl = ""
     var productUrl = ""
+
+    val appBarScrollListener = object : AppBarLayout.OnOffsetChangedListener {
+        override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+            closeBallon()
+            val maxScrollSize = appBarLayout.totalScrollRange
+            val currentScrollPercentage = (Math.abs(verticalOffset)) * 100 / maxScrollSize
+
+            if (currentScrollPercentage >= 50) {
+                _isShowButton.value = true
+            }
+
+            if (currentScrollPercentage < 50) {
+                _isShowButton.value = false
+            }
+        }
+    }
 
     fun loadData() = viewModelScope.launch {
         val response =
@@ -75,6 +96,7 @@ class ShopViewModel @Inject constructor() : ViewModel() {
                 _pingShopItems.value = response.value.data.recommendGoodsList
                 _petName.value = "${response.value.data.pet.name}에게 "
                 _pingAmount.value = response.value.data.availablePings.toString().toNumberFormat()
+                _isShowBanner.value = true
             }
             is Resource.Failure -> {
                 response.errorBody?.let { body ->
@@ -102,10 +124,6 @@ class ShopViewModel @Inject constructor() : ViewModel() {
         _scrollTopFlag.value = true
     }
 
-    fun setTopBtnStatus(status:Boolean) {
-        _topBtnVisible.value = status
-    }
-
     fun shopSignUp() = viewModelScope.launch {
         val response = shopRepository.shopSignUp(AppConstants.AUTH_KEY, AppConstants.ID)
         when (response) {
@@ -131,5 +149,13 @@ class ShopViewModel @Inject constructor() : ViewModel() {
                 }
             }
         }
+    }
+
+    fun showBallon() {
+        ballonStatus.value = true
+    }
+
+    fun closeBallon() {
+        ballonStatus.value = false
     }
 }

@@ -35,7 +35,7 @@
             android:theme="@style/Theme.MaterialComponents.Light"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintDimensionRatio="H,4:3"
             >
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -111,11 +111,11 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="P"
+                    tools:text="Ping"
                     app:goodsPriceUnit="@{item}"
                     android:textColor="@color/greyscale_9_111"
                     android:textSize="18dp"
-                    android:fontFamily="@font/nanum_square_round"
+                    android:fontFamily="@font/nanum_square_round_b"
                     />
             </LinearLayout>
 
@@ -147,7 +147,7 @@
                     android:text="%"
                     android:textSize="18dp"
                     android:textColor="@color/primary_pink"
-                    android:fontFamily="@font/nanum_square_round"
+                    android:fontFamily="@font/nanum_square_round_b"
                     app:layout_constraintTop_toTopOf="@+id/dcRate"
                     app:layout_constraintStart_toEndOf="@+id/dcRate"
                     />
@@ -175,10 +175,10 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="P"
+                        android:text="Ping"
                         android:textColor="@color/greyscale_9_111"
                         android:textSize="18dp"
-                        android:fontFamily="@font/nanum_square_round"
+                        android:fontFamily="@font/nanum_square_round_b"
                         />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

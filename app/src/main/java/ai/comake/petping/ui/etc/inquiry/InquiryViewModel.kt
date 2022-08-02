@@ -9,6 +9,9 @@ import ai.comake.petping.util.getBitmapFromInputStream
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -53,6 +56,9 @@ class InquiryViewModel @Inject constructor() : ViewModel() {
     private val _typeInputStatus = MutableStateFlow(false)
     val typeInputStatus get() = _typeInputStatus
 
+    private val _isScroll = MutableLiveData<Boolean>().apply { value = false }
+    val isScroll: LiveData<Boolean> get() = _isScroll
+
     val imageMargin = MutableStateFlow(false)
     val isBottomBtnShow = MutableStateFlow(false)
 
@@ -66,6 +72,22 @@ class InquiryViewModel @Inject constructor() : ViewModel() {
     val imageList = arrayListOf<String>()
     var inquiryTypes: List<InquiryType> = listOf()
     var inquiryList = arrayListOf<String>()
+
+    val scrollChangeListener = object : View.OnScrollChangeListener {
+        override fun onScrollChange(
+            v: View?,
+            scrollX: Int,
+            scrollY: Int,
+            oldScrollX: Int,
+            oldScrollY: Int
+        ) {
+            if (v?.scrollY == 0) {
+                _isScroll.value = false
+            } else {
+                _isScroll.value = true
+            }
+        }
+    }
 
     fun getType() = Coroutines.main(this) {
         _uiState.emit(UiState.Loading)

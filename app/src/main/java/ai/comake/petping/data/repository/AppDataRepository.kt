@@ -10,15 +10,11 @@ class AppDataRepository @Inject constructor(private val webService: WebService) 
         webService.appVersion(authKey)
     }
 
-    suspend fun testLogin(sapaKey:String, body: RequestBody) = safeApiCall {
-        webService.testLogin(sapaKey, body)
-    }
-
     suspend fun getAccessTokenTime(authKey: String) = safeApiCall {
         webService.getAccessTokenTime(authKey)
     }
 
-    suspend fun getAppInfo(authKey: String, memberId:String) = safeApiCall {
+    suspend fun getAppInfo(authKey: String, memberId: String) = safeApiCall {
         webService.getAppInfo(authKey, memberId)
     }
 
@@ -26,13 +22,15 @@ class AppDataRepository @Inject constructor(private val webService: WebService) 
         webService.getNotificationStatus(authKey, memberId)
     }
 
-    suspend fun setPushMarketingInfo(authKey: String, memberId: String, body: RequestBody) = safeApiCall {
-        webService.setPushMarketingInfo(authKey, memberId, body)
-    }
+    suspend fun setPushMarketingInfo(authKey: String, memberId: String, body: RequestBody) =
+        safeApiCall {
+            webService.setPushMarketingInfo(authKey, memberId, body)
+        }
 
-    suspend fun setNotificationStatus(authKey: String, type:String, body: RequestBody) = safeApiCall {
-        webService.setNotificationStatus(authKey, type, body)
-    }
+    suspend fun setNotificationStatus(authKey: String, type: String, body: RequestBody) =
+        safeApiCall {
+            webService.setNotificationStatus(authKey, type, body)
+        }
 
     suspend fun getDashboard(
         authKey: String,
@@ -44,7 +42,16 @@ class AppDataRepository @Inject constructor(private val webService: WebService) 
         lat: String,
         lng: String
     ) = safeApiCall {
-        webService.getDashboard(authKey, appVersion, osVersion, deviceInfo, mobileCarrierInfo, deviceId, lat, lng)
+        webService.getDashboard(
+            authKey,
+            appVersion,
+            osVersion,
+            deviceInfo,
+            mobileCarrierInfo,
+            deviceId,
+            lat,
+            lng
+        )
     }
 
     suspend fun getDashboard(
@@ -58,18 +65,32 @@ class AppDataRepository @Inject constructor(private val webService: WebService) 
         lat: String,
         lng: String
     ) = safeApiCall {
-        webService.getDashboard(authKey, appVersion, osVersion, deviceInfo, mobileCarrierInfo, deviceId, profileId, lat, lng)
+        webService.getDashboard(
+            authKey,
+            appVersion,
+            osVersion,
+            deviceInfo,
+            mobileCarrierInfo,
+            deviceId,
+            profileId,
+            lat,
+            lng
+        )
     }
 
     suspend fun getPingTip(authKey: String) = safeApiCall {
         webService.getPingTip(authKey)
     }
 
-    suspend fun getPingZoneFriends(authKey: String, petId:Int) = safeApiCall {
+    suspend fun getPingZoneFriends(authKey: String, petId: Int) = safeApiCall {
         webService.getPingZoneFriends(authKey, petId)
     }
 
     suspend fun getAppVersion(authKey: String) = safeApiCall {
         webService.getAppVersion(authKey)
+    }
+
+    suspend fun registFcmToken(authKey: String, requestBody: RequestBody) = safeApiCall {
+        webService.registFcmToken(authKey, requestBody)
     }
 }

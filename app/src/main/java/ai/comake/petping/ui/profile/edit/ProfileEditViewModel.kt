@@ -7,6 +7,8 @@ import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.util.*
 import android.content.Context
 import android.net.Uri
+import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -49,6 +51,7 @@ class ProfileEditViewModel @Inject constructor() : ViewModel() {
     val gender = MutableLiveData<Int>().apply { value = -1 }
     val profileId = MutableLiveData<Int>().apply { value = -1 }
     val profileType = MutableLiveData<Int>().apply { value = -1 }
+    val isScroll = MutableLiveData<Boolean>().apply { value = false }
 
     val deleteErrorPopup = MutableLiveData<Event<ErrorResponse>>()
     val deletePopup = MutableLiveData<Event<Unit>>()
@@ -63,6 +66,22 @@ class ProfileEditViewModel @Inject constructor() : ViewModel() {
     var needPhotoUpdated = false
     var breedList:List<String> = listOf()
     var petId = -1
+
+    val scrollChangeListener = object : View.OnScrollChangeListener {
+        override fun onScrollChange(
+            v: View?,
+            scrollX: Int,
+            scrollY: Int,
+            oldScrollX: Int,
+            oldScrollY: Int
+        ) {
+            if (v?.scrollY == 0) {
+                isScroll.value = false
+            } else {
+                isScroll.value = true
+            }
+        }
+    }
 
     fun loadData(_petId: Int) {
         petId = _petId

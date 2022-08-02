@@ -19,6 +19,15 @@ import javax.inject.Inject
 
 class SharedPreferencesManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
+    fun saveFCMTokenDataStore(token: String) {
+        sharedPreferences.edit()
+            .putString(AppConstants.PREF_FCM_TOKEN, token).apply()
+    }
+
+    fun getFCMTokenDataStore(): String {
+        return sharedPreferences.getString(AppConstants.PREF_FCM_TOKEN, "") ?: ""
+    }
+
     fun saveLoginDataStore(userDataStore: UserDataStore) {
         sharedPreferences.edit()
             .putString(AppConstants.PREF_KEY_ACCESS_TOKEN, userDataStore.access_token).apply()
@@ -30,19 +39,19 @@ class SharedPreferencesManager @Inject constructor(private val sharedPreferences
         sharedPreferences.edit().remove(AppConstants.PREF_KEY_ACCESS_TOKEN).apply()
     }
 
-    fun getDataStoreLoginId() : String {
-        return sharedPreferences.getString(AppConstants.PREF_KEY_USER_ID,"") ?: ""
+    fun getDataStoreLoginId(): String {
+        return sharedPreferences.getString(AppConstants.PREF_KEY_USER_ID, "") ?: ""
     }
 
-    fun getDataStoreAccessToken() : String {
-        return sharedPreferences.getString(AppConstants.PREF_KEY_ACCESS_TOKEN,"") ?: ""
+    fun getDataStoreAccessToken(): String {
+        return sharedPreferences.getString(AppConstants.PREF_KEY_ACCESS_TOKEN, "") ?: ""
+    }
+
+    fun hasFCMTokenDataStore(): Boolean {
+        return sharedPreferences.getString(AppConstants.PREF_FCM_TOKEN, "") != ""
     }
 
     fun hasLoginDataStore(): Boolean {
-        LogUtil.log(
-            "TAG",
-            ": ${sharedPreferences.getString(AppConstants.PREF_KEY_ACCESS_TOKEN, "")}"
-        )
         return sharedPreferences.getString(
             AppConstants.PREF_KEY_ACCESS_TOKEN,
             ""

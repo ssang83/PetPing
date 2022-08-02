@@ -156,7 +156,7 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
             AppConstants.colorList[2],
             "0",
             AppConstants.colorList[6],
-            "2",
+            "0",
             AppConstants.colorList[2],
             7,
             "",

@@ -1,6 +1,7 @@
 package ai.comake.petping
 
 import ai.comake.petping.AppConstants.AUTH_KEY
+import ai.comake.petping.AppConstants.FCM_TOKEN
 import ai.comake.petping.AppConstants.ID
 import ai.comake.petping.AppConstants.SYSTEM_CHECKING_INFO
 import ai.comake.petping.AppConstants.SYSTEM_CHECKING_INFO_DEV
@@ -186,10 +187,18 @@ class MainFragment : Fragment() {
                                 viewModel.systemCheckDesc.value = obj["contents"].toString()
                             } else {
                                 viewModel.systemCheckMode.value = false
-                                checkUnProcessedWalk()
+                                if (sharedPreferencesManager.getAuthorityPopup().not()) {
+                                    goToGuide()
+                                } else {
+                                    checkUnProcessedWalk()
+                                }
                             }
                         } catch (e: Exception) {
-                            checkUnProcessedWalk()
+                            if (sharedPreferencesManager.getAuthorityPopup().not()) {
+                                goToGuide()
+                            } else {
+                                checkUnProcessedWalk()
+                            }
                         }
                     }
                 }
@@ -212,6 +221,11 @@ class MainFragment : Fragment() {
         is MainViewModel.MainEvent.SystemCheck -> {
             checkSystemInfo()
         }
+    }
+
+    private fun goToGuide() {
+        requireActivity().findNavController(R.id.nav_main)
+            .navigate(R.id.action_mainScreen_to_userGuideFragment)
     }
 
     private fun checkUnProcessedWalk() {

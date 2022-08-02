@@ -19,6 +19,8 @@ class HomeShareViewModel : ViewModel() {
     private val _moveToReward = MutableLiveData<Event<Unit>>()
     val moveToReward: LiveData<Event<Unit>> = _moveToReward
 
+    var screenName: String = "dashBoardScreen"
+
     fun isVisibleBottomNavigation(value: Boolean) {
         _isVisibleBottomNavigation.value = Event(value)
     }

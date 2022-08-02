@@ -65,14 +65,13 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
 
                 moveToHome.emit()
             }
-            is Resource.Failure -> {
+            is Resource.Error -> {
                 uiState.emit(UiState.Failure(null))
                 response.errorBody?.let { errorBody ->
-                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                    if (errorResponse.message.contains("이메일")) {
-                        emailErrorPopup.emit(errorResponse)
-                    } else if (errorResponse.message.contains("비밀번호")) {
-                        passwordErrorPopup.emit(errorResponse)
+                    if (errorBody.message.contains("이메일")) {
+                        emailErrorPopup.emit(errorBody)
+                    } else if (errorBody.message.contains("비밀번호")) {
+                        passwordErrorPopup.emit(errorBody)
                     }
                 }
             }

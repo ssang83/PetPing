@@ -62,7 +62,7 @@ class PetItemAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        LogUtil.log("TAG", "position $position")
+//        LogUtil.log("TAG", "position $position")
         return if (mItems.size < 10) {
             if (position == mItems.size) {
                 FOOTER_VIEW

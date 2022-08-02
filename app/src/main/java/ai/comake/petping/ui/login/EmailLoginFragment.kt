@@ -65,6 +65,8 @@ class EmailLoginFragment :
             }
 
             moveToHome.observeEvent(viewLifecycleOwner) {
+                mainShareViewModel.registFCMToken()
+
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(R.id.action_global_homeScreen)
             }

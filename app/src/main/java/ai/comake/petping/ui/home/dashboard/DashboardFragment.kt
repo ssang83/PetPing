@@ -14,7 +14,7 @@ import ai.comake.petping.ui.home.HomeFragmentDirections
 import ai.comake.petping.ui.home.HomeShareViewModel
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.setSafeOnClickListener
-import ai.comake.petping.util.updateLightStatusBar
+import ai.comake.petping.util.updateWhiteStatusBar
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
@@ -31,9 +31,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,8 +44,10 @@ class DashboardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        updateLightStatusBar(requireActivity().window)
-        viewModel.getPingTip()
+        viewModel.apply {
+            getPingTip()
+            getPetList()
+        }
     }
 
     override fun onCreateView(
@@ -63,6 +63,7 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         LogUtil.log("TAG", "")
+        updateWhiteStatusBar(requireActivity().window)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
@@ -70,16 +71,12 @@ class DashboardFragment : Fragment() {
 
         with(viewModel) {
 
-            getPetList()
-
-            petListSuccess.observeEvent(viewLifecycleOwner) {
-                // Location 가져오는 로직은 추후에 추가 예정....
-                getDashboard(
-                    requireContext(),
-                    AppConstants.lastLocation.latitude,
-                    AppConstants.lastLocation.longitude
-                )
-            }
+            // Location 가져오는 로직은 추후에 추가 예정....
+            getDashboard(
+                requireContext(),
+                AppConstants.lastLocation.latitude,
+                AppConstants.lastLocation.longitude
+            )
 
             updateAnimation.observeEvent(viewLifecycleOwner) { info ->
                 updateAnimationInfo(info)
@@ -115,8 +112,10 @@ class DashboardFragment : Fragment() {
             }
 
             showHomePopup.observeEvent(viewLifecycleOwner) { popupList ->
-                val bottomDialog = HomePopupDialogFragment(popupList)
-                bottomDialog.show(childFragmentManager, "HomePopupDialog")
+                if (homeShareViewModel.screenName == "dashBoardScreen") {
+                    val bottomDialog = HomePopupDialogFragment(popupList)
+                    bottomDialog.show(childFragmentManager, "HomePopupDialog")
+                }
             }
 
             moveToMakeProfile.observeEvent(viewLifecycleOwner) {

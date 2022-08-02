@@ -44,11 +44,13 @@
     <color name="d8d8d8">#d8d8d8</color>
     <color name="color_e5e5e5">#e5e5e5</color>
     <color name="color_14000000">#14000000</color>
+    <color name="color_ffffff_alpha_90">#e5ffffff</color>
 
     <color name="seleted_dot">#ff4857</color>
     <color name="default_dot">#dddddd</color>
     <color name="seleted_dot1">#777777</color>
     <color name="default_dot1">#d1d1d1</color>
+    <color name="default_dot2">#7fffffff</color>
     <color name="guide_popup_bg">#77000000</color>
 
     <color name="transfer">#00FFFFFF</color>

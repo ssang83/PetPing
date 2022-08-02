@@ -13,6 +13,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,9 +41,30 @@ class NoticeViewModel @Inject constructor() : ViewModel() {
     private val _scrollTopFlag = MutableLiveData<Boolean>().apply { value = false }
     val scrollTopFlag: LiveData<Boolean> get() = _scrollTopFlag
 
+    private val _isScroll = MutableLiveData<Boolean>().apply { value = false }
+    val isScroll:LiveData<Boolean> get() = _isScroll
+
     val moveToNoticePage = MutableLiveData<Event<String>>()
     val errorPopup = MutableLiveData<Event<ErrorResponse>>()
     val uiState = MutableLiveData<Event<UiState>>()
+
+    val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if(recyclerView.canScrollVertically(-1)) {
+                _isScroll.value = true
+            } else {
+                _isScroll.value = false
+            }
+
+            (recyclerView.layoutManager as LinearLayoutManager).apply {
+                val visibleCount = findFirstVisibleItemPosition()
+                when {
+                    visibleCount >= 3 -> _topBtnVisible.value = true
+                    else -> _topBtnVisible.value = false
+                }
+            }
+        }
+    }
 
     fun loadData() = viewModelScope.launch {
         uiState.emit(UiState.Loading)

@@ -1,20 +1,15 @@
 package ai.comake.petping.ui.home.insurance
 
-import ai.comake.petping.AppConstants
-import ai.comake.petping.R
 import ai.comake.petping.databinding.FragmentInsuranceBinding
-import ai.comake.petping.databinding.FragmentRewardBinding
 import ai.comake.petping.observeEvent
-import ai.comake.petping.ui.base.BaseFragment
-import ai.comake.petping.util.*
+import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.updateWhiteStatusBar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -29,11 +24,6 @@ class InsuranceFragment : Fragment() {
     private lateinit var binding: FragmentInsuranceBinding
     private val viewModel by viewModels<InsuranceViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        updateLightStatusBar(requireActivity().window)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +36,7 @@ class InsuranceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         LogUtil.log("TAG","")
+        updateWhiteStatusBar(requireActivity().window)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 

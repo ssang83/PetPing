@@ -210,7 +210,7 @@ object BindingUtils {
                     )
 
                     setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
-                    text = "P"
+                    text = "Ping"
                 }
                 else -> {
                     setTextColor(
@@ -222,7 +222,7 @@ object BindingUtils {
 
                     setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
                     paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    text = "P"
+                    text = "Ping"
                 }
             }
         }
@@ -252,46 +252,8 @@ object BindingUtils {
 
     @JvmStatic
     @BindingAdapter("scrollListener")
-    fun setScrollListener(view: RecyclerView, viewModel: ShopViewModel) {
-        view.apply {
-            layoutManager = LinearLayoutManager(view.context).apply {
-                orientation = LinearLayoutManager.VERTICAL
-            }
-
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    (layoutManager as LinearLayoutManager).apply {
-                        val visibleCount = findFirstVisibleItemPosition()
-                        when {
-                            visibleCount >= 3 -> viewModel.setTopBtnStatus(true)
-                            else -> viewModel.setTopBtnStatus(false)
-                        }
-                    }
-                }
-            })
-        }
-    }
-
-    @JvmStatic
-    @BindingAdapter("scrollListener")
-    fun setScrollListener(view: RecyclerView, viewModel: NoticeViewModel) {
-        view.apply {
-            layoutManager = LinearLayoutManager(view.context).apply {
-                orientation = LinearLayoutManager.VERTICAL
-            }
-
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    (layoutManager as LinearLayoutManager).apply {
-                        val visibleCount = findFirstVisibleItemPosition()
-                        when {
-                            visibleCount >= 3 -> viewModel.setTopBtnStatus(true)
-                            else -> viewModel.setTopBtnStatus(false)
-                        }
-                    }
-                }
-            })
-        }
+    fun setScrollListener(view: RecyclerView, listener: RecyclerView.OnScrollListener) {
+        view.addOnScrollListener(listener)
     }
 
     @JvmStatic
@@ -508,22 +470,8 @@ object BindingUtils {
 
     @JvmStatic
     @BindingAdapter("eventScrollListener")
-    fun setEventScrollListener(view: EventScrollView, viewModel: EtcViewModel) {
-        view.apply {
-            setOnScrollListener(object : EventScrollView.OnScrollListener {
-                override fun onScrollChanged(l: Int, t: Int, oldX: Int, oldY: Int) {
-                    if (viewModel.isVisibleScrollView.value == true) {
-                        viewModel.isVisibleScrollView.value = false
-                    }
-                }
-
-                override fun onScrollEnd() {
-                    if (viewModel.isVisibleScrollView.value == false) {
-                        viewModel.isVisibleScrollView.value = true
-                    }
-                }
-            })
-        }
+    fun setEventScrollListener(view: EventScrollView, listener : EventScrollView.OnScrollListener) {
+        view.setOnScrollListener(listener)
     }
 
     @JvmStatic
@@ -1304,5 +1252,100 @@ object BindingUtils {
         }
 
         view.setText(ssb)
+    }
+
+    @JvmStatic
+    @BindingAdapter("guideText1")
+    fun setGuideText1(view:AppCompatTextView, position:Int) {
+        view.apply {
+            when (position) {
+                0 -> text = view.context.getString(R.string.guide_01)
+                1 -> text = view.context.getString(R.string.guide_02)
+                2 -> text = view.context.getString(R.string.guide_03)
+                3 -> text = view.context.getString(R.string.guide_04)
+                4 -> text = view.context.getString(R.string.guide_05)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("guideText2")
+    fun setGuideText2(view:AppCompatTextView, position:Int) {
+        view.apply {
+            when (position) {
+                0 -> {
+                    val title = view.context.getString(R.string.guide_title_01)
+                    val ssb = SpannableStringBuilder(title).apply {
+                        setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    setText(ssb)
+                }
+                1 -> {
+                    val title = view.context.getString(R.string.guide_title_02)
+                    val ssb = SpannableStringBuilder(title).apply {
+                        setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    setText(ssb)
+                }
+                2 -> {
+                    val title = view.context.getString(R.string.guide_title_03)
+                    val ssb = SpannableStringBuilder(title).apply {
+                        setSpan(StyleSpan(Typeface.BOLD), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    val ssb1 = SpannableStringBuilder(ssb).apply {
+                        setSpan(StyleSpan(Typeface.BOLD), 6, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    setText(ssb1)
+                }
+                3 -> {
+                    val title = view.context.getString(R.string.guide_title_04)
+                    val ssb = SpannableStringBuilder(title).apply {
+                        setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    setText(ssb)
+                }
+                4 -> {
+                    val title = view.context.getString(R.string.guide_title_05)
+                    val ssb = SpannableStringBuilder(title).apply {
+                        setSpan(StyleSpan(Typeface.BOLD), 0, title.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    setText(ssb)
+                }
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("guideText3")
+    fun setGuideText3(view:AppCompatTextView, position:Int) {
+        view.apply {
+            when (position) {
+                0 -> text = view.context.getString(R.string.guide_desc_01)
+                1 -> text = view.context.getString(R.string.guide_desc_02)
+                2 -> text = view.context.getString(R.string.guide_desc_03)
+                3 -> text = view.context.getString(R.string.guide_desc_04)
+                4 -> text = view.context.getString(R.string.guide_desc_05)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("pageChangeListener")
+    fun ViewPager2.bindPageChangeListener(pageChangeListener: ViewPager2.OnPageChangeCallback) {
+        registerOnPageChangeCallback(pageChangeListener)
+        overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        orientation = ViewPager2.ORIENTATION_HORIZONTAL
+    }
+
+    @JvmStatic
+    @BindingAdapter("appBarOffsetChangeListener")
+    fun AppBarLayout.addOffsetChangeListener(changeListener: AppBarLayout.OnOffsetChangedListener) {
+        addOnOffsetChangedListener(changeListener)
     }
 }

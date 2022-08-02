@@ -1,8 +1,9 @@
 package ai.comake.petping.firebase
 
-import ai.comake.petping.MainActivity
-import ai.comake.petping.R
+import ai.comake.petping.*
+import ai.comake.petping.AppConstants.FCM_TOKEN
 import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.SharedPreferencesManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -20,9 +21,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class IFirebaseMessaging : FirebaseMessagingService() {
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
+
     private val INTENT_CODE = 1
 
     override fun onMessageReceived(message: RemoteMessage) {
@@ -62,7 +69,7 @@ class IFirebaseMessaging : FirebaseMessagingService() {
         LogUtil.log("TAG", "token $token")
         Airbridge.registerPushToken(token)
         if (token.isNotEmpty()) {
-            registerToken()
+            saveTokenDataStore(token)
         }
     }
 
@@ -135,8 +142,8 @@ class IFirebaseMessaging : FirebaseMessagingService() {
         }
     }
 
-    private fun registerToken() {
-        //서버에 토큰 등록
+    private fun saveTokenDataStore(token: String) {
+        sharedPreferencesManager.saveFCMTokenDataStore(token)
     }
 
     companion object {

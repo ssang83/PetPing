@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="design_bottom_navigation_height" tools:override="true">56dp</dimen>
     <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="shop_banner_indicator_width">10dp</dimen>
 </resources>

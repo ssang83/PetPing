@@ -8,6 +8,8 @@ import ai.comake.petping.data.vo.MyPageData
 import ai.comake.petping.data.vo.MyPet
 import ai.comake.petping.data.vo.PetProfileConfig
 import ai.comake.petping.emit
+import ai.comake.petping.ui.common.widget.EventScrollView
+import ai.comake.petping.util.LogUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,18 +43,45 @@ class EtcViewModel @Inject constructor() : ViewModel() {
     private val _myPetItems = MutableLiveData<List<MyPet>>()
     val myPetItems:LiveData<List<MyPet>> get() = _myPetItems
 
+    private val _isScroll = MutableLiveData<Boolean>().apply { value = false }
+    val isScroll:LiveData<Boolean> get() = _isScroll
+
     val isVisibleScrollView = MutableLiveData<Boolean>().apply { value = true }
     val moveToMemberInfo = MutableLiveData<Event<Unit>>()
     val moveToNotice = MutableLiveData<Event<Unit>>()
     val moveToInquiry = MutableLiveData<Event<Unit>>()
     val moveToAppInfo = MutableLiveData<Event<Unit>>()
     val moveToMissionPet = MutableLiveData<Event<Unit>>()
-    val moveToWelcomeKit = MutableLiveData<Event<Unit>>()
     val moveToMakeProfile = MutableLiveData<Event<Unit>>()
+    val moveToPetInsuranceJoin = MutableLiveData<Event<Unit>>()
+    val moveToPetInsuranceApply = MutableLiveData<Event<Unit>>()
     val moveToPetProfile = MutableLiveData<Event<PetProfileConfig>>()
     val uiSetUp = MutableLiveData<Event<Unit>>()
 
     var etcFragmentInfo: MyPageData? = null
+
+    val eventScrollListener = object : EventScrollView.OnScrollListener {
+
+        override fun onScrollChanged(l: Int, t: Int, oldX: Int, oldY: Int) {
+            if (isVisibleScrollView.value == true) {
+                isVisibleScrollView.value = false
+            }
+
+            if (t == 0) {
+                _isScroll.value = false
+            } else {
+                _isScroll.value = true
+            }
+
+            LogUtil.log("l : $l, t: $t, oldX : $oldX, oldY : $oldY")
+        }
+
+        override fun onScrollEnd() {
+            if (isVisibleScrollView.value == false) {
+                isVisibleScrollView.value = true
+            }
+        }
+    }
 
     fun loadData() = viewModelScope.launch {
         val response = userDataRepository.getMyPageInfo(AppConstants.AUTH_KEY, AppConstants.ID)
@@ -89,10 +118,6 @@ class EtcViewModel @Inject constructor() : ViewModel() {
         moveToMissionPet.emit()
     }
 
-    fun goToWeclomKit() {
-        moveToWelcomeKit.emit()
-    }
-
     fun goToMakeProfile() {
         moveToMakeProfile.emit()
     }
@@ -102,5 +127,13 @@ class EtcViewModel @Inject constructor() : ViewModel() {
             petId, viewMode
         )
         moveToPetProfile.emit(config)
+    }
+
+    fun goToPetInsuranceJoin() {
+        moveToPetInsuranceJoin.emit()
+    }
+
+    fun goToPetInsuranceApply() {
+        moveToPetInsuranceApply.emit()
     }
 }

@@ -1,9 +1,12 @@
 package ai.comake.petping.ui.home
 
-import ai.comake.petping.AppConstants
+import ai.comake.petping.*
+import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT
-import ai.comake.petping.MainShareViewModel
-import ai.comake.petping.R
+import ai.comake.petping.AppConstants.FCM_TOKEN
+import ai.comake.petping.AppConstants.ID
+import ai.comake.petping.api.Resource
+import ai.comake.petping.data.repository.AppDataRepository
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentHomeBinding
 import ai.comake.petping.observeEvent
@@ -24,10 +27,15 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -66,15 +74,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        LogUtil.log("TAG", "args " + args.menulink)
+        LogUtil.log("TAG", "userId : ${ID}")
+        LogUtil.log("TAG", "token : ${AUTH_KEY}")
+
+        setUpObserver()
+        setupClickEvent()
+        checkMenuLink(args.menulink)
+
         if (navController == null) {
             setUpNavigation()
-            setupClickEvent()
-            setUpObserver()
-            checkMenuLink(args.menulink)
-
-            LogUtil.log("TAG", "args " + args.menulink)
-            LogUtil.log("TAG", "userId : ${AppConstants.ID}")
-            LogUtil.log("TAG", "token : ${AppConstants.AUTH_KEY}")
         }
     }
 
@@ -82,22 +91,27 @@ class HomeFragment : Fragment() {
         when (view.id) {
             R.id.dashBoardScreen -> {
                 LogUtil.log("TAG", "dashBoardScreen ")
+                homeShareViewModel.screenName = "dashBoardScreen"
                 showDashBoardScreen()
             }
             R.id.walkScreen -> {
                 LogUtil.log("TAG", "walkScreen ")
+                homeShareViewModel.screenName = "walkScreen"
                 showWalkScreen()
             }
             R.id.rewardScreen -> {
                 LogUtil.log("TAG", "rewardScreen ")
+                homeShareViewModel.screenName = "rewardScreen"
                 showRewardScreen()
             }
             R.id.shopScreen -> {
                 LogUtil.log("TAG", "shopScreen ")
+                homeShareViewModel.screenName = "shopScreen"
                 showShopScreen()
             }
             R.id.insuranceScreen -> {
                 LogUtil.log("TAG", "insuranceScreen ")
+                homeShareViewModel.screenName = "insuranceScreen"
                 showInsuranceScreen()
             }
         }

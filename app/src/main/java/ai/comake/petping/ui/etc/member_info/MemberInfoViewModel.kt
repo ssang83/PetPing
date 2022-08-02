@@ -3,6 +3,7 @@ package ai.comake.petping.ui.etc.member_info
 import ai.comake.petping.*
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.UserDataRepository
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,6 +55,9 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
     private val _isVisibleEmailSend = MutableLiveData<Boolean>().apply { value = false }
     val isVisibleEmailSend: LiveData<Boolean> get() = _isVisibleEmailSend
 
+    private val _isScroll = MutableLiveData<Boolean>().apply { value = false }
+    val isScroll:LiveData<Boolean> get() = _isScroll
+
     val emailAuthSuccessPopup = MutableLiveData<Event<Unit>>()
     val moveToWithDrawal = MutableLiveData<Event<Unit>>()
     val moveToChangePw = MutableLiveData<Event<Unit>>()
@@ -64,6 +68,22 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
     val moveToLocationHistory = MutableLiveData<Event<Unit>>()
     val logout = MutableLiveData<Event<Unit>>()
     val uiState = MutableLiveData<Event<UiState>>()
+
+    val scrollChangeListener = object : View.OnScrollChangeListener {
+        override fun onScrollChange(
+            v: View?,
+            scrollX: Int,
+            scrollY: Int,
+            oldScrollX: Int,
+            oldScrollY: Int
+        ) {
+            if (v?.scrollY == 0) {
+                _isScroll.value = false
+            } else {
+                _isScroll.value = true
+            }
+        }
+    }
 
     fun loadData() = viewModelScope.launch {
         uiState.emit(UiState.Loading)

@@ -8,6 +8,7 @@ import ai.comake.petping.data.vo.NetworkErrorEvent
 import ai.comake.petping.databinding.ActivityMainBinding
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.SharedPreferencesManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -23,10 +24,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val mainShareViewModel: MainShareViewModel by viewModels()
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
+
     private var destinationScreen = "mainScreen"
     lateinit var binding: ActivityMainBinding
 
@@ -36,23 +41,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpNavigation(window.decorView)
         setUpObserver()
-        LogUtil.log("TAG", "")
 
         FirebaseApp.initializeApp(this)
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                LogUtil.log("TAG", "FCM token: $task.exception")
-//                return@OnCompleteListener
-//            }
-//            val token = task.result
-//            LogUtil.log("TAG" ,"FCM token $token")
-//            if (token != null) {
-//                AppConstants.FCM_TOKEN = token
-////                if (AppConstants.AUTH_KEY.isNotEmpty()) {
-////                    viewModel.registerFCMToken()
-////                }
-//            }
-//        })
+        checkSavedFcmToken()
+        LogUtil.log("TAG", "")
+    }
+
+    private fun checkSavedFcmToken(){
+        if(!sharedPreferencesManager.hasFCMTokenDataStore()) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+                val token = task.result
+                LogUtil.log("TAG" ,"FCM token $token")
+                if (token != null) {
+                    sharedPreferencesManager.saveFCMTokenDataStore(token)
+                }
+            })
+        }
     }
 
     private fun setUpNavigation(view: View) {
@@ -73,6 +80,11 @@ class MainActivity : AppCompatActivity() {
             } else {
                 dismissLoadingDialog()
             }
+        }
+
+        mainShareViewModel.registFcmToken.observeEvent(this) { it ->
+            LogUtil.log("TAG", "registFcmToken: $it")
+            mainShareViewModel.registFCMToken()
         }
     }
 
@@ -199,4 +211,5 @@ class MainActivity : AppCompatActivity() {
     fun dismissLoadingDialog() {
         binding.loadingDialog.root.visibility = View.GONE
     }
+
 }
