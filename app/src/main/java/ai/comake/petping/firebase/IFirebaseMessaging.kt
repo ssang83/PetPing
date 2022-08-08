@@ -30,7 +30,7 @@ class IFirebaseMessaging : FirebaseMessagingService() {
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
-    private val INTENT_CODE = 1
+    private var INTENT_CODE = 1
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
@@ -39,13 +39,15 @@ class IFirebaseMessaging : FirebaseMessagingService() {
             return
         }
 
-        if (/* Check if data needs to be processed by long running job */ false) {
-            // For long-running tasks (10 seconds or more) use WorkManager.
-            scheduleJob(message)
-        } else {
-            // Handle message within 10 seconds
-            handleNow(message)
-        }
+        handleNow(message)
+
+//        if (/* Check if data needs to be processed by long running job */ false) {
+//            // For long-running tasks (10 seconds or more) use WorkManager.
+//            scheduleJob(message)
+//        } else {
+//            // Handle message within 10 seconds
+//            handleNow(message)
+//        }
     }
 
     /**
@@ -80,11 +82,15 @@ class IFirebaseMessaging : FirebaseMessagingService() {
             putExtra("type", message.data["type"] ?: "")
             putExtra("link", message.data["link"] ?: "")
             putExtra("title", message.data["title"] ?: "")
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
+
+        LogUtil.log("TAG2", "message.data[\"type\"] : ${message.data["type"] }")
+        LogUtil.log("TAG2", "message.data[\"link\"] : ${message.data["link"] }")
 
         pendingIntent = PendingIntent.getActivity(
             this,
-            INTENT_CODE,
+            INTENT_CODE++,
             notificationIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT
         )
@@ -119,6 +125,14 @@ class IFirebaseMessaging : FirebaseMessagingService() {
                 .asBitmap()
                 .load(imageUrl)
                 .into(object : CustomTarget<Bitmap>() {
+                    override fun onLoadFailed(errorDrawable: Drawable?) {
+                        super.onLoadFailed(errorDrawable)
+                        notificationManager.notify(
+                            getNotificationID(),
+                            notificationBuilder.build()
+                        )
+                    }
+
                     override fun onResourceReady(
                         resource: Bitmap,
                         transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?

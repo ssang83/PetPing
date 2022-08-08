@@ -305,6 +305,23 @@
     <string name="etc_title">더 보기</string>
     <string name="pet_ping_shop">펫핑샵</string>
     <string name="shop_guide_ballon_title">펫핑샵에서 반려견 웰니스 상품을 구\n매하세요. 신용카드로 추가 결제도\n할 수 있어요.</string>
+    <string name="pet_insurance_gnb">펫보험</string>
+    <string name="insurance_guide_ballon_title">펫보험에 가입하면 펫보험 전용 건강\n미션을 달성하고 리워드를 받을 수\n있어요.</string>
+    <string name="move_insurance_fee">보험료 확인하기</string>
+    <string name="hanhwa_desc_01">연 249,000원부터 가입 가능</string>
+    <string name="hanhwa_desc_02">* 만 1세 반려견 기준</string>
+    <string name="hanhwa_desc_03">만 10세까지 가입</string>
+    <string name="hanhwa_desc_04">다둥이 10% 할인</string>
+    <string name="hanhwa_desc_05">갱신 5% 할인</string>
+    <string name="hanhwa_desc_06">+ 펫핑 리워드 70,000 Ping</string>
+    <string name="db_desc_01">연 341,700원부터 가입 가능</string>
+    <string name="db_desc_02">* 만 1세 반려견 기준</string>
+    <string name="db_desc_03">슬관절/고관절</string>
+    <string name="db_desc_04">피부병</string>
+    <string name="db_desc_05">구강질병</string>
+    <string name="db_desc_06">+ 펫핑 리워드 40,000 Ping</string>
+    <string name="pet_insurance_apply_do">펫보험 청구하기</string>
+    <string name="pet_insurance_desc">펫핑은 금융위원회 혁신금융서비스로 지정된 국내 최초 \'펫보험 건강증진형 리워드 서비스\'를 제공합니다.</string>
 
     <string name="mission_pet_setting_title">
         <![CDATA[

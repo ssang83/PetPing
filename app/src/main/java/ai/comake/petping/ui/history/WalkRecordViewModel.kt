@@ -25,9 +25,10 @@ class WalkRecordViewModel @Inject constructor() : ViewModel() {
     val walkTime = MutableStateFlow("")
     val walkDistance = MutableStateFlow("")
     val markingCount = MutableStateFlow("")
+    val markingTitle = MutableStateFlow("")
     val markingDetail = MutableStateFlow("")
     val rewardPoint = MutableStateFlow("")
-    val isShowRewardView = MutableStateFlow(false)
+    val isShowRewardView = MutableStateFlow(true)
 
     private val _isSucceedSave = MutableLiveData<Event<Boolean>>()
     val isSucceedSave: LiveData<Event<Boolean>>

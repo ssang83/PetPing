@@ -13,8 +13,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:background="@color/greyscale_1_fff"
         >
 
@@ -39,96 +37,177 @@
             app:layout_constraintBottom_toTopOf="@+id/social_container"
             >
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/btn_naver_bg"
-                android:clickable="true"
-                android:focusable="true"
-                app:onSafeClick="@{view -> viewModel.goToNaverLogin()}"
+                android:layout_height="55dp"
                 >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/btn_naver_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:onSafeClick="@{view -> viewModel.goToNaverLogin()}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="18dp"
+                        android:src="@drawable/naver_icon"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@string/naver_login"
+                        android:textColor="@color/greyscale_1_fff"
+                        android:textSize="15dp" />
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="18dp"
-                    android:src="@drawable/naver_icon"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:text="@string/naver_login"
-                    android:textColor="@color/greyscale_1_fff"
-                    android:textSize="15dp"
-                    android:visibility="@{viewModel.loginType == 2 ? View.GONE : View.VISIBLE}"
+                    android:src="@drawable/ic_last_login"
+                    android:adjustViewBounds="true"
+                    android:layout_marginEnd="17dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="@{viewModel.loginType == 2 ? View.VISIBLE : View.GONE}"
                     />
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/btn_kakao_bg"
+                android:layout_height="55dp"
                 android:layout_marginTop="12dp"
-                app:onSafeClick="@{view -> viewModel.goToKakaoLogin()}"
                 >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/btn_kakao_bg"
+                    app:onSafeClick="@{view -> viewModel.goToKakaoLogin()}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="18dp"
+                        android:src="@drawable/kakao_icon"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@string/kakao_login"
+                        android:textColor="@color/greyscale_9_111"
+                        android:textSize="15dp"
+                        />
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="18dp"
-                    android:src="@drawable/kakao_icon"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:text="@string/kakao_login"
-                    android:textColor="@color/greyscale_9_111"
-                    android:textSize="15dp"
-                    android:visibility="@{viewModel.loginType == 3 ? View.GONE : View.VISIBLE}"
+                    android:src="@drawable/ic_last_login"
+                    android:adjustViewBounds="true"
+                    android:layout_marginEnd="17dp"
+                    android:visibility="@{viewModel.loginType == 3 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     />
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="55dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/img_apple_login"
-                android:adjustViewBounds="true"
-                app:onSafeClick="@{view -> viewModel.goToAppleLogin()}"
-                />
+                >
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:background="@drawable/btn_other_bg"
-                android:layout_marginTop="12dp"
-                app:onSafeClick="@{view -> viewModel.goToOtherLogin()}">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="18dp"
-                    android:src="@drawable/letter_icon"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:layout_centerInParent="true"
-                    android:fontFamily="@font/nanum_square_round_b"
-                    android:textColor="@color/greyscale_9_111"
-                    android:text="@string/other_login"
-                    android:visibility="@{viewModel.loginType == 1 ? View.GONE : View.VISIBLE}"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/img_apple_login"
+                    android:adjustViewBounds="true"
+                    app:onSafeClick="@{view -> viewModel.goToAppleLogin()}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     />
-            </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_last_login"
+                    android:layout_marginEnd="17dp"
+                    android:adjustViewBounds="true"
+                    android:visibility="@{viewModel.loginType == 6 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="12dp"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/btn_other_bg"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    app:onSafeClick="@{view -> viewModel.goToOtherLogin()}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="18dp"
+                        android:src="@drawable/letter_icon"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:textColor="@color/greyscale_9_111"
+                        android:text="@string/other_login"
+                        />
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_last_login"
+                    android:adjustViewBounds="true"
+                    android:layout_marginEnd="17dp"
+                    android:visibility="@{viewModel.loginType == 1 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
         <LinearLayout

@@ -6,6 +6,7 @@ import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.ShopRepository
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.RecommendGoods
+import ai.comake.petping.data.vo.ShopPopup
 import ai.comake.petping.emit
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.getErrorBodyConverter
@@ -61,6 +62,10 @@ class ShopViewModel @Inject constructor() : ViewModel() {
     val shopItemsErrorPopup:LiveData<Event<ErrorResponse>>
         get() = _shopItemsErrorPopup
 
+    private val _moveToBannerDetail = MutableLiveData<Event<String>>()
+    val moveToBannerDetail:LiveData<Event<String>>
+        get() = _moveToBannerDetail
+
     private val _isShowButton = MutableLiveData<Boolean>().apply { value = false }
     val isShowButton:LiveData<Boolean> get() = _isShowButton
 
@@ -71,6 +76,7 @@ class ShopViewModel @Inject constructor() : ViewModel() {
 
     var godoUrl = ""
     var productUrl = ""
+    var bannerList:List<ShopPopup> = listOf()
 
     val appBarScrollListener = object : AppBarLayout.OnOffsetChangedListener {
         override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
@@ -93,15 +99,27 @@ class ShopViewModel @Inject constructor() : ViewModel() {
             shopRepository.getShopRecommendList(AppConstants.AUTH_KEY, AppConstants.ID)
         when (response) {
             is Resource.Success -> {
-                _pingShopItems.value = response.value.data.recommendGoodsList
-                _petName.value = "${response.value.data.pet.name}에게 "
-                _pingAmount.value = response.value.data.availablePings.toString().toNumberFormat()
-                _isShowBanner.value = true
+                if (response.value.status == "200") {
+                    _pingShopItems.value = response.value.data.recommendGoodsList
+                    _petName.value = if(response.value.data.pet.name == null) {
+                        "펫핑이 "
+                    } else {
+                        "${response.value.data.pet.name}에게 "
+                    }
+                    _pingAmount.value = response.value.data.detailPings.availablePings.toString().toNumberFormat()
+                    if (response.value.data.popupList.size > 0) {
+                        bannerList = response.value.data.popupList
+                        _isShowBanner.value = true
+                    } else {
+                        _isShowBanner.value = false
+                    }
+                } else {
+                    _shopItemsErrorPopup.emit(response.value.error)
+                }
             }
-            is Resource.Failure -> {
+            is Resource.Error -> {
                 response.errorBody?.let { body ->
-                    val errorResponse = getErrorBodyConverter().convert(body)!!
-                    _shopItemsErrorPopup.emit(errorResponse)
+                    _shopItemsErrorPopup.emit(body)
                 }
             }
         }
@@ -157,5 +175,9 @@ class ShopViewModel @Inject constructor() : ViewModel() {
 
     fun closeBallon() {
         ballonStatus.value = false
+    }
+
+    fun onBannerClicked(url: String) {
+        _moveToBannerDetail.emit(url)
     }
 }

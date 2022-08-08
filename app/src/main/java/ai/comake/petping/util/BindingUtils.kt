@@ -38,12 +38,14 @@ import ai.comake.petping.ui.profile.SettingFamilyViewModel
 import ai.comake.petping.ui.profile.SettingViewModel
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.AnimationDrawable
 import android.net.Uri
 import android.os.Message
 import android.text.*
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.View
@@ -1347,5 +1349,51 @@ object BindingUtils {
     @BindingAdapter("appBarOffsetChangeListener")
     fun AppBarLayout.addOffsetChangeListener(changeListener: AppBarLayout.OnOffsetChangedListener) {
         addOnOffsetChangedListener(changeListener)
+    }
+
+    @JvmStatic
+    @BindingAdapter("bgShopBanner")
+    fun setBgShopBanner(view: ImageView, bgCode: String) {
+        view.setBackgroundColor(Color.parseColor(bgCode))
+    }
+
+    @JvmStatic
+    @BindingAdapter("hanhwaText1")
+    fun setHanhwaText1(view: TextView, desc: String) {
+        val ssb = SpannableStringBuilder(desc).apply {
+            setSpan(ForegroundColorSpan(Color.parseColor("#ff4857")), 2, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        view.setText(ssb)
+    }
+
+    @JvmStatic
+    @BindingAdapter("hanhwaText2")
+    fun setHanhwaText2(view: TextView, desc: String) {
+        val ssb = SpannableStringBuilder(desc).apply {
+            setSpan(ForegroundColorSpan(Color.parseColor("#ff4857")), 8, 15, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        view.setText(ssb)
+    }
+
+    @JvmStatic
+    @BindingAdapter("dbText1")
+    fun setDBText1(view: TextView, desc: String) {
+        val ssb = SpannableStringBuilder(desc).apply {
+            setSpan(ForegroundColorSpan(Color.parseColor("#ff4857")), 2, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        view.setText(ssb)
+    }
+
+    @JvmStatic
+    @BindingAdapter("dbText2")
+    fun setDBText2(view: TextView, desc: String) {
+        val ssb = SpannableStringBuilder(desc).apply {
+            setSpan(ForegroundColorSpan(Color.parseColor("#ff4857")), 8, 15, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        view.setText(ssb)
     }
 }

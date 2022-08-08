@@ -44,6 +44,8 @@
             android:value="@string/naver_map_sdk_client_id" />
 
         <activity
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

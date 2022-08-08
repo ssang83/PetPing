@@ -112,6 +112,7 @@ class DashboardFragment : Fragment() {
             }
 
             showHomePopup.observeEvent(viewLifecycleOwner) { popupList ->
+                LogUtil.log("screenName : ${homeShareViewModel.screenName}")
                 if (homeShareViewModel.screenName == "dashBoardScreen") {
                     val bottomDialog = HomePopupDialogFragment(popupList)
                     bottomDialog.show(childFragmentManager, "HomePopupDialog")

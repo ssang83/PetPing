@@ -17,7 +17,7 @@ interface WebService {
         @Header("Authorization") authKey: String
     ): AppVersionResponse
 
-    @GET("/v1/petping/shop/goods/recommendation")
+    @GET("/v2/petping/shop/goods/recommendation")
     suspend fun getShopItemsList(
         @Header("Authorization") authKey: String,
         @Query("memberId") memberId: String
@@ -689,4 +689,9 @@ interface WebService {
         @Header("Authorization") authKey: String,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    @GET("/v2/petping/insurances")
+    suspend fun getInsurances(
+        @Header("Authorization") authKey: String,
+    ): CommonResponse<JoinInsuranceResponse>
 }

@@ -37,14 +37,7 @@ class AppleSignInDialog(
 
             webViewClient = AppleWebClient()
 
-            loadUrl(
-                "https://appleid.apple.com/auth/authorize" +
-                        "?client_id=kr.co.petdoc.auth" +
-                        "&redirect_uri=https://auth.petdoc.co.kr/auth/appleapp" +
-                        "&response_type=code%20id_token" +
-                        "&state=&scope=name%20email" +
-                        "&response_mode=form_post"
-            )
+            loadUrl("https://dev.petping.com/oauth/apple/login")
         }
 
         setContentView(webView)
@@ -75,9 +68,11 @@ class AppleSignInDialog(
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-            //petdoc://?userKey=001252.54e066d2f1c04beba9267648f48c0a7f.0934
+            //petpingapple://?email=devyeony@gmail.com
+            // &authWord=000994.3da820954aad4215bf6b5378a0f781ad.0146
+            // &authorizationCode=ejxmKhGGg+K3SvwFWgCeJnD/I71ouVAtC77N2bLN3ItAfhNez0j3X/N8nJFqTLuJjUArS61QPLf5XvYVC5t76w==
             url?.let {
-                if (it.startsWith("petdoc")) {
+                if (it.startsWith("petpingapple")) {
                     val tempUrl = it.split("=")
                     callBack?.invoke(tempUrl[1])
                     dismiss()

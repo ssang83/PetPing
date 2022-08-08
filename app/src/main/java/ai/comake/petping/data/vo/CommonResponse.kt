@@ -1,9 +1,8 @@
 package ai.comake.petping.data.vo
 
 data class ErrorResponse(
-    val result: Boolean,
-    val status: Number,
     val code: String,
+    val title: String,
     val message: String
 )
 
@@ -26,10 +25,9 @@ data class ServerErrorResponse(
 }
 
 data class CommonResponse<T>(
-    val result: Boolean,
-    val status: Number,
+    val status: String,
     val data: T,
-    var errorResponse: ErrorResponse
+    var error: ErrorResponse
 )
 
 data class CommonListResponse<T>(

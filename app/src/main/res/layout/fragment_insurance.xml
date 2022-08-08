@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable name="viewModel"
@@ -17,59 +17,491 @@
         android:background="@color/greyscale_1_fff"
         >
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="펫보험 x 리워드 안내"
-            android:textSize="30dp"
-            android:textColor="@color/greyscale_9_000"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:layout_marginTop="94dp"
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:scrollChangeListener="@{viewModel.scrollChangeListener}"
+            >
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="펫보험에 가입하면\n펫보험 전용 건강 미션을 달성하고\n리워드 핑(포인트)을 받을 수 있어요. \n펫핑을 운영하는 (주)스몰티켓은\n금융위원회 혁신금융서비스로 지정된\n국내 최초 '펫보험 건강증진형 리워드 서비스'\n를 제공합니다."
-            android:textSize="18dp"
-            android:textColor="@color/greyscale_9_000"
-            android:fontFamily="@font/nanum_square_round"
-            android:layout_marginTop="69dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textAlignment="center"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="46dp"
+                    android:layout_marginStart="20dp"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pet_insurance_gnb"
+                        android:textSize="24dp"
+                        android:textColor="@color/color_111111"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_shop_guide"
+                        android:adjustViewBounds="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_gravity="center"
+                        app:onSafeClick="@{view -> viewModel.showBallon()}"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/bg_top_round_white"
+                    android:elevation="20dp"
+                    android:orientation="vertical"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/img_hanhwa"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="24dp"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="17dp"
+                        android:layout_gravity="center"
+                        tools:text="@string/hanhwa_desc_01"
+                        app:hanhwaText1="@{@string/hanhwa_desc_01}"
+                        android:textColor="@color/color_111111"
+                        android:textSize="18dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hanhwa_desc_02"
+                        android:layout_marginTop="4dp"
+                        android:textSize="11dp"
+                        android:textColor="@color/color_99999"
+                        android:layout_gravity="center"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="63dp"
+                                android:layout_height="63dp"
+                                android:src="@drawable/img_hanhwa_01"
+                                android:adjustViewBounds="true"
+                                android:layout_gravity="center"
+                                />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/hanhwa_desc_03"
+                                android:textColor="@color/color_000000"
+                                android:textSize="11dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="10dp"
+                            >
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="63dp"
+                                android:layout_height="63dp"
+                                android:src="@drawable/img_hanhwa_02"
+                                android:adjustViewBounds="true"
+                                android:layout_gravity="center"
+                                />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/hanhwa_desc_04"
+                                android:textColor="@color/color_000000"
+                                android:textSize="11dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="10dp"
+                            >
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="63dp"
+                                android:layout_height="63dp"
+                                android:src="@drawable/img_hanhwa_03"
+                                android:adjustViewBounds="true"
+                                android:layout_gravity="center"
+                                />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/hanhwa_desc_05"
+                                android:textColor="@color/color_000000"
+                                android:textSize="11dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/color_f0f0f0"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/hanhwa_desc_06"
+                        app:hanhwaText2="@{@string/hanhwa_desc_06}"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="25dp"
+                        android:textSize="15dp"
+                        android:textColor="@color/color_111111"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/bg_bottom_round_black"
+                    app:onSafeClick="@{view -> viewModel.moveHanhwaJoin()}"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/move_insurance_fee"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="14dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/bg_top_round_white"
+                    android:elevation="20dp"
+                    android:orientation="vertical"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/img_db"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="24dp"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="17dp"
+                        android:layout_gravity="center"
+                        tools:text="@string/db_desc_01"
+                        app:hanhwaText1="@{@string/db_desc_01}"
+                        android:textColor="@color/color_111111"
+                        android:textSize="18dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/db_desc_02"
+                        android:layout_marginTop="4dp"
+                        android:textSize="11dp"
+                        android:textColor="@color/color_99999"
+                        android:layout_gravity="center"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            >
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="63dp"
+                                android:layout_height="63dp"
+                                android:src="@drawable/img_db_01"
+                                android:adjustViewBounds="true"
+                                android:layout_gravity="center"
+                                />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/db_desc_03"
+                                android:textColor="@color/color_000000"
+                                android:textSize="11dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="19dp"
+                            >
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="63dp"
+                                android:layout_height="63dp"
+                                android:src="@drawable/img_db_02"
+                                android:adjustViewBounds="true"
+                                android:layout_gravity="center"
+                                />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/db_desc_04"
+                                android:textColor="@color/color_000000"
+                                android:textSize="11dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="19dp"
+                            >
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="63dp"
+                                android:layout_height="63dp"
+                                android:src="@drawable/img_db_03"
+                                android:adjustViewBounds="true"
+                                android:layout_gravity="center"
+                                />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/db_desc_05"
+                                android:textColor="@color/color_000000"
+                                android:textSize="11dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/color_f0f0f0"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/db_desc_06"
+                        app:dbText2="@{@string/db_desc_06}"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="25dp"
+                        android:textSize="15dp"
+                        android:textColor="@color/color_111111"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:layout_gravity="center"
+                        />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/bg_bottom_round_black"
+                    app:onSafeClick="@{view -> viewModel.moveDBJoin()}"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/move_insurance_fee"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="14dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/goToApply"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/btn_outline_666"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    app:onSafeClick="@{view -> viewModel.moveToApply()}"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pet_insurance_apply_do"
+                        android:textSize="14dp"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:textColor="@color/color_111111"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="184dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/img_insurance"
+                    android:adjustViewBounds="true"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="20dp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pet_insurance_desc"
+                    android:textColor="@color/color_99999"
+                    android:textSize="11dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:lineSpacingExtra="7dp"
+                    />
+            </LinearLayout>
+        </ScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/goToMall"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:background="@drawable/bg_orange_solid_round_3"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            app:onSafeClick="@{view -> viewModel.goToInsurance()}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="118dp"
+            android:layout_marginTop="47dp"
+            android:paddingTop="10dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/bg_shop_guide_ballon"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="@{viewModel.ballonStatus == true ? View.VISIBLE : View.GONE , default = gone}"
             >
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="펫보험 바로가기"
-                android:textSize="14dp"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:textColor="@color/greyscale_1_fff"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/insurance_guide_ballon_title"
+                android:textSize="10dp"
+                android:textColor="@color/color_111111"
+                android:lineSpacingExtra="5dp"
+                android:fontFamily="@font/nanum_square_round"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/ic_shop_guide_close_b"
+                android:adjustViewBounds="true"
+                android:layout_marginStart="9dp"
+                app:layout_constraintStart_toEndOf="@+id/tvDesc"
+                app:layout_constraintTop_toTopOf="parent"
+                app:onSafeClick="@{view -> viewModel.closeBallon()}"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

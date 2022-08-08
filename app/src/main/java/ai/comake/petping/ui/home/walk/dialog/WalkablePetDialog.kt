@@ -81,9 +81,13 @@ class WalkablePetDialog(
     private fun setOnClickListener() {
         binding.startWalkButton.setSafeOnClickListener {
             callback.invoke(walkPets)
-            dismissAllowingStateLoss()
+
         }
     }
 
     private fun isVisibleAllTogether(size: Int) = size in 1..5
+
+    fun dismissWalkablePetDialog() {
+        dismissAllowingStateLoss()
+    }
 }

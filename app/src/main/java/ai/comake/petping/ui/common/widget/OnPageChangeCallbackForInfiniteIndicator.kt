@@ -1,18 +1,13 @@
 package ai.comake.petping.ui.common.widget
 
 import ai.comake.petping.R
-import androidx.viewpager2.widget.ViewPager2
-import android.widget.LinearLayout
-
+import ai.comake.petping.data.vo.ShopPopup
 import android.app.Activity
-import android.widget.ImageView
-
 import android.view.View
-
 import android.view.ViewGroup
-
-
-
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.viewpager2.widget.ViewPager2
 
 
 /**
@@ -24,13 +19,13 @@ import android.view.ViewGroup
  */
 class OnPageChangeCallbackForInfiniteIndicator(
     _activity: Activity,
-    _bannerList: List<Int>,
+    _bannerList: List<ShopPopup>,
     _currentItem: Int
 ) : ViewPager2.OnPageChangeCallback() {
 
     private val activity: Activity = _activity
     private val pageIndicatorList: MutableList<ImageView> = mutableListOf()
-    private val bannerList: List<Int> = _bannerList
+    private val bannerList: List<ShopPopup> = _bannerList
     private var containerIndicator: LinearLayout? = null
     private var viewPagerActivePosition = _currentItem
     private var positionToUse = 0

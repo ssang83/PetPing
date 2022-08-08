@@ -99,6 +99,8 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     var mClusterPOIs: List<MarkingPoi> = emptyList()
     var walkData = listOf<Walk>()
 
+    var walkablePetDialog: WalkablePetDialog? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
@@ -291,8 +293,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 
         _myMarkingList.value.add(myMarkingPoi)
         displayMyMarkingPOI(_myMarkingList.value)
-
-
     }
 
     fun onClickNavWalkHistoryDetail(petId: Int) {
@@ -308,6 +308,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     private fun setUpObserver() {
         lifecycleScope.launch {
             viewModel.walkablePetList.collectLatest {
+                LogUtil.log("TAG", "walkablePetList.collectLatest : $")
                 openWalkablePetDialog(it as ArrayList<WalkablePet.Pets>)
             }
         }
@@ -332,6 +333,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         }
 
         viewModel.isSucceedReadyForWalk.observeEvent(viewLifecycleOwner) { walkstart ->
+            walkablePetDialog?.dismissWalkablePetDialog()
             localWalkData =
                 Walk(
                     walkId = walkstart.walk.id,
@@ -344,8 +346,20 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             viewModel.startWalk(true)
         }
 
-        viewModel.isFaiedReadyForWalk.observeEvent(viewLifecycleOwner) {
-            LogUtil.log("TAG", "it $it")
+        viewModel.isFailedReadyForWalk.observeEvent(viewLifecycleOwner) { errorResponse ->
+            if (errorResponse != null) {
+                if (errorResponse.code == "C4080" || errorResponse.code == "C4090") {
+                    SingleBtnDialog(
+                        mContext,
+                        "산책할 수 없습니다.",
+                        errorResponse.message
+                    ) {
+                    }.show()
+                } else if (errorResponse.code == "C4081") {
+                    SingleBtnDialog(mContext, "기존 산책이 종료되지 않음", errorResponse.message) {
+                    }.show()
+                }
+            }
         }
 
         viewModel.isStopWalkService.observeEvent(viewLifecycleOwner) { isComplete ->
@@ -405,7 +419,8 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         viewModel.hasMoreWalkGuideItem = false
         viewModel.walkGuideListItem = arrayListOf()
 
-        mMarkingDetailClusterListAdapter = MarkingDetailClusterRecyclerViewAdapter(viewModel,this::onClickNavWalkHistoryDetail)
+        mMarkingDetailClusterListAdapter =
+            MarkingDetailClusterRecyclerViewAdapter(viewModel, this::onClickNavWalkHistoryDetail)
         binding.walkTracker.clusterDetailView.clusterRecyclerView.apply {
             addItemDecoration(
                 SpaceItemDecoration(
@@ -649,13 +664,15 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 
     private fun openWalkablePetDialog(items: ArrayList<WalkablePet.Pets>) {
         LogUtil.log("TAG", "items: $items")
-        WalkablePetDialog(items) { item ->
+        walkablePetDialog = WalkablePetDialog(items) {item ->
             viewModel.walkAblePetList = item as ArrayList<WalkablePet.Pets>
             val petIds = item.map {
                 it.id
             }
             asyncWalkId(petIds)
-        }.showAllowingStateLoss(childFragmentManager)
+        }
+
+        walkablePetDialog?.showAllowingStateLoss(childFragmentManager)
     }
 
     fun asyncWalkId(petIds: List<Int>) {

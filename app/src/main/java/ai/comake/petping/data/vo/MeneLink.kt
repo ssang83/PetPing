@@ -4,9 +4,8 @@ import java.io.Serializable
 
 sealed class MenuLink : Serializable {
     data class Fcm(
-        val title: String,
-        val message: String,
-        val type: String
+        var type: String,
+        var link: String
     ) : MenuLink()
 
     data class Airbridge(

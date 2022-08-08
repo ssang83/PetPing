@@ -1,10 +1,14 @@
 package ai.comake.petping
 
 import ai.comake.petping.AppConstants.AUTH_KEY
+import ai.comake.petping.AppConstants.FCM_LINK
 import ai.comake.petping.AppConstants.FCM_TOKEN
+import ai.comake.petping.AppConstants.FCM_TYPE
 import ai.comake.petping.AppConstants.ID
 import ai.comake.petping.AppConstants.SYSTEM_CHECKING_INFO
 import ai.comake.petping.AppConstants.SYSTEM_CHECKING_INFO_DEV
+import ai.comake.petping.AppConstants.closeMissionAlert
+import ai.comake.petping.AppConstants.closeMissionPetAlert
 import ai.comake.petping.data.db.walk.Walk
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.data.vo.WalkFinishRequest
@@ -50,6 +54,8 @@ class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModels()
 
     var walkData = listOf<Walk>()
+
+    var menuLink: MenuLink? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -207,8 +213,23 @@ class MainFragment : Fragment() {
     }
 
     private fun initAppConstant() {
-        AppConstants.closeMissionAlert = false
-        AppConstants.closeMissionPetAlert = false
+        closeMissionAlert = false
+        closeMissionPetAlert = false
+
+        ID = sharedPreferencesManager.getDataStoreLoginId()
+        AUTH_KEY = sharedPreferencesManager.getDataStoreAccessToken()
+
+        val type = activity?.intent?.getStringExtra("type") ?: ""
+        val link = activity?.intent?.getStringExtra("link") ?: ""
+        menuLink =  MenuLink.Fcm(type,link)
+
+//        FCM_TYPE = activity?.intent?.getStringExtra("type") ?: ""
+//        FCM_LINK = activity?.intent?.getStringExtra("link") ?: ""
+
+        LogUtil.log("TAG", "ID: $ID")
+        LogUtil.log("TAG", "AUTH_KEY: $AUTH_KEY")
+        LogUtil.log("TAG", "FCM_TYPE: $FCM_TYPE")
+        LogUtil.log("TAG", "FCM_LINK: $FCM_LINK")
     }
 
     private fun handleEvent(event: MainViewModel.MainEvent) = when (event) {
@@ -254,13 +275,25 @@ class MainFragment : Fragment() {
 
     private fun checkSavedLogin() {
         if (sharedPreferencesManager.hasLoginDataStore()) {
-            ID = sharedPreferencesManager.getDataStoreLoginId()
-            AUTH_KEY = sharedPreferencesManager.getDataStoreAccessToken()
+            if (menuLink != null) {
+                findNavController().navigate(
+                    MainFragmentDirections.actionMainToHome().setMenulink(menuLink)
+                )
+            } else {
+                findNavController().navigate(R.id.action_main_to_home)
+            }
 
-            findNavController().navigate(R.id.action_main_to_home)
         } else {
             findNavController().navigate(R.id.action_main_to_login)
         }
+    }
+
+    private fun getIntentMessage() {
+        val type = activity?.intent?.getStringExtra("type")
+        val link = activity?.intent?.getStringExtra("link")
+
+        LogUtil.log("TAG", "type: $type")
+        LogUtil.log("TAG", "link: $link")
     }
 
 //    private fun setUpDeepLink() {

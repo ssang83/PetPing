@@ -112,6 +112,12 @@
             android:id="@+id/action_homeScreen_to_dogProfileFragment"
             app:destination="@id/dogProfileFragment"
             />
+        <action
+            android:id="@+id/action_homeScreen_to_contentsWebFragment2"
+            app:destination="@id/contentsWebFragment" />
+        <action
+            android:id="@+id/action_homeScreen_to_contentsWebFragment3"
+            app:destination="@id/contentsWebFragment" />
 
     </fragment>
 
@@ -370,6 +376,13 @@
         <action
             android:id="@+id/action_etcFragment_to_insuranceHistoryFragment"
             app:destination="@id/insuranceHistoryFragment"
+            app:enterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
+            />
+
+        <action
+            android:id="@+id/action_etcFragment_to_contentsWebFragment"
+            app:destination="@id/contentsWebFragment"
             app:enterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right"
             />

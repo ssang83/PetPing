@@ -29,4 +29,8 @@ class InsuranceRepository @Inject constructor(private val webService: WebService
     suspend fun connectPetInsurance(authkey: String, body: RequestBody) = safeApiCall {
         webService.connectPetInsurance(authkey, body)
     }
+
+    suspend fun getJoinInsurance(authkey: String) = safeApiCall {
+        webService.getInsurances(authkey)
+    }
 }

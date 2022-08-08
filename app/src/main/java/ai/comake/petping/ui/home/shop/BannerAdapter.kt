@@ -1,6 +1,7 @@
 package ai.comake.petping.ui.home.shop
 
 import ai.comake.petping.R
+import ai.comake.petping.data.vo.ShopPopup
 import ai.comake.petping.databinding.ItemShopBannerBinding
 import ai.comake.petping.ui.base.BindingViewHolder
 import android.view.LayoutInflater
@@ -16,9 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
  * Description:
  */
 class BannerAdapter(
-    private val viewModel: ShopViewModel,
-    private val bannerList:List<Int>
+    private val viewModel: ShopViewModel
 ) : RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
+
+    private var bannerList = viewModel.bannerList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -36,9 +38,9 @@ class BannerAdapter(
     override fun getItemCount() = Int.MAX_VALUE
 
     inner class ViewHolder(view: View) : BindingViewHolder<ItemShopBannerBinding>(view) {
-        fun bind(id : Int) {
+        fun bind(item : ShopPopup) {
             binding.viewModel = viewModel
-            binding.bannerImg.setBackgroundResource(id)
+            binding.item = item
         }
     }
 

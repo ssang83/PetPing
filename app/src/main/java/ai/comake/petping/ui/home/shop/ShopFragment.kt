@@ -3,6 +3,7 @@ package ai.comake.petping.ui.home.shop
 import ai.comake.petping.AirbridgeManager
 import ai.comake.petping.R
 import ai.comake.petping.data.vo.GodoMallConfig
+import ai.comake.petping.data.vo.WebConfig
 import ai.comake.petping.databinding.FragmentShopBinding
 import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
@@ -21,9 +22,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.ceil
 
 @AndroidEntryPoint
 class ShopFragment : Fragment(){
@@ -82,6 +81,13 @@ class ShopFragment : Fragment(){
                         requireActivity().findNavController(R.id.nav_main)
                             .navigate(HomeFragmentDirections.actionHomeScreenToProfileGraph(false))
                     }
+                    else -> {
+                        SingleBtnDialog(
+                            requireContext(),
+                            errorBody.title,
+                            errorBody.message
+                        ).show()
+                    }
                 }
             }
 
@@ -120,6 +126,16 @@ class ShopFragment : Fragment(){
                     )
                 }
             }
+
+            moveToBannerDetail.observeEvent(viewLifecycleOwner) { url ->
+                val config = WebConfig(
+                    url = url
+                )
+
+                requireActivity().findNavController(R.id.nav_main).navigate(
+                    HomeFragmentDirections.actionHomeScreenToContentsWebFragment(config)
+                )
+            }
         }
 
         setUI()
@@ -128,7 +144,7 @@ class ShopFragment : Fragment(){
     private fun setUI() {
         with(binding) {
             viewPager.apply {
-                adapter = BannerAdapter(viewModel!!, getBannerList())
+                adapter = BannerAdapter(viewModel!!)
                 overScrollMode = RecyclerView.OVER_SCROLL_NEVER
                 orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
@@ -139,15 +155,11 @@ class ShopFragment : Fragment(){
             viewPager.registerOnPageChangeCallback(
                 OnPageChangeCallbackForInfiniteIndicator(
                     requireActivity(),
-                    getBannerList(),
+                    viewModel!!.bannerList,
                     viewPager.currentItem
                 )
             )
         }
-    }
-
-    private fun getBannerList(): List<Int> {
-        return listOf(R.color.color_ff4857, R.color.kakao, R.color.naver)
     }
 
     companion object {

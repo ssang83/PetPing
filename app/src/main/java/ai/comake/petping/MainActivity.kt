@@ -29,6 +29,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val mainShareViewModel: MainShareViewModel by viewModels()
+
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
@@ -47,14 +48,14 @@ class MainActivity : AppCompatActivity() {
         LogUtil.log("TAG", "")
     }
 
-    private fun checkSavedFcmToken(){
-        if(!sharedPreferencesManager.hasFCMTokenDataStore()) {
+    private fun checkSavedFcmToken() {
+        if (!sharedPreferencesManager.hasFCMTokenDataStore()) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     return@OnCompleteListener
                 }
                 val token = task.result
-                LogUtil.log("TAG" ,"FCM token $token")
+                LogUtil.log("TAG", "FCM token $token")
                 if (token != null) {
                     sharedPreferencesManager.saveFCMTokenDataStore(token)
                 }
@@ -90,25 +91,34 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        LogUtil.log("TAG", "")
+        LogUtil.log("TAG2", "")
         checkMenuDirection(intent)
     }
 
     private fun checkMenuDirection(intent: Intent?) {
         LogUtil.log("TAG", "")
-        if (intent?.hasExtra("menu") == true) {
-            if (destinationScreen == "homeScreen") {
-                openHomeNavMenu(intent.getStringExtra("menu") ?: "")
-            } else {
-                openMainNavMenu(intent.getStringExtra("menu") ?: "")
-            }
+        if (intent?.hasExtra("type") == true) {
+            val type = intent.getStringExtra("type") ?: ""
+            val link = intent.getStringExtra("link") ?: ""
+
+            LogUtil.log("TAG", "type: $type")
+            LogUtil.log("TAG", "link: $link")
+
+            mainShareViewModel.menuLink = MenuLink.Fcm(type, link)
+            openHomeNavMenu(mainShareViewModel.menuLink)
         }
     }
 
-    private fun openHomeNavMenu(menuName: String) {
-        when (menuName) {
-            "walk" -> {
-                mainShareViewModel.setMenuLink(MenuLink.PetPing("walk"))
+    private fun openHomeNavMenu(menuLink: MenuLink) {
+        when (menuLink) {
+            is MenuLink.Fcm -> {
+                if (destinationScreen == "homeScreen") {
+                    mainShareViewModel.moveLinkedScreen.value = Event(menuLink)
+                } else {
+                    findNavController(R.id.nav_main).navigate(
+                        MainFragmentDirections.actionMainToHome().setMenulink(menuLink)
+                    )
+                }
             }
         }
     }

@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.history.WalkRecordViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_e5e5e5">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/saveButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/headerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/normalStopWalkHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/walkFinishStatusLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="14dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:gravity="center_vertical"
+                            android:text="@string/today_walk_record_saved"
+                            android:textColor="@color/color_111111"
+                            android:textSize="16dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <View
+                            android:id="@+id/header_underline"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_e4e4e4"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/forceStopHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:background="@color/color_444444"
+                        android:clickable="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/forceStopHeaderText1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="23dp"
+                            android:layout_marginTop="46dp"
+                            android:fontFamily="@font/nanum_square_round_b"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/walk_over"
+                            android:textColor="@android:color/white"
+                            android:textSize="17dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/forceStopHeaderText2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:lineHeight="20dp"
+                            android:textAlignment="center"
+                            android:textColor="@android:color/white"
+                            android:textSize="13dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/forceStopHeaderText1"
+                            tools:text="산책 활동이 감지되지 않아 자동 종료되고\n종료 전 기록은 프로필에 안전하게 저장되었어요." />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:visibility="@{viewModel.isShowRewardView() ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/rewardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="316dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/headerView">
+
+                    <ImageView
+                        android:id="@+id/rewardImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="41dp"
+                        android:background="@drawable/walk_record_reward_image"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </ImageView>
+
+                    <TextView
+                        android:text="@{viewModel.rewardPoint}"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        android:id="@+id/rewardPoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/nanum_square_round_b_font"
+                        android:textColor="@color/color_ff4857"
+                        android:textSize="26dp"
+                        app:layout_constraintEnd_toStartOf="@+id/rewardLabel1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rewardImageView"
+                        tools:text="10,000" />
+
+                    <TextView
+                        android:id="@+id/rewardLabel1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/nanum_square_round_b_font"
+                        android:textColor="@color/color_000000"
+                        android:textSize="26dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/rewardPoint"
+                        app:layout_constraintTop_toBottomOf="@+id/rewardImageView"
+                        android:text="Ping" />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:id="@+id/rewardLabel2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b_font"
+                        android:text="리워드를 받았어요!"
+                        android:textColor="@color/color_000000"
+                        android:textSize="26dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rewardLabel1" />
+
+                    <TextView
+                        android:lineHeight="20dp"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/rewardLabel3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_b_font"
+                        android:text="가족 반려견과 함께 산책한 경우\n프로필을 만든 회원에게 핑 리워드가 적립돼요."
+                        android:textColor="@color/color_99999"
+                        android:textSize="12dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rewardLabel2" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/walkRecordDetailView"
+                    android:layout_width="match_parent"
+                    android:layout_height="320dp"
+                    android:background="@color/color_ffffff"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rewardView"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/walkTimeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:fontFamily="@font/nanum_square_round_font"
+                        android:includeFontPadding="false"
+                        android:text="산책 시간"
+                        android:textColor="@color/color_444444"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/walkTimeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/nanum_square_round_b_font"
+                        android:includeFontPadding="false"
+                        android:text="@{viewModel.walkTime}"
+                        android:textColor="@color/color_111111"
+                        android:textSize="26dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/walkTimeLabel"
+                        tools:text="23시간 59분">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/walkDistanceLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/nanum_square_round_font"
+                        android:includeFontPadding="false"
+                        android:text="산책 거리"
+                        android:textColor="@color/color_444444"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/walkTimeValue">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/walkDistanceValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/nanum_square_round_b_font"
+                        android:includeFontPadding="false"
+                        android:text="@{viewModel.walkDistance}"
+                        android:textColor="@color/color_111111"
+                        android:textSize="26dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/walkDistanceLabel"
+                        tools:text="999,99km">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/markingLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/nanum_square_round_font"
+                        android:includeFontPadding="false"
+                        android:text="마킹"
+                        android:textColor="@color/color_444444"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/walkDistanceValue">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/markingCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/nanum_square_round_b_font"
+                        android:includeFontPadding="false"
+                        android:text="@{viewModel.markingCount}"
+                        android:textColor="@color/color_111111"
+                        android:textSize="26dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/markingLabel"
+                        tools:text="11개">
+
+                    </TextView>
+
+                    <TextView
+                        android:text="@{viewModel.markingDetail}"
+                        android:id="@+id/markingDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="@font/nanum_square_round_font"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/color_979797"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/markingCount"
+                        tools:text="사랑이 999개, 코코 99개">
+
+                    </TextView>
+
+                    <View
+                        android:id="@+id/detail_underline"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_e4e4e4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/attachView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_ffffff"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/walkRecordDetailView">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pictureRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="155dp"
+                        android:layout_marginTop="32dp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="15dp"
+                        app:layoutManager="LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="235dp"
+                        android:layout_marginTop="28dp"
+                        android:background="@null"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:gravity="top"
+                        android:hint="@string/walk_record_memo_guide"
+                        android:includeFontPadding="false"
+                        android:inputType="textMultiLine"
+                        android:lineSpacingMultiplier="1.5"
+                        android:maxLength="300"
+                        android:minHeight="235dp"
+                        android:padding="20dp"
+                        android:text="@={viewModel.comment}"
+                        android:textColor="@color/color_bbbbbb"
+                        android:textSize="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pictureRecyclerView" />
+
+                    <View
+                        android:id="@+id/attachView_underline"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_e4e4e4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/additionalGuide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/attachView">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nanum_square_round_font"
+                        android:lineHeight="20dp"
+                        android:text="적립한 리워드로 [리워드] > [핑샵]에서 반려견 케어 상품을 구매할 수 있어요."
+                        android:textColor="@color/color_777777"
+                        android:textSize="13dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/color_ff4857"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

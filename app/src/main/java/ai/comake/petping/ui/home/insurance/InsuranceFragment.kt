@@ -1,7 +1,10 @@
 package ai.comake.petping.ui.home.insurance
 
+import ai.comake.petping.R
+import ai.comake.petping.data.vo.WebConfig
 import ai.comake.petping.databinding.FragmentInsuranceBinding
 import ai.comake.petping.observeEvent
+import ai.comake.petping.ui.home.HomeFragmentDirections
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.updateWhiteStatusBar
 import android.os.Bundle
@@ -10,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -44,8 +48,43 @@ class InsuranceFragment : Fragment() {
 
             loadData()
 
-            moveToInsurance.observeEvent(viewLifecycleOwner) {
-                //TODO : 펫보험 바로가기
+            moveToHanhwa.observeEvent(viewLifecycleOwner) { url ->
+                val config = WebConfig(
+                    url = url,
+                    insurance = true
+                )
+
+                requireActivity().findNavController(R.id.nav_main).navigate(
+                    HomeFragmentDirections.actionHomeScreenToContentsWebFragment(config)
+                )
+            }
+
+            moveToDB.observeEvent(viewLifecycleOwner) { url ->
+                val config = WebConfig(
+                    url = url,
+                    insurance = true
+                )
+
+                requireActivity().findNavController(R.id.nav_main).navigate(
+                    HomeFragmentDirections.actionHomeScreenToContentsWebFragment(config)
+                )
+            }
+
+            moveToInsuranceApply.observeEvent(viewLifecycleOwner) { url ->
+                val config = WebConfig(
+                    url = url,
+                    insurance = true
+                )
+
+                requireActivity().findNavController(R.id.nav_main).navigate(
+                    HomeFragmentDirections.actionHomeScreenToContentsWebFragment(config)
+                )
+            }
+
+            showErrorPopup.observeEvent(viewLifecycleOwner) { errorResponse ->
+                when (errorResponse.code) {
+
+                }
             }
         }
     }

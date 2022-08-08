@@ -15,6 +15,8 @@ object AppConstants {
     var PHONE = ""
     var UUID = ""
     var FCM_TOKEN = ""
+    var FCM_TYPE = ""
+    var FCM_LINK = ""
 
     // 고도몰 웹뷰 정보
     var GODOMALL_KEYWORD_COOKIE = ""
@@ -51,6 +53,7 @@ object AppConstants {
     var SYSTEM_CHECKING_INFO = "system_checking_info"
     var SYSTEM_CHECKING_INFO_DEV = "system_checking_info_dev"
 
+    val PREF_FCM_TOKEN = "FCM_TOKEN"
     val PREF_KEY_ACCESS_TOKEN = "ACCESS_TOKEN"
     val PREF_KEY_USER_ID = "USER_ID"
     val PREF_KEY_CURRENT_USER_NAME = "USER_NAME"
@@ -64,7 +67,6 @@ object AppConstants {
     val PREF_KEY_UUID_KEY = "UUID_KEY"
     val PREF_KEY_AUTHORITY_POP_UP = "AUTHORITY_POP_UP"
     val PREF_KEY_GUIDE_POP_UP_SHOW = "GUIDE_POP_UP_SHOW"
-    val PREF_FCM_TOKEN = "FCM_TOKEN"
 
     @SuppressLint("HardwareIds")
     fun getAndroidId(context: Context): String {

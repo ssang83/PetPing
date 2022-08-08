@@ -1,11 +1,14 @@
 package ai.comake.petping.ui.etc
 
 import ai.comake.petping.AirbridgeManager
+import ai.comake.petping.MainShareViewModel
 import ai.comake.petping.R
 import ai.comake.petping.data.vo.MyPageData
+import ai.comake.petping.data.vo.WebConfig
 import ai.comake.petping.databinding.FragmentEtcBinding
 import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.base.BaseFragment
+import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.backStack
 import ai.comake.petping.util.setSafeOnClickListener
 import ai.comake.petping.util.updateWhiteStatusBar
@@ -13,6 +16,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -33,6 +37,8 @@ import kotlin.random.Random
 class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate) {
 
     private val viewModel: EtcViewModel by viewModels()
+
+    private val mainShareViewModel: MainShareViewModel by activityViewModels()
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -71,8 +77,6 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
         binding.lifecycleOwner = viewLifecycleOwner
 
         with(viewModel) {
-
-            loadData()
 
             uiSetUp.observeEvent(viewLifecycleOwner) {
                 setUpBanner()
@@ -163,6 +167,9 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(R.id.action_etcFragment_to_insuranceHistoryFragment)
             }
+
+            loadData()
+            checkFcmMenuLink()
         }
 
         binding.btnBack.setSafeOnClickListener {
@@ -191,6 +198,19 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
                 indicator.visibility = View.GONE
             }
         }
+    }
+
+    fun checkFcmMenuLink(){
+        val fcmMenuLink = mainShareViewModel.getOnceFCMLink()
+        if(fcmMenuLink.isNotEmpty()){
+            val webConfig = WebConfig(fcmMenuLink)
+            goContentsWebViewScreen(webConfig)
+        }
+    }
+
+    fun goContentsWebViewScreen(webConfig : WebConfig){
+        requireActivity().findNavController(R.id.nav_main)
+            .navigate(EtcFragmentDirections.actionEtcFragmentToContentsWebFragment(webConfig))
     }
 
     /**

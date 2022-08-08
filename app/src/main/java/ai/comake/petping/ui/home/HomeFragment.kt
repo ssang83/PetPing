@@ -3,10 +3,7 @@ package ai.comake.petping.ui.home
 import ai.comake.petping.*
 import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT
-import ai.comake.petping.AppConstants.FCM_TOKEN
 import ai.comake.petping.AppConstants.ID
-import ai.comake.petping.api.Resource
-import ai.comake.petping.data.repository.AppDataRepository
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentHomeBinding
 import ai.comake.petping.observeEvent
@@ -27,15 +24,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -43,7 +36,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private val args by navArgs<HomeFragmentArgs>()
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
-    private val homeShareViewModel: HomeShareViewModel by activityViewModels()
+    private val homeShareViewModel: HomeShareViewModel by viewModels()
     private var navController: NavController? = null
     private var menuIcons = hashMapOf(
         R.id.dashBoardScreen to BottomMenu(R.id.dashBoardScreenIcon, R.id.dashBoardScreenTitle),
@@ -80,11 +73,12 @@ class HomeFragment : Fragment() {
 
         setUpObserver()
         setupClickEvent()
-        checkMenuLink(args.menulink)
 
         if (navController == null) {
             setUpNavigation()
         }
+
+        checkMenuLink(args.menulink)
     }
 
     fun onClickBottomNav(view: View) {
@@ -121,22 +115,33 @@ class HomeFragment : Fragment() {
 
     private fun showDashBoardScreen() {
         navController?.navigate(R.id.dashBoardScreen)
+        changeUnSelectedMenuIcon(R.id.dashBoardScreen)
     }
 
     private fun showWalkScreen() {
         navController?.navigate(R.id.walkScreen)
+        changeUnSelectedMenuIcon(R.id.walkScreen)
     }
 
     private fun showRewardScreen() {
         navController?.navigate(R.id.rewardScreen)
+        changeUnSelectedMenuIcon(R.id.rewardScreen)
     }
 
     private fun showShopScreen() {
         navController?.navigate(R.id.shopScreen)
+        changeUnSelectedMenuIcon(R.id.shopScreen)
     }
 
     private fun showInsuranceScreen() {
         navController?.navigate(R.id.insuranceScreen)
+        changeUnSelectedMenuIcon(R.id.insuranceScreen)
+    }
+
+    private fun showEtcScreen() {
+        requireActivity().findNavController(R.id.nav_main)
+            .navigate(R.id.etcFragment)
+        showDashBoardScreen()
     }
 
     private fun changeUnSelectedMenuIcon(menuId: Int) {
@@ -211,28 +216,27 @@ class HomeFragment : Fragment() {
 //
 //            }
 //        }
-//
-
     }
 
     private fun checkMenuLink(args: MenuLink?) {
+        LogUtil.log("TAG", "args: ${args.toString()}")
         when (args) {
-//            is DeepLink.Fcm -> {
-//                LogUtil.log("TAG", "args.type " + args.type)
-//                bottomNavigationView.selectedItemId = R.id.walkScreen
-//            }
-//            is DeepLink.Airbridge -> {
-//                LogUtil.log("TAG", "args.type " + args.type)
-//                bottomNavigationView.selectedItemId = R.id.walkScreen
-//            }
-            is MenuLink.PetPing -> {
+            is MenuLink.Fcm -> {
                 when (args.type) {
                     "walk" -> {
-//                        binding.homeBottomNavigation.selectedItemId = R.id.walkScreen
+                        showWalkScreen()
+                    }
+                    "reward" -> {
+                        showRewardScreen()
+                    }
+                    "pingshop" -> {
+                        showShopScreen()
+                    }
+                    "etc", "other", "event" ->{
+                        showEtcScreen()
                     }
                 }
             }
-
 //            else -> {
 //                LogUtil.log("TAG","binding.homeBottomNavigation.selectedItemId")
 //                binding.homeBottomNavigation.selectedItemId = R.id.dashBoardScreen
@@ -275,7 +279,7 @@ class HomeFragment : Fragment() {
             changeUnSelectedMenuIcon(R.id.rewardScreen)
         }
 
-        mainShareViewModel.menuLink.observeEvent(viewLifecycleOwner, { menuLink ->
+        mainShareViewModel.moveLinkedScreen.observeEvent(viewLifecycleOwner, { menuLink ->
             checkMenuLink(menuLink)
         })
 

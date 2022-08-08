@@ -277,6 +277,7 @@ class ContentsWebFragment :
                         }, "RewardInterface")
                     }
                     args.config.insurance == true -> {
+                        binding.header.btnBack.visibility = View.GONE
                         addJavascriptInterface(object : InsuranceInterface() {
                             @JavascriptInterface
                             override fun Exit() {

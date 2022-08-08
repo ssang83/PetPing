@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -34,6 +35,8 @@ class WalkRecordFragment :
     private lateinit var mWalkRecordPictureAdapter: WalkRecordPictureAdapter
     private val viewModel: WalkRecordViewModel by viewModels()
     private var walkId = 0
+
+    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -59,6 +62,16 @@ class WalkRecordFragment :
         setUpView()
 
         LogUtil.log("TAG", "args.walkFinish: ${args.walkFinish}")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.let { AndroidBug5497Workaround(it).addListener() }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.let { AndroidBug5497Workaround(it).removeListener() }
     }
 
     private fun setUpView() {
@@ -102,20 +115,16 @@ class WalkRecordFragment :
             }
         }
 
-        when {
-            walkHours > 0 -> {
-                viewModel.walkTime.value = "${walkHours}시간 ${walkMinutes}분"
-            }
-            walkMinutes > 0 -> {
-                viewModel.walkTime.value = "${walkMinutes}분 ${walkSeconds}초"
-            }
-            else -> {
-                viewModel.walkTime.value = "${walkSeconds}초"
-            }
+        val markingCount = walkFinish?.walk?.markingCount.toString()
+        val walkDistance = walkFinish?.walk?.distanceString ?: "0km"
+        if (walkHours > 0) {
+            if (walkMinutes > 0) viewModel.markingTitle.value = ("${walkHours}시간 ${walkMinutes}분 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
+            else viewModel.markingTitle.value = ("${walkHours}시간 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
+        } else if (walkMinutes > 0) {
+            viewModel.markingTitle.value = ("${walkMinutes}분 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
+        } else {
+            viewModel.markingTitle.value = ("${walkSeconds}초 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
         }
-
-        viewModel.walkDistance.value = walkFinish?.walk?.distanceString ?: "0km"
-        viewModel.markingCount.value = walkFinish?.walk?.markingCount.toString() + "개"
 
         val markingDetail = walkFinish?.pets?.joinToString { pet ->
             if(pet.markingCount > 0) {
@@ -124,8 +133,6 @@ class WalkRecordFragment :
                 ""
             }
         }
-
-        LogUtil.log("TAG", "markingDetail: $markingDetail")
 
         viewModel.markingDetail.value = markingDetail.toString()
         viewModel.isShowRewardView.value = walkFinish?.isMissionAchievement ?: false
@@ -142,6 +149,20 @@ class WalkRecordFragment :
         }
 
         mWalkRecordPictureAdapter.submitList(viewModel.pictureList.toMutableList())
+
+//        activity?.window?.let{
+//            keyboardVisibilityUtils = KeyboardVisibilityUtils(it,
+//                onShowKeyboard = { keyboardHeight ->
+//                    binding.svRoot.run {
+//                        smoothScrollTo(scrollX, binding.memo.top)
+//                    }
+//                })
+//
+//            keyboardVisibilityUtils = KeyboardVisibilityUtils(it,
+//                onHideKeyboard = {
+//                    binding.outside.clearFocus()
+//                })
+//        }
     }
 
     private fun setUpObserver() {
@@ -176,6 +197,14 @@ class WalkRecordFragment :
                 viewModel.walkFinishRecord(walkId, reviewBody, fileBody)
             }
         }
+
+        binding.pictureCloseButton.setOnClickListener{
+            binding.pictureView.visibility = View.GONE
+        }
+
+        binding.rewardCloseButton.setOnClickListener{
+            binding.rewardView.visibility = View.GONE
+        }
     }
 
     private fun setUpAdapter() {
@@ -189,7 +218,14 @@ class WalkRecordFragment :
     }
 
     private fun onPictureImageClick(url: String) {
+        binding.pictureView.visibility = View.VISIBLE
 
+        activity?.let {
+            Glide.with(it).load(url).override(
+                it.resources.displayMetrics.widthPixels,
+                it.resources.displayMetrics.heightPixels
+            ).optionalFitCenter().into(binding.pictureImage)
+        }
     }
 
     private fun onAddImageClick() {
@@ -271,7 +307,7 @@ class WalkRecordFragment :
     }
 
     private fun changeUIForceStopWalk() {
-        activity?.window?.let { updateDarkStatusBar(it) }
+        activity?.window?.let { updateLightStatusBar(it) }
         binding.normalStopWalkHeader.visibility = View.GONE
         binding.forceStopHeader.visibility = View.VISIBLE
         binding.forceStopHeaderText2.text =
@@ -279,14 +315,14 @@ class WalkRecordFragment :
     }
 
     private fun changeUIAutoStopWalk() {
-        activity?.window?.let { updateBlackStatusBar(it) }
+        activity?.window?.let { updateLightStatusBar(it) }
         binding.normalStopWalkHeader?.visibility = View.GONE
         binding.forceStopHeader.visibility = View.VISIBLE
         binding.forceStopHeaderText2.text = "산책 활동이 감지되지 않아 자동 종료되고\n종료 전 기록은 프로필에 안전하게 저장되었어요."
     }
 
     private fun changeUINormalStopWalk() {
-        activity?.window?.let { updateLightStatusBar(it) }
+        activity?.window?.let { updateDarkStatusBar(it) }
         binding.forceStopHeader.visibility = View.GONE
         binding.normalStopWalkHeader.visibility = View.VISIBLE
     }

@@ -67,9 +67,9 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     val isSucceedReadyForWalk: LiveData<Event<WalkStart>>
         get() = _isSucceedReadyForWalk
 
-    private val _isFaiedReadyForWalk = MutableLiveData<Event<ErrorResponse>>()
-    val isFaiedReadyForWalk: LiveData<Event<ErrorResponse>>
-        get() = _isFaiedReadyForWalk
+    private val _isFailedReadyForWalk = MutableLiveData<Event<ErrorResponse?>>()
+    val isFailedReadyForWalk: LiveData<Event<ErrorResponse?>>
+        get() = _isFailedReadyForWalk
 
     private val _clearMarker = MutableLiveData<Event<Boolean>>()
     val clearMarker: LiveData<Event<Boolean>>
@@ -259,7 +259,7 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
                 }
 
                 is Resource.Error -> {
-                    LogUtil.log("TAG", "response ${response.errorBody}")
+                    _isFailedReadyForWalk.postValue(Event(response.errorBody))
                 }
             }
         }
@@ -299,7 +299,7 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
                     _isSucceedWalkFinish.postValue(Event(response.value.data))
                 }
                 else -> {
-                    //Do Nothing
+                    //Do Nothxing
                 }
             }
         }

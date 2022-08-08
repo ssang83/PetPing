@@ -6,6 +6,8 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
     id 'com.jfrog.bintray' version '1.8.5'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 //plugins {
@@ -15,13 +17,12 @@ plugins {
 
 android {
     compileSdk 31
-
     defaultConfig {
-        applicationId 'ai.comake.petping'
+        applicationId 'com.smallticket.petping'
         minSdk 26
         targetSdk 31
         versionCode 1
-        versionName '1.0'
+        versionName '1.2.6'
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -35,7 +36,6 @@ android {
         }
 
         debug {
-
             storeFile file("../key/debug.keystore")
         }
     }
@@ -96,7 +96,7 @@ android {
 
     flavorDimensions "default"
     productFlavors {
-        real {
+        prod {
             dimension "default"
             buildConfigField("String", "PETPING_DOMAIN", '"https://api.petping.com"')
             buildConfigField("String", "PETPING_SAPA_KEY", '"Bearer sdQw1y1m5PU2YcVnbxYwZXm1IRqWD6Lr_p_RlSY0"')
@@ -195,6 +195,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:19.0.2'
     implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.3'
+    implementation 'com.google.firebase:firebase-config-ktx:21.1.0'
 
     //wark
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
@@ -252,5 +253,7 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
+
+    implementation 'com.airbnb.android:lottie:5.2.0'
 
 }

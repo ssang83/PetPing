@@ -2,13 +2,16 @@ package ai.comake.petping.ui.home.insurance
 
 import ai.comake.petping.AppConstants
 import ai.comake.petping.Event
+import ai.comake.petping.api.Resource
+import ai.comake.petping.data.repository.InsuranceRepository
+import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.emit
+import ai.comake.petping.util.Coroutines
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -21,15 +24,74 @@ import javax.inject.Inject
 @HiltViewModel
 class InsuranceViewModel @Inject constructor() : ViewModel() {
 
-    private val _moveToInsurance = MutableLiveData<Event<Unit>>()
-    val moveToInsurance:LiveData<Event<Unit>>
-        get() = _moveToInsurance
+    @Inject
+    lateinit var repo:InsuranceRepository
 
-    fun loadData() = viewModelScope.launch {
+    private val _moveToInsuranceApply = MutableLiveData<Event<String>>()
+    val moveToInsuranceApply:LiveData<Event<String>>
+        get() = _moveToInsuranceApply
 
+    private val _moveToHanhwa = MutableLiveData<Event<String>>()
+    val moveToHanhwa:LiveData<Event<String>>
+        get() = _moveToHanhwa
+
+    private val _moveToDB = MutableLiveData<Event<String>>()
+    val moveToDB:LiveData<Event<String>>
+        get() = _moveToDB
+
+    private val _showErrorPopup = MutableLiveData<Event<ErrorResponse>>()
+    val showErrorPopup:LiveData<Event<ErrorResponse>> get() = _showErrorPopup
+
+    val ballonStatus = MutableLiveData<Boolean>().apply { value = false }
+
+    var hanhwaUrl = ""
+    var dbUrl = ""
+    var claimUrl = ""
+
+    val scrollChangeListener = object : View.OnScrollChangeListener {
+        override fun onScrollChange(
+            v: View?,
+            scrollX: Int,
+            scrollY: Int,
+            oldScrollX: Int,
+            oldScrollY: Int
+        ) {
+            ballonStatus.value = false
+        }
     }
 
-    fun goToInsurance() {
-        _moveToInsurance.emit()
+    fun loadData() = Coroutines.main(this) {
+        val response = repo.getJoinInsurance(AppConstants.AUTH_KEY)
+        when (response) {
+            is Resource.Success -> {
+                if (response.value.status == "200") {
+                    hanhwaUrl = response.value.data.hanwhaJoinPage
+                    dbUrl = response.value.data.dbJoinPage
+                    claimUrl = response.value.data.claimPage
+                } else {
+                    _showErrorPopup.emit(response.value.error)
+                }
+            }
+        }
+    }
+
+    fun showBallon() {
+        ballonStatus.value = true
+    }
+
+    fun closeBallon() {
+        ballonStatus.value = false
+    }
+
+    fun moveHanhwaJoin() {
+        _moveToHanhwa.emit(hanhwaUrl)
+    }
+
+    fun moveDBJoin() {
+        _moveToDB.emit(dbUrl)
+    }
+
+    fun moveToApply() {
+        _moveToInsuranceApply.emit(claimUrl)
     }
 }
