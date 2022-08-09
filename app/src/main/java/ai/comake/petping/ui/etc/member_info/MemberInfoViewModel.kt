@@ -3,6 +3,8 @@ package ai.comake.petping.ui.etc.member_info
 import ai.comake.petping.*
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.UserDataRepository
+import ai.comake.petping.data.vo.ErrorResponse
+import ai.comake.petping.util.Coroutines
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -68,6 +70,7 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
     val moveToLocationHistory = MutableLiveData<Event<Unit>>()
     val logout = MutableLiveData<Event<Unit>>()
     val uiState = MutableLiveData<Event<UiState>>()
+    val logoutErrorPopup = MutableLiveData<Event<ErrorResponse>>()
 
     val scrollChangeListener = object : View.OnScrollChangeListener {
         override fun onScrollChange(
@@ -159,7 +162,7 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
     }
 
     fun logout() {
-        logout.emit()
+        sendLogout()
     }
 
     private fun sendEmailAuth() = viewModelScope.launch {
@@ -173,6 +176,19 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
             }
             is Resource.Failure -> {
                 uiState.emit(UiState.Failure(null))
+            }
+        }
+    }
+
+    private fun sendLogout() = Coroutines.main(this) {
+        val response = userDataRepository.userLogout(AppConstants.AUTH_KEY)
+        when (response) {
+            is Resource.Success -> {
+                if (response.value.status == "200") {
+                    logout.emit()
+                } else {
+                    logoutErrorPopup.emit(response.value.error)
+                }
             }
         }
     }

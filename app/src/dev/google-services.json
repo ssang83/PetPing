@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:956520437769:android:eef884146862f501b240d8",
         "android_client_info": {
-          "package_name": "com.smallticket.petping"
+          "package_name": "com.smallticket.petping.debug"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "956520437769-3ircepm1ojd1bjq0iqrnfv6mrv3e23uf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.smallticket.petping",
+            "package_name": "com.smallticket.petping.debug",
             "certificate_hash": "7c82e64f5944eb1b1497d81c45cd79f617dbb063"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "956520437769-tj7gpbofn4i5ql9thuqo6kg2ghjf57bb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.smallticket.petping",
+            "package_name": "com.smallticket.petping.debug",
             "certificate_hash": "b75f39fb6ff06b3ec91890005b5b02b351899916"
           }
         },

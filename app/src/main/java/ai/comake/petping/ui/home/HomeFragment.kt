@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private val args by navArgs<HomeFragmentArgs>()
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
-    private val homeShareViewModel: HomeShareViewModel by viewModels()
+    private val homeShareViewModel: HomeShareViewModel by activityViewModels()
     private var navController: NavController? = null
     private var menuIcons = hashMapOf(
         R.id.dashBoardScreen to BottomMenu(R.id.dashBoardScreenIcon, R.id.dashBoardScreenTitle),
@@ -79,6 +79,12 @@ class HomeFragment : Fragment() {
         }
 
         checkMenuLink(args.menulink)
+
+        if (homeShareViewModel.screenName.isEmpty()) {
+            homeShareViewModel.screenName = "dashBoardScreen"
+        }
+
+        LogUtil.log("screenName : ${homeShareViewModel.screenName}")
     }
 
     fun onClickBottomNav(view: View) {

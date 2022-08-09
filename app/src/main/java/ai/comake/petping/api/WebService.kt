@@ -694,4 +694,9 @@ interface WebService {
     suspend fun getInsurances(
         @Header("Authorization") authKey: String,
     ): CommonResponse<JoinInsuranceResponse>
+
+    @POST("/v2/petping/accounts/logout")
+    suspend fun logout(
+        @Header("Authorization") authKey: String,
+    ): CommonResponse<Any>
 }

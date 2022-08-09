@@ -99,9 +99,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             moveToAppleLogin.observeEvent(viewLifecycleOwner) {
                 AppleSignInDialog(
                     requireContext(),
-                    callBack = { token ->
-                        LogUtil.log("apple token : $token")
-                        loginApple(requireContext(), token)
+                    callBack = { config ->
+                        LogUtil.log("apple token : ${config.authWord}, email : ${config.email}, authCode : ${config.authCode}")
+                        loginApple(requireContext(), config)
                     }
                 ).show()
             }

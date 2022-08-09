@@ -176,7 +176,10 @@
                     android:id="@+id/fragment_dashboard_walk_report"
                     layout="@layout/fragment_dashboard_walk_report"
                     android:layout_width="match_parent"
-                    android:layout_height="144dp">
+                    android:layout_height="144dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    >
 
                 </include>
 

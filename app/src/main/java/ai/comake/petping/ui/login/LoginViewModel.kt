@@ -4,6 +4,7 @@ import ai.comake.petping.*
 import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.LoginRepository
+import ai.comake.petping.data.vo.AppleLoginConfig
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.NaverData
 import ai.comake.petping.data.vo.UserDataStore
@@ -111,11 +112,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
                 moveToHome.emit()
             }
-            is Resource.Failure -> {
+            is Resource.Error -> {
                 uiState.emit(UiState.Failure(null))
                 response.errorBody?.let { errorBody ->
-                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                    naverLoginError.emit(errorResponse)
+                    naverLoginError.emit(errorBody)
                 }
             }
         }
@@ -145,11 +145,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
                 moveToHome.emit()
             }
-            is Resource.Failure -> {
+            is Resource.Error -> {
                 uiState.emit(UiState.Failure(null))
                 response.errorBody?.let { errorBody ->
-                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                    kakaoLoginError.emit(errorResponse)
+                    kakaoLoginError.emit(errorBody)
                 }
             }
         }
@@ -160,14 +159,14 @@ class LoginViewModel @Inject constructor() : ViewModel() {
      *
      * @param token
      */
-    fun loginApple(context: Context, token: String) = viewModelScope.launch {
+    fun loginApple(context: Context, config: AppleLoginConfig) = viewModelScope.launch {
         uiState.emit(UiState.Loading)
         val body = makeLoginBody(
             "4",
-            "",
-            "",
+            config.email,
+            config.authWord,
             AppConstants.getAndroidId(context),
-            token
+            config.authWord
         )
         val response = loginRepository.requestSignIn(SAPA_KEY, body)
         when (response) {
@@ -177,11 +176,10 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                 AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
                 moveToHome.emit()
             }
-            is Resource.Failure -> {
+            is Resource.Error -> {
                 uiState.emit(UiState.Failure(null))
                 response.errorBody?.let { errorBody ->
-                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                    appleLoginError.emit(errorResponse)
+                    appleLoginError.emit(errorBody)
                 }
             }
         }

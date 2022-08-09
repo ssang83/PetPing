@@ -1,8 +1,11 @@
 package ai.comake.petping.ui.login
 
+import ai.comake.petping.data.vo.AppleLoginConfig
+import ai.comake.petping.util.LogUtil
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -18,7 +21,7 @@ import androidx.appcompat.app.AppCompatDialog
  */
 class AppleSignInDialog(
     context: Context,
-    private val callBack: ((token:String) -> Unit)? = null
+    private val callBack: ((config:AppleLoginConfig) -> Unit)? = null
 ) : AppCompatDialog(context) {
 
     private lateinit var webView: WebView
@@ -73,8 +76,14 @@ class AppleSignInDialog(
             // &authorizationCode=ejxmKhGGg+K3SvwFWgCeJnD/I71ouVAtC77N2bLN3ItAfhNez0j3X/N8nJFqTLuJjUArS61QPLf5XvYVC5t76w==
             url?.let {
                 if (it.startsWith("petpingapple")) {
-                    val tempUrl = it.split("=")
-                    callBack?.invoke(tempUrl[1])
+                    val uri = Uri.parse(it)
+                    LogUtil.log("email : ${uri.getQueryParameter("email")}, authWord : ${uri.getQueryParameter("authWord")}, authorizationCode : ${uri.getQueryParameter("authorizationCode")}")
+                    val config = AppleLoginConfig(
+                        email = uri.getQueryParameter("email") ?: "",
+                        authWord = uri.getQueryParameter("authWord") ?: "",
+                        authCode = uri.getQueryParameter("authorizationCode") ?: ""
+                    )
+                    callBack?.invoke(config)
                     dismiss()
                 }
             }

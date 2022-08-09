@@ -118,7 +118,7 @@ class MemberInfoFragment : BaseFragment<FragmentMemberInfoBinding>(FragmentMembe
                     .navigate(R.id.action_memberInfoFragment_to_locationHistoryFragment)
             }
 
-            logout.observe(viewLifecycleOwner) {
+            logout.observeEvent(viewLifecycleOwner) {
                 // airbridge logout event
                 val event = Event(StandardEventCategory.SIGN_OUT)
                 Airbridge.trackEvent(event)
@@ -131,6 +131,14 @@ class MemberInfoFragment : BaseFragment<FragmentMemberInfoBinding>(FragmentMembe
 
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(R.id.action_memberInfoFragment_to_loginScreen)
+            }
+
+            logoutErrorPopup.observeEvent(viewLifecycleOwner) { error ->
+                SingleBtnDialog(
+                    requireContext(),
+                    error.title,
+                    error.message
+                ) {}.show()
             }
         }
 

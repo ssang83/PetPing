@@ -299,20 +299,14 @@
         <action
             android:id="@+id/action_missionPetFragment_to_certificationFragment"
             app:destination="@id/certificationFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_missionPetFragment_to_RNSFragment"
             app:destination="@id/RNSFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_missionPetFragment_to_insuranceHistoryFragment"
             app:destination="@id/insuranceHistoryFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_missionPetFragment_to_homeScreen"
@@ -328,63 +322,43 @@
         <action
             android:id="@+id/action_etcFragment_to_noticeFragment"
             app:destination="@id/noticeFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_missionPetFragment"
             app:destination="@id/missionPetFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_memberInfoFragment"
             app:destination="@id/memberInfoFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_questionFragment"
             app:destination="@id/questionFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_appSettingFragment"
             app:destination="@id/appSettingFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_welcomKitGuideFragment"
             app:destination="@id/welcomKitGuideFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_dogProfileFragment"
             app:destination="@id/dogProfileFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_profileGraph"
             app:destination="@id/profileGraph"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_etcFragment_to_insuranceHistoryFragment"
             app:destination="@id/insuranceHistoryFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
 
         <action
             android:id="@+id/action_etcFragment_to_contentsWebFragment"
             app:destination="@id/contentsWebFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
     </fragment>
     <fragment
@@ -396,8 +370,6 @@
         <action
             android:id="@+id/action_noticeFragment_to_contentsWebFragment"
             app:destination="@id/contentsWebFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
     </fragment>
     <fragment
@@ -409,14 +381,10 @@
         <action
             android:id="@+id/action_memberInfoFragment_to_changeEmailFragment"
             app:destination="@id/changeEmailFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_memberInfoFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             app:launchSingleTop="true"
@@ -424,32 +392,22 @@
             app:popUpToInclusive="true"
             android:id="@+id/action_memberInfoFragment_to_loginScreen"
             app:destination="@id/loginGraph"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_memberInfoFragment_to_changePhoneNumberFragment"
             app:destination="@id/changePhoneNumberFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_memberInfoFragment_to_withdrawalFragment"
             app:destination="@id/withdrawalFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_memberInfoFragment_to_certWebFragment"
             app:destination="@id/certWebFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_memberInfoFragment_to_locationHistoryFragment"
             app:destination="@id/locationHistoryFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
     </fragment>
     <fragment
@@ -461,14 +419,10 @@
         <action
             android:id="@+id/action_questionFragment_to_contentsWebFragment"
             app:destination="@id/contentsWebFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_questionFragment_to_inquriyFragment"
             app:destination="@id/inquriyFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
     </fragment>
     <fragment
@@ -480,14 +434,10 @@
         <action
             android:id="@+id/action_appSettingFragment_to_contentsWebFragment"
             app:destination="@id/contentsWebFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
         <action
             android:id="@+id/action_appSettingFragment_to_policyFragment"
             app:destination="@id/policyFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
     </fragment>
     <fragment
@@ -519,8 +469,6 @@
         <action
             android:id="@+id/action_policyFragment_to_contentsWebFragment"
             app:destination="@id/contentsWebFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
     </fragment>
     <fragment
@@ -535,8 +483,6 @@
         <action
             android:id="@+id/action_dogProfileFragment_to_settingFragment"
             app:destination="@id/settingFragment"
-            app:enterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
             />
     </fragment>
     <fragment

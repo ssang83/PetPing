@@ -25,6 +25,8 @@
             android:lineSpacingExtra="10dp"
             android:textColor="#111111"
             android:textSize="26dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             app:htmlText="@{@string/login_activity_welcome}"
             app:layout_constraintTop_toTopOf="parent"
             />

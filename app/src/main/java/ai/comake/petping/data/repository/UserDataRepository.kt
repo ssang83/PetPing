@@ -100,4 +100,8 @@ class UserDataRepository @Inject constructor(private val webService: WebService)
     ) = safeApiCall {
         webService.uploadPersonalInquirys(authKey, memberId, inquiryType, title, content, appVersion, osVersion, deviceInfo, mobileCarrierInfo, deviceId, file)
     }
+
+    suspend fun userLogout(authKey: String) = safeApiCall {
+        webService.logout(authKey)
+    }
 }

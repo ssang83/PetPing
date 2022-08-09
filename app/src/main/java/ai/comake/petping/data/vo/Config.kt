@@ -72,3 +72,10 @@ data class FamilyConfrimConfig(
     var familyCode: String,
     var profile: FamilyProfile
 ) : Parcelable
+
+@Parcelize
+data class AppleLoginConfig(
+    var email: String,
+    var authWord: String,
+    var authCode: String
+) : Parcelable
