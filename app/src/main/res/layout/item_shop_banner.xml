@@ -28,7 +28,6 @@
             tools:background="#ffde46"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:bgShopBanner="@{item.bgCode}"
             app:imageUrl="@{item.imageURL}"
             />
     </com.google.android.material.card.MaterialCardView>

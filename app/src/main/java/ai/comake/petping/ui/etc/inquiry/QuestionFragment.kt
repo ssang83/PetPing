@@ -44,6 +44,11 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding>(FragmentQuestionB
             binding.viewPagerContainer.setCurrentItem(position, false)
         }
 
+        viewModel.moveToAsk.observeEvent(viewLifecycleOwner) {
+            requireActivity().findNavController(R.id.nav_main)
+                .navigate(R.id.action_questionFragment_to_inquriyFragment)
+        }
+
         with(binding) {
             viewPagerContainer.apply {
                 pagerAdapter = QuestionTabPagerAdapter()
@@ -53,7 +58,7 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding>(FragmentQuestionB
 
             TabLayoutMediator(tabLayout, viewPagerContainer) { tab, position ->
                 when (position) {
-                    0 -> tab.text = getString(R.string.inquiry)
+                    0 -> tab.text = getString(R.string.inquiry_tab)
                     else -> tab.text = getString(R.string.faq)
                 }
             }.attach()

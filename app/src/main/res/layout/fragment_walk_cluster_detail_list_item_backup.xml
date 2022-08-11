@@ -18,49 +18,51 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootView"
-        android:layout_width="wrap_content"
-        android:layout_height="170dp"
-        android:paddingStart="13dp"
-        android:paddingEnd="13dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_marginTop="37dp"
-            android:id="@+id/circleImageView"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
             app:imageUrl="@{data.profileImageURL}"
+            android:id="@+id/circleImageView"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            tools:background="@drawable/marking_detail_pet"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/roundedImageView"
-            tools:background="@drawable/marking_detail_pet" />
+            app:shapeAppearanceOverlay="@style/roundedImageView" />
 
         <TextView
-            android:layout_marginTop="15dp"
+            android:text="@{data.petName}"
             android:id="@+id/petName"
-            android:layout_width="wrap_content"
+            android:layout_width="146dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{data.petName}"
             android:textColor="@color/color_111111"
-            app:layout_constraintEnd_toEndOf="@+id/circleImageView"
-            app:layout_constraintStart_toStartOf="@+id/circleImageView"
-            app:layout_constraintTop_toBottomOf="@+id/circleImageView"
+            app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
+            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+            app:layout_constraintTop_toTopOf="@+id/circleImageView"
             tools:text="상근이" />
 
         <TextView
-            android:layout_marginTop="2dp"
+            android:text="@{data.recentVisit}"
             android:id="@+id/recentVisit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{data.recentVisit}"
+            android:layout_marginStart="20dp"
             android:textColor="@color/color_aaaaaa"
             android:textSize="12dp"
-            app:layout_constraintEnd_toEndOf="@+id/circleImageView"
-            app:layout_constraintStart_toStartOf="@+id/circleImageView"
-            app:layout_constraintTop_toBottomOf="@+id/petName"
+            app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/circleImageView"
             tools:text="1시간 30분전" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
+

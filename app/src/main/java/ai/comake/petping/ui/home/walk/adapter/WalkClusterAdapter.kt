@@ -3,7 +3,6 @@ package ai.comake.petping.ui.home.walk.adapter
 import ai.comake.petping.data.vo.MarkingPoi
 import ai.comake.petping.databinding.FragmentWalkClusterDetailListItemBinding
 import ai.comake.petping.ui.home.walk.WalkViewModel
-import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.setSafeOnClickListener
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,11 +10,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class MarkingDetailClusterRecyclerViewAdapter(
+class WalkClusterAdapter(
     val viewModel: WalkViewModel,
     val onItemClick: (Int) -> Unit
 ) :
-    ListAdapter<MarkingPoi.Pois, MarkingDetailClusterRecyclerViewAdapter.ViewHolder>(
+    ListAdapter<MarkingPoi.Pois, WalkClusterAdapter.ViewHolder>(
         TaskDiffCallback()
     ) {
 
@@ -62,5 +61,3 @@ class MarkingDetailClusterRecyclerViewAdapter(
         }
     }
 }
-
-

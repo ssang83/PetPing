@@ -18,6 +18,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -50,9 +51,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private val viewModel: LoginViewModel by viewModels()
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            requireActivity().finish()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateWhiteStatusBar(requireActivity().window)
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -188,6 +196,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 requireActivity().startActivity(intent)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        onBackPressedCallback.remove()
+        super.onDestroyView()
     }
 
     private fun kakaoLogin() {

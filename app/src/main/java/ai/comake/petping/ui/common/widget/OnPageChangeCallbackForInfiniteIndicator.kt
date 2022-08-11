@@ -56,7 +56,7 @@ class OnPageChangeCallbackForInfiniteIndicator(
         if (state == 0) {
             viewPagerActivePosition = actualPosition
             positionToUse = viewPagerActivePosition % bannerList.size
-            loadIndicators();
+            loadIndicators()
         }
     }
 

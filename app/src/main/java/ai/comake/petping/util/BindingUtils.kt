@@ -10,6 +10,7 @@ import ai.comake.petping.ui.common.webview.reward.RewardWebViewModel
 import ai.comake.petping.ui.common.widget.EventScrollView
 import ai.comake.petping.ui.common.widget.IDEditText
 import ai.comake.petping.ui.common.widget.IDFullEditText
+import ai.comake.petping.ui.common.widget.OnPageChangeCallbackForInfiniteIndicator
 import ai.comake.petping.ui.etc.EtcViewModel
 import ai.comake.petping.ui.etc.PetItemAdapter
 import ai.comake.petping.ui.etc.inquiry.*
@@ -28,6 +29,7 @@ import ai.comake.petping.ui.home.dashboard.DashboardViewModel
 import ai.comake.petping.ui.home.dashboard.tip.TipAdapter
 import ai.comake.petping.ui.home.dashboard.tip.TipAllAdapter
 import ai.comake.petping.ui.home.dashboard.tip.TipAllViewModel
+import ai.comake.petping.ui.home.shop.BannerAdapter
 import ai.comake.petping.ui.home.shop.ShopAdapter
 import ai.comake.petping.ui.home.shop.ShopViewModel
 import ai.comake.petping.ui.insurance.InsuranceHistoryAdapter
@@ -1395,5 +1397,58 @@ object BindingUtils {
         }
 
         view.setText(ssb)
+    }
+
+    @JvmStatic
+    @BindingAdapter("inputTextClear")
+    fun setInputTextClear(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                setText("")
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("lineColor")
+    fun setLineColor(view: View, status: Boolean) {
+        view.apply {
+            if (status) {
+                setBackgroundResource(R.color.greyscale_9_111)
+            } else {
+                setBackgroundResource(R.color.greyscale_4_ddd)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("hintText")
+    fun setHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "이메일 주소를 입력해 주세요."
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter(value = ["viewModel", "bannerItems"])
+    fun bindShopBannerItem(
+        viewPager: ViewPager2,
+        viewModel: ShopViewModel,
+        items:List<ShopPopup>?
+    ) {
+        items?.let {
+            viewPager.apply {
+                adapter = BannerAdapter(viewModel, it)
+                overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+                orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+//                val centerPosition = Int.MAX_VALUE / 2 - ceil(getBannerList().size.toDouble() / 2).toInt()
+                setCurrentItem(0, false)
+            }
+        }
     }
 }

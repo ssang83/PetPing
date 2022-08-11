@@ -31,7 +31,6 @@ class InquiryDoViewModel @Inject constructor() : ViewModel() {
     private val _inquiryItems = MutableLiveData<List<InquiryData>>()
     val inquiryItems: LiveData<List<InquiryData>> get() = _inquiryItems
 
-    val moveToAsk = MutableLiveData<Event<Unit>>()
     val moveToDetail = MutableLiveData<Event<String>>()
     val uiState = MutableLiveData<Event<UiState>>()
 
@@ -45,10 +44,6 @@ class InquiryDoViewModel @Inject constructor() : ViewModel() {
             }
             is Resource.Failure -> uiState.emit(UiState.Failure(null))
         }
-    }
-
-    fun goToAskPage() {
-        moveToAsk.emit()
     }
 
     fun goToDetail(url: String) {

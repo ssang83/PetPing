@@ -19,7 +19,7 @@
         android:background="@color/white">
 
         <TextView
-            android:text="@{viewModel.placeDetail.place.poiDesc0}"
+            android:text="@{viewModel.placeDetail.place.poiTitle}"
             android:id="@+id/placeDesc1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_marginTop="20dp"
             tools:text="동반 가능 카페"
             android:textColor="@color/color_ff4857"
-            android:textSize="14dp"
+            android:textSize="13dp"
             app:layout_constraintBottom_toTopOf="@+id/placeName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

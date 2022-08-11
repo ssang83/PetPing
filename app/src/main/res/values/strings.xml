@@ -77,6 +77,7 @@
     <string name="email_input_need">이메일 입력이 필요해요</string>
     <string name="notice">공지사항</string>
     <string name="inquiry">문의하기</string>
+    <string name="inquiry_tab">1:1 문의하기</string>
     <string name="setting">설정</string>
     <string name="my_pets">나의 반려견</string>
     <string name="my_reward">나의 리워드</string>

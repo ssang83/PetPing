@@ -54,11 +54,12 @@ class EtcViewModel @Inject constructor() : ViewModel() {
     val moveToMissionPet = MutableLiveData<Event<Unit>>()
     val moveToMakeProfile = MutableLiveData<Event<Unit>>()
     val moveToPetInsuranceJoin = MutableLiveData<Event<Unit>>()
-    val moveToPetInsuranceApply = MutableLiveData<Event<Unit>>()
+    val moveToPetInsuranceApply = MutableLiveData<Event<String>>()
     val moveToPetProfile = MutableLiveData<Event<PetProfileConfig>>()
     val uiSetUp = MutableLiveData<Event<Unit>>()
 
     var etcFragmentInfo: MyPageData? = null
+    var claimUrl = ""
 
     val eventScrollListener = object : EventScrollView.OnScrollListener {
 
@@ -93,6 +94,7 @@ class EtcViewModel @Inject constructor() : ViewModel() {
                 data.myInfos.email?.let { _email.value = it }
                 _isEmailAuth.value = data.myInfos.isEmailAuth
                 _myPetItems.value = data.myPets
+                claimUrl = data.claimURL
                 uiSetUp.emit()
             }
         }
@@ -134,6 +136,6 @@ class EtcViewModel @Inject constructor() : ViewModel() {
     }
 
     fun goToPetInsuranceApply() {
-        moveToPetInsuranceApply.emit()
+        moveToPetInsuranceApply.emit(claimUrl)
     }
 }

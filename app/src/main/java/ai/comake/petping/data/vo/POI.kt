@@ -71,5 +71,8 @@ data class PlaceDetail(
         val poiDesc2: String,
         val poiDesc3: String,
         val placeImagesURL: List<String>
-    )
+    ) {
+        val poiTitle get() = "플레이스 · ${poiDesc0}"
+    }
+
 }

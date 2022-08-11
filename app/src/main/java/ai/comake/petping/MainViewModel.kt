@@ -104,10 +104,10 @@ class MainViewModel @Inject constructor() : ViewModel(
                 val forceVersion =
                     data.appUpdateVersion.forceUpdateVerAos.replace("[^0-9]".toRegex(), "").toInt()
                 val version = BuildConfig.VERSION_NAME.replace("[^0-9]".toRegex(), "").toInt()
-                LogUtil.log("selectVersion : $selectVersion, forceVersion : $forceVersion")
+                LogUtil.log("selectVersion : $selectVersion, forceVersion : $forceVersion, appVersion : $version")
 
-                val isForcedUpdate = version <= forceVersion
-                val isSelectUpdate = version <= selectVersion
+                val isForcedUpdate = version < forceVersion
+                val isSelectUpdate = version < selectVersion
                 if (isForcedUpdate) {
                     event(MainEvent.ForceUpdate)
                 } else if (isSelectUpdate) {

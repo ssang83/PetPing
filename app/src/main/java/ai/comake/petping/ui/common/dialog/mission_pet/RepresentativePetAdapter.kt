@@ -48,7 +48,6 @@ class RepresentativePetAdapter(
             Glide.with(mBinding.profileImage.context)
                 .load(data[position].profileImageURL)
                 .apply(RequestOptions.circleCropTransform())
-                .centerCrop()
                 .into(mBinding.profileImage)
 
             mBinding.itemRoot.setSafeOnClickListener {

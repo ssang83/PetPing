@@ -96,11 +96,11 @@ class EmailLoginFragment :
      */
     private fun emailErrorUI() {
         binding.apply {
-            emailEdit.setText("")
+            editEmail.setText("")
             passwordEdit.setText("")
-            emailEdit.requestFocus()
+            editEmail.requestFocus()
             passwordEdit.requestFocus()
-            showKeyboardOnView(emailEdit)
+            showKeyboardOnView(editEmail)
         }
     }
 
@@ -118,15 +118,15 @@ class EmailLoginFragment :
     private fun setUi() {
         with(binding) {
 
-            setEditText(
-                requireContext(),
-                emailWrapper,
-                emailEdit,
-                Pattern.compile(EMAIL_PATTERN),
-                "잘못된 주소 형식입니다.",
-                "이메일 주소를 입력하세요",
-                "이메일 주소"
-            )
+//            setEditText(
+//                requireContext(),
+//                emailWrapper,
+//                emailEdit,
+//                Pattern.compile(EMAIL_PATTERN),
+//                "잘못된 주소 형식입니다.",
+//                "이메일 주소를 입력하세요",
+//                "이메일 주소"
+//            )
 
             setEditText(
                 requireContext(),

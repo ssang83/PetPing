@@ -13,25 +13,38 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clusterView"
         android:layout_width="match_parent"
-        android:layout_height="209dp"
-        android:paddingStart="13dp"
-        android:paddingEnd="13dp"
-        android:background="@color/color_ffffff">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="160dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:orientation="horizontal"
+        <ImageView
+            android:id="@+id/clusterHandleImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_drawer_handle"
+            app:layout_constraintBottom_toTopOf="@+id/clusterRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ai.comake.petping.ui.home.walk.adapter.MaxHeightRecyclerView
             android:background="@color/color_ffffff"
+            android:layout_marginTop="10dp"
             android:id="@+id/clusterRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="true"
             android:overScrollMode="never"
+            android:paddingTop="10dp"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/fragment_walk_cluster_detail_list_item" />
+            tools:listitem="@layout/fragment_walk_cluster_detail_list_item_backup" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

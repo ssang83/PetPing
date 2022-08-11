@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/btnAsk"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="30dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tool:listitem="@layout/adapter_inquiry_item"
@@ -32,31 +32,17 @@
             />
 
         <TextView
-            android:visibility="@{viewModel.inquiryItems.size() == 0 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.inquiryItems.size() == 0 ? View.VISIBLE : View.GONE, default = gone}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/btnAsk"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:text="@string/inquiry_history_empty"
             android:textColor="@color/color_bbbbbb"
             android:textSize="16dp"
             android:fontFamily="@font/nanum_square_round"
-            tool:visibility="gone"
-            />
-
-        <Button
-            style="@style/BottomBarButton"
-            android:id="@+id/btnAsk"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginHorizontal="20dp"
-            app:onSafeClick="@{view -> viewModel.goToAskPage()}"
-            android:text="@string/inquiry_do"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -72,11 +72,17 @@ class ShopViewModel @Inject constructor() : ViewModel() {
     private val _isShowBanner = MutableLiveData<Boolean>().apply { value = false }
     val isShowBanner:LiveData<Boolean> get() = _isShowBanner
 
+    private val _bannerUpdate = MutableLiveData<Event<Unit>>()
+    val bannerUpdate:LiveData<Event<Unit>> get() = _bannerUpdate
+
+    private val _bannerList = MutableLiveData<List<ShopPopup>>()
+    val bannerList:LiveData<List<ShopPopup>> get() = _bannerList
+
     val ballonStatus = MutableLiveData<Boolean>().apply { value = false }
 
     var godoUrl = ""
     var productUrl = ""
-    var bannerList:List<ShopPopup> = listOf()
+    var bannerItems = listOf<ShopPopup>()
 
     val appBarScrollListener = object : AppBarLayout.OnOffsetChangedListener {
         override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
@@ -108,7 +114,9 @@ class ShopViewModel @Inject constructor() : ViewModel() {
                     }
                     _pingAmount.value = response.value.data.detailPings.availablePings.toString().toNumberFormat()
                     if (response.value.data.popupList.size > 0) {
-                        bannerList = response.value.data.popupList
+                        _bannerList.value = response.value.data.popupList
+                        bannerItems = response.value.data.popupList
+                        _bannerUpdate.emit()
                         _isShowBanner.value = true
                     } else {
                         _isShowBanner.value = false

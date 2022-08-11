@@ -22,7 +22,7 @@
             android:clipToPadding="false"
             tool:listitem="@layout/item_saving_card"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:visibility="@{viewModel.savingHistoryData.size() == 0 || viewModel.expireHistoryData.size() == 0 ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.savingHistoryData.size() == 0 &amp;&amp; viewModel.expireHistoryData.size() == 0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

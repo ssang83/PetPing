@@ -52,6 +52,10 @@ class ShopFragment : Fragment(){
 
         with(viewModel) {
 
+            bannerUpdate.observeEvent(viewLifecycleOwner) {
+                setUI()
+            }
+
             signUpErrorPopup.observeEvent(viewLifecycleOwner) { errorBody ->
                 when (errorBody.code) {
                     "C7014" -> {
@@ -137,28 +141,26 @@ class ShopFragment : Fragment(){
                 )
             }
         }
+    }
 
-        setUI()
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.bannerItems.size > 0) {
+            setUI()
+        }
     }
 
     private fun setUI() {
         with(binding) {
             viewPager.apply {
-                adapter = BannerAdapter(viewModel!!)
-                overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-                orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
-//                val centerPosition = Int.MAX_VALUE / 2 - ceil(getBannerList().size.toDouble() / 2).toInt()
-                setCurrentItem(0, false)
-            }
-
-            viewPager.registerOnPageChangeCallback(
-                OnPageChangeCallbackForInfiniteIndicator(
-                    requireActivity(),
-                    viewModel!!.bannerList,
-                    viewPager.currentItem
+                registerOnPageChangeCallback(
+                    OnPageChangeCallbackForInfiniteIndicator(
+                        requireActivity(),
+                        viewModel!!.bannerItems,
+                        viewPager.currentItem
+                    )
                 )
-            )
+            }
         }
     }
 

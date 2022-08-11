@@ -45,6 +45,7 @@
     <color name="color_e5e5e5">#e5e5e5</color>
     <color name="color_14000000">#14000000</color>
     <color name="color_ffffff_alpha_90">#e5ffffff</color>
+    <color name="color_f7f7f7">#f7f7f7</color>
 
     <color name="seleted_dot">#ff4857</color>
     <color name="default_dot">#dddddd</color>

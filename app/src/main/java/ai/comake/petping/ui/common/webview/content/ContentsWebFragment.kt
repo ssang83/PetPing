@@ -31,6 +31,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -110,12 +111,36 @@ class ContentsWebFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        updateWhiteStatusBar(requireActivity().window)
+        if (args.config.insurance) {
+            requireActivity().window.statusBarColor =
+                ContextCompat.getColor(requireContext(), R.color.color_f7f7f7)
+        } else {
+            updateWhiteStatusBar(requireActivity().window)
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
         with(binding) {
 
             header.btnBack.setSafeOnClickListener { goBack() }
+
+            btnClose.setSafeOnClickListener {
+                if (args.config.insuranceType == "join") {
+                    DoubleBtnDialog(
+                        requireContext(),
+                        "가입 신청을 종료하시겠어요?",
+                        "가입 신청을 종료하면 앱 화면으로 돌아가요.",
+                        okCallback = { requireActivity().backStack(R.id.nav_main) }
+                    ).show()
+                } else {
+                    DoubleBtnDialog(
+                        requireContext(),
+                        "청구 신청을 종료하시겠어요?",
+                        "청구 신청을 종료하면 앱 화면으로 돌아가요.",
+                        okCallback = { requireActivity().backStack(R.id.nav_main) }
+                    ).show()
+                }
+            }
 
             try {
                 val cookieManager = CookieManager.getInstance()
@@ -243,6 +268,9 @@ class ContentsWebFragment :
 
                 when {
                     args.config.fromWelcomKit == true -> {
+                        binding.header.root.visibility = View.VISIBLE
+                        binding.insuranceLayer.visibility = View.GONE
+
                         addJavascriptInterface(object : WelcomeKitInterface() {
                             @JavascriptInterface
                             override fun GoToEtc() {
@@ -263,6 +291,9 @@ class ContentsWebFragment :
                         }, "WelcomeKitInterface")
                     }
                     args.config.rewardCashBack == true -> {
+                        binding.header.root.visibility = View.VISIBLE
+                        binding.insuranceLayer.visibility = View.GONE
+
                         addJavascriptInterface(object : RewardInterface() {
                             @JavascriptInterface
                             override fun GoToRewardDetail() {
@@ -277,7 +308,16 @@ class ContentsWebFragment :
                         }, "RewardInterface")
                     }
                     args.config.insurance == true -> {
-                        binding.header.btnBack.visibility = View.GONE
+                        binding.header.root.visibility = View.GONE
+                        binding.insuranceLayer.visibility = View.VISIBLE
+                        binding.title.apply {
+                            if (args.config.insuranceType == "join") {
+                                text = "펫보험 가입"
+                            } else {
+                                text = "펫보험 청구 신청"
+                            }
+                        }
+
                         addJavascriptInterface(object : InsuranceInterface() {
                             @JavascriptInterface
                             override fun Exit() {
@@ -314,6 +354,9 @@ class ContentsWebFragment :
                         }, "PetInsuranceInterface")
                     }
                     else -> {
+                        binding.header.root.visibility = View.VISIBLE
+                        binding.insuranceLayer.visibility = View.GONE
+
                         addJavascriptInterface(object : CommonInterface() {
                             @JavascriptInterface
                             override fun GoToMissionPet() {

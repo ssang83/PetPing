@@ -7,6 +7,7 @@ import ai.comake.petping.AppConstants.ID
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentHomeBinding
 import ai.comake.petping.observeEvent
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.readTextFromUri
 import android.app.Activity
@@ -28,6 +29,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -71,13 +73,12 @@ class HomeFragment : Fragment() {
         LogUtil.log("TAG", "userId : ${ID}")
         LogUtil.log("TAG", "token : ${AUTH_KEY}")
 
-        setUpObserver()
-        setupClickEvent()
-
         if (navController == null) {
             setUpNavigation()
         }
 
+        setUpObserver()
+        setupClickEvent()
         checkMenuLink(args.menulink)
 
         if (homeShareViewModel.screenName.isEmpty()) {
@@ -167,6 +168,14 @@ class HomeFragment : Fragment() {
                         .setTextColor(ContextCompat.getColor(activity, R.color.color_444444))
                 }
             }
+
+            if(viewModel.isStartWalk.value == true) {
+                if(menuId == R.id.walkScreen) {
+                    binding.layoutHomeBottomNav.walkingStatusIcon.background = activity.getDrawable(R.drawable.walking_entering_nav_icon)
+                } else {
+                    binding.layoutHomeBottomNav.walkingStatusIcon.background = activity.getDrawable(R.drawable.walking_leave_nav_icon)
+                }
+            }
         }
     }
 
@@ -238,7 +247,7 @@ class HomeFragment : Fragment() {
                     "pingshop" -> {
                         showShopScreen()
                     }
-                    "etc", "other", "event" ->{
+                    "etc", "other", "event" -> {
                         showEtcScreen()
                     }
                 }
@@ -274,6 +283,15 @@ class HomeFragment : Fragment() {
 //                    binding.homeBottomNavigation.visibility = View.GONE
 //                }
             })
+
+        viewModel.isStartWalk.observe(viewLifecycleOwner) { isStartWalk ->
+            LogUtil.log("TAG", "isStartWalk: $isStartWalk")
+            if(isStartWalk){
+                binding.layoutHomeBottomNav.walkingStatusIcon.visibility = View.VISIBLE
+            } else {
+                binding.layoutHomeBottomNav.walkingStatusIcon.visibility = View.GONE
+            }
+        }
 
         homeShareViewModel.moveToWalk.observeEvent(viewLifecycleOwner) {
             showWalkScreen()

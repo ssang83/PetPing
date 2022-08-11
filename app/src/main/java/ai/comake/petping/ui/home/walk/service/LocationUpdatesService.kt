@@ -544,8 +544,6 @@ class LocationUpdatesService() : LifecycleService() {
          */
         private const val NOTIFICATION_ID = 111
 
-        lateinit var naverMapService: NaverMap
-
         var localWalkData = Walk()
         var walkAudioGuideData = AudioGuideItem()
 
@@ -568,6 +566,5 @@ class LocationUpdatesService() : LifecycleService() {
         val _cameraPosition = MutableStateFlow(LatLng(37.566573, 126.978179))
 
         val _walkTimeSeconds = MutableStateFlow("00:00")
-        var serviceMapFragment : MapFragment? = null
     }
 }

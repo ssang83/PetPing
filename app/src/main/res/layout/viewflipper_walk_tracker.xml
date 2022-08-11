@@ -57,36 +57,36 @@
                 android:visibility="@{viewModel.isAudioGuideHeader ? View.VISIBLE : View.GONE}"
                 bind:viewModel="@{viewModel}" />
 
-            <include
-                android:id="@+id/markingHeaderView"
-                layout="@layout/fragment_walk_marking_header"
-                android:layout_width="match_parent"
-                android:layout_height="84dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                bind:viewModel="@{viewModel}" />
+<!--            <include-->
+<!--                android:id="@+id/markingHeaderView"-->
+<!--                layout="@layout/fragment_walk_marking_header"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="84dp"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                bind:viewModel="@{viewModel}" />-->
 
-            <include
-                android:id="@+id/placeHeaderView"
-                layout="@layout/fragment_walk_place_header"
-                android:layout_width="match_parent"
-                android:layout_height="84dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                bind:viewModel="@{viewModel}" />
+<!--            <include-->
+<!--                android:id="@+id/placeHeaderView"-->
+<!--                layout="@layout/fragment_walk_place_header"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="84dp"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                bind:viewModel="@{viewModel}" />-->
 
-            <include
-                android:id="@+id/clusterHeaderView"
-                layout="@layout/fragment_walk_marking_cluster_header"
-                android:layout_width="match_parent"
-                android:layout_height="84dp"
-                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.CLUSTER ? View.VISIBLE : View.GONE}"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                bind:viewModel="@{viewModel}" />
+<!--            <include-->
+<!--                android:id="@+id/clusterHeaderView"-->
+<!--                layout="@layout/fragment_walk_marking_cluster_header"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="84dp"-->
+<!--                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.CLUSTER ? View.VISIBLE : View.GONE}"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                bind:viewModel="@{viewModel}" />-->
 
             <include
                 android:id="@+id/walkControlHeaderView"
@@ -206,6 +206,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     bind:viewModel="@{viewModel}" />
 
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="209dp"
+                    android:id="@+id/clusterDetailView"
+                    layout="@layout/fragment_walk_cluster_detail"
+                    android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.CLUSTER ? View.VISIBLE : View.GONE}"
+                    bind:viewModel="@{viewModel}" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.Group
@@ -230,12 +238,6 @@
                 app:constraint_referenced_ids="placeHeaderView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:id="@+id/clusterDetailView"
-            layout="@layout/fragment_walk_cluster_detail"
-            android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.CLUSTER ? View.VISIBLE : View.GONE}"
-            bind:viewModel="@{viewModel}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

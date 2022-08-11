@@ -12,6 +12,7 @@ import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.ui.home.HomeFragmentDirections
 import ai.comake.petping.ui.home.walk.adapter.MarkingDetailClusterRecyclerViewAdapter
 import ai.comake.petping.ui.home.walk.adapter.SpaceItemDecoration
+import ai.comake.petping.ui.home.walk.adapter.WalkClusterAdapter
 import ai.comake.petping.ui.home.walk.adapter.WalkGuideAdapter
 import ai.comake.petping.ui.home.walk.dialog.MarkingBottomSheetDialog
 import ai.comake.petping.ui.home.walk.dialog.WalkEndBottomSheetDialog
@@ -89,7 +90,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     private var mService: LocationUpdatesService? = null
     private lateinit var mContext: Context
     private lateinit var mNaverMap: NaverMap
-    private lateinit var mMarkingDetailClusterListAdapter: MarkingDetailClusterRecyclerViewAdapter
+    private var mWalkClusterAdapter: WalkClusterAdapter? = null
     private lateinit var mAudioGuideListAdapter: WalkGuideAdapter
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var mPetClusterView: View? = null
@@ -117,8 +118,10 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        LogUtil.log("TAG", "")
-        binding = FragmentWalkBinding.inflate(inflater, container, false)
+        LogUtil.log("TAG", "${this::binding.isInitialized}")
+        if (!this::binding.isInitialized) {
+            binding = FragmentWalkBinding.inflate(inflater, container, false)
+        }
         return binding.root
     }
 
@@ -306,11 +309,8 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setUpObserver() {
-        lifecycleScope.launch {
-            viewModel.walkablePetList.collectLatest {
-                LogUtil.log("TAG", "walkablePetList.collectLatest : $")
-                openWalkablePetDialog(it as ArrayList<WalkablePet.Pets>)
-            }
+        viewModel.walkablePetList.observeEvent(viewLifecycleOwner) {
+            openWalkablePetDialog(it as ArrayList<WalkablePet.Pets>)
         }
 
         lifecycleScope.launch {
@@ -334,6 +334,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.isSucceedReadyForWalk.observeEvent(viewLifecycleOwner) { walkstart ->
             walkablePetDialog?.dismissWalkablePetDialog()
+
             localWalkData =
                 Walk(
                     walkId = walkstart.walk.id,
@@ -419,17 +420,14 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         viewModel.hasMoreWalkGuideItem = false
         viewModel.walkGuideListItem = arrayListOf()
 
-        mMarkingDetailClusterListAdapter =
-            MarkingDetailClusterRecyclerViewAdapter(viewModel, this::onClickNavWalkHistoryDetail)
-        binding.walkTracker.clusterDetailView.clusterRecyclerView.apply {
-            addItemDecoration(
-                SpaceItemDecoration(
-                    requireActivity(),
-                    R.drawable.shape_divider
-                )
-            )
-            adapter = mMarkingDetailClusterListAdapter
+        if (mWalkClusterAdapter == null) {
+            mWalkClusterAdapter =
+                WalkClusterAdapter(viewModel, this::onClickNavWalkHistoryDetail)
+            binding.walkTracker.clusterDetailView.clusterRecyclerView.apply {
+                adapter = mWalkClusterAdapter
+            }
         }
+
 
         mAudioGuideListAdapter = WalkGuideAdapter(
             this::startWalkWithAudioGuide,
@@ -638,7 +636,11 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     fun asyncMarkingClusterDetail(id: Int) {
-        mMarkingDetailClusterListAdapter.submitList(getClusterPOIs(id))
+        mWalkClusterAdapter?.apply {
+            stateRestorationPolicy =
+                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            submitList(getClusterPOIs(id))
+        }
         viewModel.updatePOIUi(WalkBottomUi.CLUSTER)
     }
 
@@ -664,14 +666,13 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 
     private fun openWalkablePetDialog(items: ArrayList<WalkablePet.Pets>) {
         LogUtil.log("TAG", "items: $items")
-        walkablePetDialog = WalkablePetDialog(items) {item ->
+        walkablePetDialog = WalkablePetDialog(items) { item ->
             viewModel.walkAblePetList = item as ArrayList<WalkablePet.Pets>
             val petIds = item.map {
                 it.id
             }
             asyncWalkId(petIds)
         }
-
         walkablePetDialog?.showAllowingStateLoss(childFragmentManager)
     }
 

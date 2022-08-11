@@ -51,7 +51,8 @@ class InsuranceFragment : Fragment() {
             moveToHanhwa.observeEvent(viewLifecycleOwner) { url ->
                 val config = WebConfig(
                     url = url,
-                    insurance = true
+                    insurance = true,
+                    insuranceType = "join"
                 )
 
                 requireActivity().findNavController(R.id.nav_main).navigate(
@@ -62,7 +63,8 @@ class InsuranceFragment : Fragment() {
             moveToDB.observeEvent(viewLifecycleOwner) { url ->
                 val config = WebConfig(
                     url = url,
-                    insurance = true
+                    insurance = true,
+                    insuranceType = "join"
                 )
 
                 requireActivity().findNavController(R.id.nav_main).navigate(
@@ -73,7 +75,8 @@ class InsuranceFragment : Fragment() {
             moveToInsuranceApply.observeEvent(viewLifecycleOwner) { url ->
                 val config = WebConfig(
                     url = url,
-                    insurance = true
+                    insurance = true,
+                    insuranceType = "apply"
                 )
 
                 requireActivity().findNavController(R.id.nav_main).navigate(

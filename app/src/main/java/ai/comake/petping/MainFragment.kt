@@ -2,7 +2,6 @@ package ai.comake.petping
 
 import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.AppConstants.FCM_LINK
-import ai.comake.petping.AppConstants.FCM_TOKEN
 import ai.comake.petping.AppConstants.FCM_TYPE
 import ai.comake.petping.AppConstants.ID
 import ai.comake.petping.AppConstants.SYSTEM_CHECKING_INFO
@@ -18,6 +17,7 @@ import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.ui.common.dialog.DoubleBtnDialog
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.ui.home.HomeFragmentDirections
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.repeatOnStarted
@@ -56,6 +56,7 @@ class MainFragment : Fragment() {
     var walkData = listOf<Walk>()
 
     var menuLink: MenuLink? = null
+    var isWalking = LocationUpdatesService._isStartWalk.value
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,8 +78,6 @@ class MainFragment : Fragment() {
 
         with(viewModel) {
 
-            checkAppVersion()
-
             repeatOnStarted {
                 eventFlow.collect { event ->
                     handleEvent(event)
@@ -99,6 +98,17 @@ class MainFragment : Fragment() {
         }
 
         LogUtil.log("TAG", "onViewCreated")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 강제 업데이트 팝업 발생 시 스토어 이동 후 다시 펫핑 앱 실행 시
+        // 앱버전 체크가 되지 않아서 강제 업데이트 팝업이 발생 되지 않아서 호출 위치 변경함.
+        if (isWalking.not()) { // 산책 중 푸시로 진입 시 업데이트 팝업 발생되면 안됨..
+            viewModel.checkAppVersion()
+        } else {
+            checkSavedLogin()
+        }
     }
 
     private fun setUpObserver() {

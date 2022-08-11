@@ -68,6 +68,8 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
             "homeviewd_gnb_more_click_action",
             "homeviewd_gnb_more_click_label"
         )
+
+        viewModel.loadData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -159,8 +161,15 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
                     .navigate(R.id.action_etcFragment_to_questionFragment)
             }
 
-            moveToPetInsuranceApply.observeEvent(viewLifecycleOwner) {
-                // TODO : 펫보험 청구 신청 화면으로 이동
+            moveToPetInsuranceApply.observeEvent(viewLifecycleOwner) { url ->
+                val config = WebConfig(
+                    url = url,
+                    insurance = true,
+                    insuranceType = "apply"
+                )
+
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(EtcFragmentDirections.actionEtcFragmentToContentsWebFragment(config))
             }
 
             moveToPetInsuranceJoin.observeEvent(viewLifecycleOwner) {
@@ -168,7 +177,6 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
                     .navigate(R.id.action_etcFragment_to_insuranceHistoryFragment)
             }
 
-            loadData()
             checkFcmMenuLink()
         }
 

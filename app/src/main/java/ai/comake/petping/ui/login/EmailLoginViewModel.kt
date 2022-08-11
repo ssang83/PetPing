@@ -7,10 +7,12 @@ import ai.comake.petping.data.repository.LoginRepository
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.UserDataStore
 import ai.comake.petping.util.EMAIL_PATTERN
+import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.getErrorBodyConverter
 import android.content.Context
 import android.text.TextUtils
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,12 +39,31 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     val email = MutableLiveData<String>().apply { value = "" }
     val password = MutableLiveData<String>().apply { value = "" }
 
+    // 인터렉션 관련 사용하는 변수들...
+    val emailInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val emailValidation = MutableLiveData<Boolean>().apply { value = true }
+    val emailClear = MutableLiveData<Boolean>().apply { value = false }
+    val passwdInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val passwdValidation = MutableLiveData<Boolean>().apply { value = true }
+    val passwdClear = MutableLiveData<Boolean>().apply { value = false }
+    val focusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+
     val emailErrorPopup = MutableLiveData<Event<ErrorResponse>>()
     val passwordErrorPopup = MutableLiveData<Event<ErrorResponse>>()
     val uiState = MutableLiveData<Event<UiState>>()
     val moveToHome = MutableLiveData<Event<Unit>>()
     val moveToFindPasswd = MutableLiveData<Event<Unit>>()
     val moveToSignUp = MutableLiveData<Event<Unit>>()
+
+    val focusChangeListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            if (hasFocus) {
+                focusHintVisible.value = true
+            } else {
+                emailInputStatus.value = false
+            }
+        }
+    }
 
     fun signUp(context: Context) = viewModelScope.launch {
         uiState.emit(UiState.Loading)
@@ -88,5 +109,46 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
 
     fun isValidEmail(str: String): Boolean {
         return (!TextUtils.isEmpty(str)) && Pattern.compile(EMAIL_PATTERN).matcher(str).matches()
+    }
+
+    fun onEmailTextChanged(text: CharSequence) {
+
+        emailInputStatus.apply {
+            if (text.length > 0) {
+                value = true
+            } else {
+                value = false
+            }
+        }
+
+        emailValidation.apply {
+            if (text.length > 0) {
+                if (Pattern.compile(EMAIL_PATTERN).matcher(text.toString()).matches()) {
+                    value = true
+                } else {
+                    value = false
+                }
+            } else {
+                value = true
+            }
+        }
+    }
+
+    fun onInputEmailClear() {
+        emailClear.value = true
+    }
+
+    fun onPasswdTextChanged(text: CharSequence) {
+        passwdInputStatus.apply {
+            if (text.length > 0) {
+                value = true
+            } else {
+                value = false
+            }
+        }
+    }
+
+    fun onInputPasswdClear() {
+        passwdClear.value = true
     }
 }

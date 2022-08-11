@@ -1,6 +1,7 @@
 package ai.comake.petping.ui.etc.inquiry
 
 import ai.comake.petping.Event
+import ai.comake.petping.emit
 import ai.comake.petping.util.LogUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,6 +20,7 @@ class QuestionViewModel : ViewModel() {
     private val _isScroll = MutableLiveData<Boolean>().apply { value = false }
     val isScroll: LiveData<Boolean> get() = _isScroll
 
+    val moveToAsk = MutableLiveData<Event<Unit>>()
     val tabSelected = MutableLiveData<Event<Int>>()
 
     val appBarScrollListener = object : AppBarLayout.OnOffsetChangedListener {
@@ -30,5 +32,9 @@ class QuestionViewModel : ViewModel() {
                 _isScroll.value = true
             }
         }
+    }
+
+    fun goToAskPage() {
+        moveToAsk.emit()
     }
 }

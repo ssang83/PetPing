@@ -17,10 +17,11 @@ import androidx.recyclerview.widget.RecyclerView
  * Description:
  */
 class BannerAdapter(
-    private val viewModel: ShopViewModel
+    private val viewModel: ShopViewModel,
+    bannerItems: List<ShopPopup>
 ) : RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
 
-    private var bannerList = viewModel.bannerList
+    private var bannerList = bannerItems
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -35,7 +36,11 @@ class BannerAdapter(
         holder.bind(bannerList[position % bannerList.size])
     }
 
-    override fun getItemCount() = Int.MAX_VALUE
+    override fun getItemCount() = if (bannerList.size > 1) {
+        Int.MAX_VALUE
+    } else {
+        bannerList.size
+    }
 
     inner class ViewHolder(view: View) : BindingViewHolder<ItemShopBannerBinding>(view) {
         fun bind(item : ShopPopup) {

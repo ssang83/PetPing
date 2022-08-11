@@ -17,60 +17,78 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:elevation="2dp"
         android:layout_width="match_parent"
         android:layout_height="210dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:elevation="2dp">
 
         <TextView
+            android:includeFontPadding="false"
+            android:fontFamily="@font/nanum_square_round"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="핑존"
+            android:textColor="@color/color_ff4857"
+            android:textSize="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:fontFamily="@font/nanum_square_round"
+            android:includeFontPadding="false"
             android:id="@+id/petName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:text="@{viewModel.markingDetail.pet.getPetName}"
             android:textColor="@color/color_111111"
             android:textSize="18dp"
             android:textStyle="bold"
-            android:text="@{viewModel.markingDetail.pet.getPetName}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="금강" />
 
         <TextView
+            android:fontFamily="@font/nanum_square_round"
             android:id="@+id/petDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="4dp"
+            android:text="@{viewModel.markingDetail.pet.getPetDesc}"
             android:textColor="@color/color_777777"
             android:textSize="13dp"
-            android:text="@{viewModel.markingDetail.pet.getPetDesc}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/petName"
             tools:text="아이리쉬 소프트코티드 휘튼 테리어 . 7세 . 남" />
 
         <TextView
+            android:fontFamily="@font/nanum_square_round"
             android:id="@+id/markingDesc1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
+            android:text="@{viewModel.markingDetail.marking.getRecentVisitTime}"
             android:textColor="@color/color_111111"
             android:textSize="14dp"
-            android:text="@{viewModel.markingDetail.marking.getRecentVisitTime}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/petDesc"
             tools:text="N초 전 다녀갔어요" />
 
         <TextView
+            android:fontFamily="@font/nanum_square_round"
             android:id="@+id/markingDesc2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="2dp"
+            android:text="@{viewModel.markingDetail.marking.getRecentVisitCount}"
             android:textColor="@color/color_111111"
             android:textSize="14dp"
-            android:text="@{viewModel.markingDetail.marking.getRecentVisitCount}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/markingDesc1"
             tools:text="총 N회 방문" />
@@ -82,26 +100,26 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             app:imageUrl="@{viewModel.markingDetail.pet.profileImageURL}"
-            tools:background="@drawable/marking_detail_pet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/roundedImageView"
-            app:strokeColor="@color/color_111111" />
+            app:strokeColor="@color/color_111111"
+            tools:background="@drawable/marking_detail_pet" />
 
         <TextView
-            android:clickable="true"
-            android:onClick="@{() -> event.onClickNavWalkHistoryDetail(viewModel.markingDetail.pet.id)}"
-            android:background="@drawable/shape_radius_3_dddddd"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/color_111111"
-            android:text="@string/walk_history"
-            android:textSize="13dp"
-            android:gravity="center"
             android:id="@+id/walkHistoryButton"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_radius_3_dddddd"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="@{() -> event.onClickNavWalkHistoryDetail(viewModel.markingDetail.pet.id)}"
+            android:text="@string/walk_history"
+            android:textColor="@color/color_111111"
+            android:textSize="13dp"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

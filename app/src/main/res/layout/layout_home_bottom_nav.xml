@@ -10,9 +10,9 @@
             name="event"
             type="ai.comake.petping.ui.home.HomeFragment" />
 
-        <!--        <variable-->
-        <!--            name="viewModel"-->
-        <!--            type="ai.comake.petping.ui.history.walk.WalkHistoryViewModel" />-->
+        <variable
+            name="viewModel"
+            type="ai.comake.petping.ui.home.HomeViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -94,6 +94,19 @@
                 app:layout_constraintEnd_toEndOf="@+id/walkScreenIcon"
                 app:layout_constraintStart_toStartOf="@+id/walkScreenIcon" />
 
+            <ImageView
+                android:id="@+id/walkingStatusIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="23dp"
+                android:background="@drawable/walking_entering_nav_icon"
+                android:visibility="@{viewModel.isStartWalk ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/walkScreenIcon"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </ImageView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -145,10 +158,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_marginTop="4dp"
                 android:id="@+id/shopScreenIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/nav_shop_sel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -182,10 +195,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_marginTop="4dp"
                 android:id="@+id/insuranceScreenIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/nav_insurance_sel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

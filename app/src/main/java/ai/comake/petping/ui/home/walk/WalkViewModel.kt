@@ -89,8 +89,9 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     private val _placeDetail = MutableStateFlow<PlaceDetail?>(null)
     val placeDetail = _placeDetail.asStateFlow()
 
-    private val _walkablePetList = MutableSharedFlow<List<WalkablePet.Pets>?>()
-    val walkablePetList = _walkablePetList.asSharedFlow()
+    private val _walkablePetList = MutableLiveData<Event<List<WalkablePet.Pets>>>()
+    val walkablePetList: LiveData<Event<List<WalkablePet.Pets>>>
+        get() = _walkablePetList
 
     private val _walkBottomUi = MutableStateFlow(WalkBottomUi.NONE)
     val walkBottomUi = _walkBottomUi.asStateFlow()
@@ -150,7 +151,7 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
             )
             when (response) {
                 is Resource.Success -> {
-                    _walkablePetList.emit(response.value.data.pets)
+                    _walkablePetList.postValue(Event(response.value.data.pets))
                 }
                 is Resource.Failure -> {
                     Unit
@@ -376,7 +377,7 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
                 }
         }
     }
-    
+
     fun onTestClick() {
         LogUtil.log("TAG", ": $")
     }

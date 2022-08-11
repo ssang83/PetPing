@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.request.RequestOptions
 
 /**
  * android-petping-2
@@ -42,8 +44,12 @@ class InsurancePetAdapter(
         override fun onBind(position: Int) {
             mBinding.executePendingBindings()
             mBinding.name.text = data[position].petName
-            Glide.with(mBinding.profileImage.context).load(data[position].profileImageURL)
-                .centerCrop().into(mBinding.profileImage)
+
+            Glide.with(mBinding.profileImage.context)
+                .load(data[position].profileImageURL)
+                .apply(RequestOptions.circleCropTransform())
+                .into(mBinding.profileImage)
+
             mBinding.itemRoot.setSafeOnClickListener {
                 if (!mBinding.selRadio.isSelected) {
                     val prevPosition = selectedPosition

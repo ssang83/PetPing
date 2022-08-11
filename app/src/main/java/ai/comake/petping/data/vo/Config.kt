@@ -17,7 +17,8 @@ data class WebConfig(
     val rewardCashBack:Boolean = false,
     val insurance:Boolean = false,
     val fromHome:Boolean = false,
-    val welcomeDetail:Boolean = false
+    val welcomeDetail:Boolean = false,
+    val insuranceType:String = ""
 ) : Parcelable
 
 @Parcelize

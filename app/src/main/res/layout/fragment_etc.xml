@@ -222,15 +222,15 @@
                                 android:src="@drawable/ic_question_svg" />
 
                             <TextView
-                                android:gravity="center_vertical"
-                                android:layout_marginTop="10dp"
-                                android:layout_centerHorizontal="true"
-                                android:layout_below="@+id/questionIcon"
                                 android:id="@+id/questionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="22dp"
+                                android:layout_below="@+id/questionIcon"
+                                android:layout_centerHorizontal="true"
                                 android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="10dp"
                                 android:fontFamily="@font/nanum_square_round_font"
+                                android:gravity="center_vertical"
                                 android:text="@string/inquiry"
                                 android:textColor="@color/greyscale_9_111"
                                 android:textSize="14dp" />

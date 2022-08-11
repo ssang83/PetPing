@@ -21,7 +21,8 @@ data class MyPageData(
     val popupInfos: List<PopupInfo>,
     val myPets: List<MyPet>,
     val snsChannels: SNSChannel,
-    val welcomeKit: WelcomeKit
+    val welcomeKit: WelcomeKit,
+    val claimURL:String
 )
 
 data class MyInfo (

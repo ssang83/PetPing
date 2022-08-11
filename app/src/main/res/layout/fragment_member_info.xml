@@ -383,7 +383,9 @@
                         android:text="@string/location_history"
                         android:textColor="@color/greyscale_9_111"
                         android:textSize="13dp"
-                        app:onSafeClick="@{view -> viewModel.goToLocationHistory()}" />
+                        app:onSafeClick="@{view -> viewModel.goToLocationHistory()}"
+                        android:visibility="gone"
+                        />
 
                     <Button
                         style="?attr/materialButtonOutlinedStyle"

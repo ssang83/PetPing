@@ -68,7 +68,8 @@ class InsuranceHistoryFragment :
             moveToInsuranceScreen.observeEvent(viewLifecycleOwner) { url ->
                 val config = WebConfig(
                     url = url,
-                    insurance = true
+                    insurance = true,
+                    insuranceType = "join"
                 )
                 requireActivity().findNavController(R.id.nav_main).navigate(
                     InsuranceHistoryFragmentDirections.actionInsuranceHistoryFragmentToContentsWebFragment(
