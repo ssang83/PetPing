@@ -7,6 +7,7 @@ import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.*
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -63,40 +64,30 @@ class SignUpEmailFragment :
             emailErrorPopup.observeEvent(viewLifecycleOwner) { errorBody ->
                 when (errorBody.code) {
                     "C3000" -> {
-                        SingleBtnDialog(requireContext(), getString(R.string.login_error), getString(R.string.email_address_error)){
-                            binding.emailWrapper.error = null
-                            binding.emailWrapper.isErrorEnabled = true
-                            binding.emailWrapper.error = getString(R.string.email_user_exists)
+                        SingleBtnDialog(
+                            requireContext(),
+                            getString(R.string.login_error),
+                            getString(R.string.email_address_error)
+                        ) {
                             isDuplicate.value = true
                         }.show()
                     }
                 }
             }
 
-            emailError.observeEvent(viewLifecycleOwner) { errorBody ->
-                when (errorBody.code) {
-                    "C3000" -> {
-                        binding.emailWrapper.error = null
-                        binding.emailWrapper.isErrorEnabled = true
-                        binding.emailWrapper.error = getString(R.string.email_user_exists)
-                    }
-                }
-            }
-
             passwordUiUpdate.observeEvent(viewLifecycleOwner) {
-                binding.passwordEdit.setSelection(password.value!!.length)
-                if (binding.passwordEdit.text!!.isNotEmpty() && binding.passwordConfirmEdit.text!!.isNotEmpty()) {
-                    if (binding.passwordEdit.text.toString() == binding.passwordConfirmEdit.text.toString()) {
-                        binding.passwordConfirmWrapper.isErrorEnabled = false
+                binding.editPasswd.setSelection(password.value!!.length)
+                if (binding.editPasswd.text!!.isNotEmpty() && binding.editPasswdConfirm.text!!.isNotEmpty()) {
+                    if (binding.editPasswd.text.toString() == binding.editPasswdConfirm.text.toString()) {
+                        passwdConfirmValidation.value = true
                     } else {
-                        binding.passwordConfirmWrapper.isErrorEnabled = true
-                        binding.passwordConfirmWrapper.error = "비밀번호 불일치"
+                        passwdConfirmValidation.value = false
                     }
                 }
             }
 
             passwordConfirmUiUpdate.observeEvent(viewLifecycleOwner) {
-                binding.passwordConfirmEdit.setSelection(passwordConfirm.value!!.length)
+                binding.editPasswdConfirm.setSelection(passwordConfirm.value!!.length)
             }
         }
 
@@ -111,45 +102,24 @@ class SignUpEmailFragment :
     private fun setUi() {
         with(binding) {
 
-            setEditText(
-                requireContext(),
-                emailWrapper,
-                emailEdit,
-                Pattern.compile(EMAIL_PATTERN),
-                "잘못된 주소 형식입니다.",
-                "이메일 주소를 입력하세요",
-                "이메일 주소"
-            )
-
-            setEditText(
-                requireContext(),
-                passwordWrapper,
-                passwordEdit,
-                Pattern.compile(PASSWORD_PATTERN),
-                "8자 이상 영문, 숫자, 특수문자가 포함돼야 합니다.",
-                "비밀번호를 입력하세요",
-                "비밀번호",
-                "8자 이상 영문, 숫자, 특수문자를 포함해 만들어 주세요."
-            )
-
-            setEditText(
-                requireContext(),
-                passwordConfirmWrapper,
-                passwordConfirmEdit,
-                passwordEdit,
-                "비밀번호 불일치",
-                "한 번 더 입력하세요",
-                "비밀번호 확인"
-            )
-
             header.btnBack.setSafeOnClickListener {
                 requireActivity().backStack(R.id.nav_main)
+            }
+
+            outSide.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_UP -> view.let {
+                        hideKeyboard()
+                        outSide.clearFocus()
+                    }
+                }
+                true
             }
 
             keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
                 onShowKeyboard = { keyboardHeight ->
                     root.run {
-                        smoothScrollTo(scrollX, emailWrapper.top)
+                        smoothScrollTo(scrollX, editEmail.top)
                     }
                     btnNext.visibility = View.GONE
                 })

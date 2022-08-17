@@ -4,12 +4,11 @@ import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.AppDataRepository
 import ai.comake.petping.data.repository.WalkRepository
-import ai.comake.petping.data.vo.AppVersionResponse
-import ai.comake.petping.data.vo.WalkFinish
-import ai.comake.petping.data.vo.WalkFinishRequest
+import ai.comake.petping.data.vo.*
 import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.util.Coroutines
 import ai.comake.petping.util.LogUtil
+import ai.comake.petping.util.SharedPreferencesManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,6 +30,9 @@ class MainViewModel @Inject constructor() : ViewModel(
 
     @Inject
     lateinit var walkDBRepository: WalkDBRepository
+
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     private val _processing = MutableStateFlow(false)
     val processing = _processing.asStateFlow()
@@ -56,6 +58,10 @@ class MainViewModel @Inject constructor() : ViewModel(
     private val _isFailedWalkFinish = MutableLiveData<Event<Boolean>>()
     val isFailedWalkFinish: LiveData<Event<Boolean>>
         get() = _isFailedWalkFinish
+
+    private val _tokenRefresh = MutableLiveData<Event<Unit>>()
+    val tokenRefresh: LiveData<Event<Unit>>
+        get() = _tokenRefresh
 
     //    private val _openWidzet = MutableStateFlow<Event<Boolean>>(Event(false))
 //    val openWidzet: StateFlow<Event<Boolean>> = _openWidzet
@@ -138,6 +144,23 @@ class MainViewModel @Inject constructor() : ViewModel(
         }
     }
 
+    fun checkAccessToken() = Coroutines.main(this) {
+        val response = appDataRepository.getRefreshToken(AppConstants.AUTH_KEY)
+        when (response) {
+            is Resource.Success -> {
+                AppConstants.ID = response.value.data.memberID
+                AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
+
+                sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
+
+                _tokenRefresh.emit()
+            }
+            is Resource.Error -> {
+                event(MainEvent.ExpireToken)
+            }
+        }
+    }
+
     private suspend fun event(event: MainEvent) {
         _eventFlow.emit(event)
     }
@@ -146,5 +169,6 @@ class MainViewModel @Inject constructor() : ViewModel(
         object ForceUpdate : MainEvent()
         object SelectUpdate : MainEvent()
         object SystemCheck : MainEvent()
+        object ExpireToken : MainEvent()
     }
 }

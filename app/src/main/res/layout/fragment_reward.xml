@@ -15,184 +15,179 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/greyscale_fa_fa_fa">
+        android:layout_height="match_parent"
+        android:background="@color/greyscale_fa_fa_fa"
+        android:paddingBottom="56dp"
+        tools:ignore="MissingConstraints">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="1200dp"
-            android:background="@color/greyscale_fa_fa_fa"
-            tools:ignore="MissingConstraints">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/greyscale_fa_fa_fa">
 
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/appBar"
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/greyscale_fa_fa_fa">
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/headerLayer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:background="@color/greyscale_1_fff"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvAvailablePing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="54dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:text="@string/pet_ping_avaiable"
+                                android:textColor="@color/greyscale_9_777"
+                                android:textSize="15dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/pingAmount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="13dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:text="@{viewModel.earningPoint}"
+                                android:textColor="@color/greyscale_9_111"
+                                android:textSize="30dp"
+                                app:layout_constraintStart_toStartOf="@id/tvAvailablePing"
+                                app:layout_constraintTop_toBottomOf="@+id/tvAvailablePing"
+                                tools:text="112,000" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvPing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:fontFamily="@font/nanum_square_round_b"
+                                android:text="Ping"
+                                android:textColor="@color/greyscale_9_aaa"
+                                android:textSize="13dp"
+                                app:layout_constraintBaseline_toBaselineOf="@+id/pingAmount"
+                                app:layout_constraintStart_toEndOf="@+id/pingAmount" />
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/headerLayer"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@color/greyscale_1_fff"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginBottom="3dp"
+                                app:layout_constraintBottom_toBottomOf="@+id/tvPing"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/tvPing"
+                                app:onSafeClick="@{view -> viewModel.goToHistory()}">
 
                                 <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/tvAvailablePing"
+                                    android:id="@+id/tvPingRecord"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="20dp"
-                                    android:layout_marginTop="54dp"
-                                    android:fontFamily="@font/nanum_square_round_b"
-                                    android:text="@string/pet_ping_avaiable"
-                                    android:textColor="@color/greyscale_9_777"
-                                    android:textSize="15dp"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/pingAmount"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="13dp"
-                                    android:fontFamily="@font/nanum_square_round_b"
-                                    android:text="@{viewModel.earningPoint}"
-                                    android:textColor="@color/greyscale_9_111"
-                                    android:textSize="30dp"
-                                    app:layout_constraintStart_toStartOf="@id/tvAvailablePing"
-                                    app:layout_constraintTop_toBottomOf="@+id/tvAvailablePing"
-                                    tools:text="112,000" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/tvPing"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:fontFamily="@font/nanum_square_round_b"
-                                    android:text="Ping"
-                                    android:textColor="@color/greyscale_9_aaa"
-                                    android:textSize="13dp"
-                                    app:layout_constraintBaseline_toBaselineOf="@+id/pingAmount"
-                                    app:layout_constraintStart_toEndOf="@+id/pingAmount" />
-
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="20dp"
-                                    android:layout_marginBottom="3dp"
-                                    app:layout_constraintBottom_toBottomOf="@+id/tvPing"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="@+id/tvPing"
-                                    app:onSafeClick="@{view -> viewModel.goToHistory()}">
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:id="@+id/tvPingRecord"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/nanum_square_round"
-                                        android:text="@string/saving_and_using_ping"
-                                        android:textColor="@color/greyscale_9_111"
-                                        android:textSize="13dp"
-                                        app:layout_constraintBottom_toBottomOf="@+id/ivArrow"
-                                        app:layout_constraintEnd_toStartOf="@+id/ivArrow"
-                                        app:layout_constraintTop_toTopOf="@+id/ivArrow" />
-
-                                    <ImageView
-                                        android:id="@+id/ivArrow"
-                                        android:layout_width="27dp"
-                                        android:layout_height="27dp"
-                                        android:src="@drawable/ic_go"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="19dp"
-                                    android:layout_marginBottom="22dp"
                                     android:fontFamily="@font/nanum_square_round"
-                                    android:lineSpacingExtra="7dp"
-                                    android:text="@string/ping_use_guide"
-                                    android:textColor="@color/greyscale_9_777"
-                                    android:textSize="11dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="@+id/tvAvailablePing"
-                                    app:layout_constraintTop_toBottomOf="@+id/pingAmount" />
+                                    android:text="@string/saving_and_using_ping"
+                                    android:textColor="@color/greyscale_9_111"
+                                    android:textSize="13dp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/ivArrow"
+                                    app:layout_constraintEnd_toStartOf="@+id/ivArrow"
+                                    app:layout_constraintTop_toTopOf="@+id/ivArrow" />
+
+                                <ImageView
+                                    android:id="@+id/ivArrow"
+                                    android:layout_width="27dp"
+                                    android:layout_height="27dp"
+                                    android:src="@drawable/ic_go"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
-                        </LinearLayout>
-                    </com.google.android.material.appbar.CollapsingToolbarLayout>
-                </com.google.android.material.appbar.AppBarLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerMissions"
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="19dp"
+                                android:layout_marginBottom="22dp"
+                                android:fontFamily="@font/nanum_square_round"
+                                android:lineSpacingExtra="7dp"
+                                android:text="@string/ping_use_guide"
+                                android:textColor="@color/greyscale_9_777"
+                                android:textSize="11dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/tvAvailablePing"
+                                app:layout_constraintTop_toBottomOf="@+id/pingAmount" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerMissions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:visibility="@{viewModel.ongoingMissionList.size() != 0 || viewModel.completionMissionList.size() != 0 ? View.VISIBLE : View.GONE}"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.ongoingMissionList.size() == 0 &amp;&amp; viewModel.completionMissionList.size() == 0 ? View.VISIBLE : View.GONE, default = gone}"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="70dp"
+                    android:src="@drawable/ic_ping" />
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never"
-                    android:scrollbars="none"
-                    android:visibility="@{viewModel.ongoingMissionList.size() != 0 || viewModel.completionMissionList.size() != 0 ? View.VISIBLE : View.GONE}"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:lineSpacingExtra="10dp"
+                    android:text="@string/mission_empty"
+                    android:textAlignment="center"
+                    android:textColor="@color/color_bbbbbb"
+                    android:textSize="14dp" />
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.ongoingMissionList.size() == 0 &amp;&amp; viewModel.completionMissionList.size() == 0 ? View.VISIBLE : View.GONE, default = gone}"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="140dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="70dp"
-                        android:src="@drawable/ic_ping" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:fontFamily="@font/nanum_square_round"
-                        android:lineSpacingExtra="10dp"
-                        android:text="@string/mission_empty"
-                        android:textAlignment="center"
-                        android:textColor="@color/color_bbbbbb"
-                        android:textSize="14dp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/bg_white_solid_round"
-                        android:fontFamily="@font/nanum_square_round"
-                        android:gravity="center"
-                        android:text="미션 반려견 설정하기"
-                        android:textColor="@color/greyscale_9_111"
-                        android:textSize="13dp"
-                        app:onSafeClick="@{view -> viewModel.goToMissionPet()}" />
-                </LinearLayout>
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="46dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/bg_white_solid_round"
+                    android:fontFamily="@font/nanum_square_round"
+                    android:gravity="center"
+                    android:text="미션 반려견 설정하기"
+                    android:textColor="@color/greyscale_9_111"
+                    android:textSize="13dp"
+                    app:onSafeClick="@{view -> viewModel.goToMissionPet()}" />
+            </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

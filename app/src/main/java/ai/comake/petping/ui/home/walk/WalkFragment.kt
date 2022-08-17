@@ -2,6 +2,7 @@ package ai.comake.petping.ui.home.walk
 
 import ai.comake.petping.AirbridgeManager
 import ai.comake.petping.AppConstants.AUTH_KEY
+import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.R
 import ai.comake.petping.data.db.walk.Walk
 import ai.comake.petping.data.vo.*
@@ -408,7 +409,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                                 walkData[0].path,
                                 walkData[0].walkEndDatetimeMilli
                             )
-                        viewModel.asyncWalkFinish(AUTH_KEY, id, body)
+                        viewModel.asyncWalkFinish(SAPA_KEY, id, body)
                     }
                 }
             }
@@ -879,7 +880,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            LogUtil.log("TAG", ": $")
+            LogUtil.log("TAG", "resultCode: $")
             _picturePaths.value.add(viewModel.takePhotoPath)
             viewModel.pictureCount.value = _picturePaths.value.size
             if (_picturePaths.value.size >= 5) {
@@ -896,8 +897,11 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                     mContext.getDrawable(R.drawable.shape_badge_gray)
             }
         } else {
-            val file = File(viewModel.picturePaths.value!![0])
-            file.deleteOnExit()
+            LogUtil.log("TAG", "resultCode: else$")
+            if(viewModel.picturePaths.value.size > 0){
+                val file = File(viewModel.picturePaths.value[0])
+                file.deleteOnExit()
+            }
         }
     }
 

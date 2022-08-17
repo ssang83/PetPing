@@ -43,8 +43,13 @@ class MainActivity : AppCompatActivity() {
         setUpNavigation(window.decorView)
         setUpObserver()
 
+        ID = sharedPreferencesManager.getDataStoreLoginId()
+        AUTH_KEY = sharedPreferencesManager.getDataStoreAccessToken()
+
         FirebaseApp.initializeApp(this)
+
         checkSavedFcmToken()
+
         LogUtil.log("TAG", "")
     }
 
@@ -63,6 +68,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkNewBadge() {
+        mainShareViewModel.asyncNewBadge()
+    }
+
     private fun setUpNavigation(view: View) {
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_main
@@ -71,6 +80,9 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _controller, destination, arguments ->
             LogUtil.log("TAG", "destination " + destination.label)
             destinationScreen = destination.label.toString()
+            if(destinationScreen == "homeScreen") {
+                checkNewBadge()
+            }
         }
     }
 

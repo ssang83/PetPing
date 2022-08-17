@@ -44,11 +44,6 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding>(FragmentQuestionB
             binding.viewPagerContainer.setCurrentItem(position, false)
         }
 
-        viewModel.moveToAsk.observeEvent(viewLifecycleOwner) {
-            requireActivity().findNavController(R.id.nav_main)
-                .navigate(R.id.action_questionFragment_to_inquriyFragment)
-        }
-
         with(binding) {
             viewPagerContainer.apply {
                 pagerAdapter = QuestionTabPagerAdapter()

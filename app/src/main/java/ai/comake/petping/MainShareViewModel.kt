@@ -1,6 +1,10 @@
 package ai.comake.petping
 
+import ai.comake.petping.AppConstants.AUTH_KEY
+import ai.comake.petping.AppConstants.ID
 import ai.comake.petping.api.Resource
+import ai.comake.petping.data.db.badge.Badge
+import ai.comake.petping.data.db.badge.BadgeRepository
 import ai.comake.petping.data.repository.AppDataRepository
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.util.LogUtil
@@ -19,6 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainShareViewModel @Inject constructor() : ViewModel() {
     @Inject
+    lateinit var badgeRepository: BadgeRepository
+
+    @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     @Inject
@@ -27,6 +34,10 @@ class MainShareViewModel @Inject constructor() : ViewModel() {
     val showPopUp = MutableLiveData<Event<Boolean>>()
     val moveLinkedScreen = MutableLiveData<Event<MenuLink>>()
     val registFcmToken = MutableLiveData<Event<Boolean>>()
+    var remoteBadge: Badge? = null
+    var localBadge: Badge? = null
+
+    val isSucceedBadge = MutableLiveData<Boolean>()
 
 //    fun setMenuLink(menu: MenuLink) {
 //        menuLink.value = Event(menu)
@@ -64,6 +75,47 @@ class MainShareViewModel @Inject constructor() : ViewModel() {
                     }
                 }
             }
+        }
+    }
+
+    fun asyncNewBadge() {
+        viewModelScope.launch() {
+            val data = badgeRepository.select(0)
+            localBadge = Badge(
+                badgeSeq = 0,
+                newMissionId = data?.newMissionId ?: 0,
+                newSaveRewardId = data?.newSaveRewardId ?: 0,
+                newReplyId = data?.newReplyId ?: 0,
+                newNoticeId = data?.newNoticeId ?: 0,
+                androidNewAppVersion = data?.androidNewAppVersion ?: BuildConfig.VERSION_NAME
+            )
+
+            val response = appDataRepository.getNewBadge(
+                AUTH_KEY, ID)
+
+            when (response) {
+                is Resource.Success -> {
+                    response.value.data?.let { data ->
+                        remoteBadge = Badge(
+                            badgeSeq = 0,
+                            newMissionId = data.newMissionId ?: 0,
+                            newSaveRewardId = data.newSaveRewardId ?: 0,
+                            newReplyId = data.newReplyId ?: 0,
+                            newNoticeId = data.newNoticeId ?: 0,
+                            androidNewAppVersion = data.androidNewAppVersion
+                                ?: BuildConfig.VERSION_NAME
+                        )
+                    }
+                }
+                is Resource.Failure -> {
+                    Unit
+                }
+            }
+
+            isSucceedBadge.postValue(true)
+
+            LogUtil.log("TAG", "localBadge: $localBadge")
+            LogUtil.log("TAG", "remoteBadge: $remoteBadge")
         }
     }
 }

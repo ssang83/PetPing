@@ -4,6 +4,7 @@ import ai.comake.petping.*
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.UserDataRepository
 import ai.comake.petping.data.vo.LeaveType
+import ai.comake.petping.util.Coroutines
 import ai.comake.petping.util.SharedPreferencesManager
 import android.view.MotionEvent
 import android.view.View
@@ -36,7 +37,7 @@ class WithdrawalViewModel @Inject constructor() : ViewModel() {
     val etc = MutableLiveData<Boolean>().apply { value = false }
 
     val withdrawalPopup = MutableLiveData<Event<Unit>>()
-    val moveToHome = MutableLiveData<Event<Unit>>()
+    val moveToLogin = MutableLiveData<Event<Unit>>()
     val uiState = MutableLiveData<Event<UiState>>()
     val selectReason = MutableLiveData<Event<Unit>>()
 
@@ -68,29 +69,31 @@ class WithdrawalViewModel @Inject constructor() : ViewModel() {
         withdrawalPopup.emit()
     }
 
-    fun goToWithdrawal() = viewModelScope.launch {
+    fun goToWithdrawal() = Coroutines.main(this) {
         uiState.emit(UiState.Loading)
         val body = makeWithdrawalBody(
             leaveReason.find { it.leaveTypeStr == type }?.leaveType ?: 0,
             other
         )
-        val response = userDataRepository.withdrawal(AppConstants.AUTH_KEY, AppConstants.ID, body)
+        val response = userDataRepository.withdrawalV2(AppConstants.AUTH_KEY, AppConstants.ID, body)
         when (response) {
             is Resource.Success -> {
                 uiState.emit(UiState.Success)
-                // airbridge logout event
-                val event = co.ab180.airbridge.event.Event(StandardEventCategory.SIGN_OUT)
-                Airbridge.trackEvent(event)
-                Airbridge.expireUser()
+                if (response.value.status == "200") {
+                    // airbridge logout event
+                    val event = co.ab180.airbridge.event.Event(StandardEventCategory.SIGN_OUT)
+                    Airbridge.trackEvent(event)
+                    Airbridge.expireUser()
 
-                AppConstants.AUTH_KEY = ""
-                AppConstants.ID = ""
+                    AppConstants.AUTH_KEY = ""
+                    AppConstants.ID = ""
 
-                sharedPreferencesManager.deleteLoginDataStore()
+                    sharedPreferencesManager.deleteLoginDataStore()
 
-                moveToHome.emit()
+                    moveToLogin.emit()
+                }
             }
-            else -> uiState.emit(UiState.Failure(null))
+            is Resource.Error -> uiState.emit(UiState.Failure(null))
         }
     }
 }

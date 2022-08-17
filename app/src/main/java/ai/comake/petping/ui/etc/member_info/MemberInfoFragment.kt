@@ -74,8 +74,10 @@ class MemberInfoFragment : BaseFragment<FragmentMemberInfoBinding>(FragmentMembe
             }
 
             moveToWithDrawal.observeEvent(viewLifecycleOwner) {
-                requireActivity().findNavController(R.id.nav_main)
-                    .navigate(R.id.action_memberInfoFragment_to_withdrawalFragment)
+                bundleOf("loginType" to loginType).let {
+                    requireActivity().findNavController(R.id.nav_main)
+                        .navigate(R.id.action_memberInfoFragment_to_withdrawalFragment, it)
+                }
             }
 
             moveToChangePw.observeEvent(viewLifecycleOwner) {

@@ -4,6 +4,8 @@ import ai.comake.petping.*
 import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT
 import ai.comake.petping.AppConstants.ID
+import ai.comake.petping.data.db.badge.Badge
+import ai.comake.petping.data.db.badge.BadgeRepository
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentHomeBinding
 import ai.comake.petping.observeEvent
@@ -25,15 +27,21 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
+    @Inject
+    lateinit var badgeRepository: BadgeRepository
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private val args by navArgs<HomeFragmentArgs>()
@@ -80,12 +88,17 @@ class HomeFragment : Fragment() {
         setUpObserver()
         setupClickEvent()
         checkMenuLink(args.menulink)
+        checkNewBadge()
 
         if (homeShareViewModel.screenName.isEmpty()) {
             homeShareViewModel.screenName = "dashBoardScreen"
         }
 
         LogUtil.log("screenName : ${homeShareViewModel.screenName}")
+    }
+
+    fun checkNewBadge() {
+
     }
 
     fun onClickBottomNav(view: View) {
@@ -104,6 +117,10 @@ class HomeFragment : Fragment() {
                 LogUtil.log("TAG", "rewardScreen ")
                 homeShareViewModel.screenName = "rewardScreen"
                 showRewardScreen()
+
+                if (isNewPointBadge()) {
+                    insertPointBadge()
+                }
             }
             R.id.shopScreen -> {
                 LogUtil.log("TAG", "shopScreen ")
@@ -169,11 +186,13 @@ class HomeFragment : Fragment() {
                 }
             }
 
-            if(viewModel.isStartWalk.value == true) {
-                if(menuId == R.id.walkScreen) {
-                    binding.layoutHomeBottomNav.walkingStatusIcon.background = activity.getDrawable(R.drawable.walking_entering_nav_icon)
+            if (viewModel.isStartWalk.value == true) {
+                if (menuId == R.id.walkScreen) {
+                    binding.layoutHomeBottomNav.walkingStatusIcon.background =
+                        activity.getDrawable(R.drawable.walking_entering_nav_icon)
                 } else {
-                    binding.layoutHomeBottomNav.walkingStatusIcon.background = activity.getDrawable(R.drawable.walking_leave_nav_icon)
+                    binding.layoutHomeBottomNav.walkingStatusIcon.background =
+                        activity.getDrawable(R.drawable.walking_leave_nav_icon)
                 }
             }
         }
@@ -286,7 +305,7 @@ class HomeFragment : Fragment() {
 
         viewModel.isStartWalk.observe(viewLifecycleOwner) { isStartWalk ->
             LogUtil.log("TAG", "isStartWalk: $isStartWalk")
-            if(isStartWalk){
+            if (isStartWalk) {
                 binding.layoutHomeBottomNav.walkingStatusIcon.visibility = View.VISIBLE
             } else {
                 binding.layoutHomeBottomNav.walkingStatusIcon.visibility = View.GONE
@@ -303,6 +322,13 @@ class HomeFragment : Fragment() {
             changeUnSelectedMenuIcon(R.id.rewardScreen)
         }
 
+        mainShareViewModel.isSucceedBadge.observe(viewLifecycleOwner, { result ->
+            LogUtil.log("TAG", "isSucceedBadge: $result")
+            if (isNewPointBadge()) {
+                binding.layoutHomeBottomNav.rewardNewBadgeIcon.visibility = View.VISIBLE
+            }
+        })
+
         mainShareViewModel.moveLinkedScreen.observeEvent(viewLifecycleOwner, { menuLink ->
             checkMenuLink(menuLink)
         })
@@ -313,6 +339,19 @@ class HomeFragment : Fragment() {
 //                findNavController().navigate(R.id.action_dashBoardScreen_to_widgetScreen)
 //            }
 //        )
+    }
+
+    fun insertPointBadge() {
+        if (mainShareViewModel.remoteBadge != null && mainShareViewModel.localBadge != null) {
+            mainShareViewModel.localBadge!!.newMissionId =
+                mainShareViewModel.remoteBadge?.newMissionId
+            mainShareViewModel.localBadge!!.newSaveRewardId =
+                mainShareViewModel.remoteBadge!!.newSaveRewardId
+            viewLifecycleOwner.lifecycleScope.launch() {
+                badgeRepository.insert(mainShareViewModel.localBadge!!)
+                binding.layoutHomeBottomNav.rewardNewBadgeIcon.visibility = View.GONE
+            }
+        }
     }
 
     var resultLauncher =
@@ -344,6 +383,16 @@ class HomeFragment : Fragment() {
         }
 
         resultLauncher.launch(intent)
+    }
+
+    //포인트,리워드 NEW 배지 확인
+    fun isNewPointBadge(): Boolean {
+        if (mainShareViewModel.remoteBadge != null && mainShareViewModel.localBadge != null) {
+            return mainShareViewModel.remoteBadge?.newMissionId!! > mainShareViewModel.localBadge?.newMissionId!! ||
+                    mainShareViewModel.remoteBadge!!.newSaveRewardId != mainShareViewModel.localBadge!!.newSaveRewardId
+        } else {
+            return false
+        }
     }
 
     companion object {

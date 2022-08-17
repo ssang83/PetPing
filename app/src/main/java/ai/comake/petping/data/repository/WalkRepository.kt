@@ -23,7 +23,7 @@ class WalkRepository @Inject constructor(private val webService: WebService) : B
     }
 
     suspend fun finishWalk(authKey: String, walkId: Int, body: WalkFinishRequest) = safeApiCall {
-        webService.finishWalk(authKey, walkId, body)
+        webService.finishWalkSapa(authKey, walkId, body)
     }
 
     suspend fun placePoiList(authKey: String, lat: String, lng: String) = safeApiCall {

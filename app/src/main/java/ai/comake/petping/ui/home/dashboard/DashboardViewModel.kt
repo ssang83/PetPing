@@ -131,6 +131,9 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
     private val _showProfilePopup = MutableLiveData<Event<Unit>>()
     val showProfilePopup:LiveData<Event<Unit>> get() = _showProfilePopup
 
+    private val _petListSuccess = MutableLiveData<Event<Unit>>()
+    val petListSuccess:LiveData<Event<Unit>> get() = _petListSuccess
+
     private val _moveToPingTipAll = MutableLiveData<Event<Unit>>()
     val moveToPingTipAll:LiveData<Event<Unit>> get() = _moveToPingTipAll
 
@@ -157,6 +160,9 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
 
     private val _moveToMission= MutableLiveData<Event<Unit>>()
     val moveToMission:LiveData<Event<Unit>> get() = _moveToMission
+
+    private val _initialProfile = MutableLiveData<Event<Unit>>()
+    val initialProfile:LiveData<Event<Unit>> get() = _initialProfile
 
     val profileList = MutableLiveData<List<Pet>>()
     val showHomePopup = MutableLiveData<Event<List<Popup>>>()
@@ -215,6 +221,14 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         when (response) {
             is Resource.Success -> {
                 profileList.value = response.value.data.pets
+                _petListSuccess.emit()
+            }
+            is Resource.Error -> {
+                response.errorBody?.let { error ->
+                    if (error.code == "C2070") {
+                        _initialProfile.emit()
+                    }
+                }
             }
         }
     }
@@ -342,8 +356,13 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         petInfoList = listOf(dashboardData.pet)
 
         _petMessage.value = dashboardData.petMessage
+
         _walkDayCount.value = dashboardData.walk.dayCount.toInt()
         _walkTotalTime.value = dashboardData.walk.totalTime
+
+        LogUtil.log("TAG", "dashboardData.walk.totalTime: ${dashboardData.walk.dayCount.toInt()}")
+        LogUtil.log("TAG", "dashboardData.walk.totalTime: ${dashboardData.walk.totalTime}")
+
         _walkTotalDistance.apply {
             if (dashboardData.walk.totalDistance == "0.0") {
                 value = "0.00"

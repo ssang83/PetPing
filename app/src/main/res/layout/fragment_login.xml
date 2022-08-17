@@ -159,7 +159,7 @@
                     android:src="@drawable/ic_last_login"
                     android:layout_marginEnd="17dp"
                     android:adjustViewBounds="true"
-                    android:visibility="@{viewModel.loginType == 6 ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{viewModel.loginType == 4 ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     />

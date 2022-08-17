@@ -331,7 +331,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:background="@drawable/card_border"
-                    android:layout_marginBottom="120dp"
                     >
 
 
@@ -452,10 +451,15 @@
                             />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="120dp" />
             </LinearLayout>
         </ai.comake.petping.ui.common.widget.EventScrollView>
 
         <FrameLayout
+            android:id="@+id/bannerLayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

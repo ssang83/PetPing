@@ -4,20 +4,21 @@ import ai.comake.petping.*
 import ai.comake.petping.databinding.FragmentNewProfileFirstBinding
 import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.common.widget.MaleFemaleView
-import ai.comake.petping.util.*
+import ai.comake.petping.util.KeyboardVisibilityUtils
+import ai.comake.petping.util.backStack
+import ai.comake.petping.util.setSafeOnClickListener
+import ai.comake.petping.util.updateWhiteStatusBar
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import androidx.activity.viewModels
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import co.ab180.airbridge.Airbridge
 import co.ab180.airbridge.event.model.SemanticAttributes
-import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.regex.Pattern
 
 /**
  * android-petping-2
@@ -35,6 +36,13 @@ class NewProfileFirstFragment :
 
     private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            shareViewModel.resetLiveData()
+            requireActivity().backStack(R.id.nav_main)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
@@ -46,6 +54,8 @@ class NewProfileFirstFragment :
         updateWhiteStatusBar(requireActivity().window)
         binding.viewModel = shareViewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
 
         with(shareViewModel) {
 
@@ -79,24 +89,15 @@ class NewProfileFirstFragment :
 
     override fun onDestroyView() {
         keyboardVisibilityUtils.detachKeyboardListeners()
+        onBackPressedCallback.remove()
         super.onDestroyView()
     }
 
     private fun setUI() {
         with(binding) {
 
-
-            /**
-             * 입력 후 다른화면 갔다가 다시 돌아왔을 때 TextInputLayout 세팅
-             */
-            if (shareViewModel.petName.value.toString() != "") {
-                petNameWrapper.hint = "이름"
-                petNameWrapper.endIconMode = TextInputLayout.END_ICON_NONE
-                setTextInputLayoutHintColor(
-                    petNameWrapper,
-                    requireContext(),
-                    R.color.greyscale_9_aaa
-                )
+            if (shareViewModel.petName.value.toString().isNotEmpty()) {
+                shareViewModel.petNameFocusHintVisible.value = true
             }
 
             maleFemale.initialize(
@@ -105,25 +106,15 @@ class NewProfileFirstFragment :
                     override fun onGenderChanged(gender: Int) {
                         shareViewModel.gender.value = gender
                         shareViewModel.petGender.value = if(gender == 1) {
-                            "남자"
+                            "남"
                         } else {
-                            "여자"
+                            "여"
                         }
 
                         outSide.clearFocus()
                     }
                 })
 
-            setEditText(
-                requireContext(),
-                petNameWrapper,
-                petNameEdit,
-                Pattern.compile(HANGUEL_PATTERN_NEW_FIX),
-                "영문, 숫자, 특수문자는 사용할 수 없습니다.",
-                "이름이 무엇인가요?",
-                "이름",
-                "최대 10자의 한글만 사용해 주세요."
-            )
 
             outSide.setOnTouchListener { view, motionEvent ->
                 when (motionEvent.action) {
@@ -143,7 +134,7 @@ class NewProfileFirstFragment :
             keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
                 onShowKeyboard = { keyboardHeight ->
                     scrollView.run {
-                        smoothScrollTo(scrollX, petNameWrapper.top)
+                        smoothScrollTo(scrollX, editPetName.top)
                     }
                 },
                 onHideKeyboard = {

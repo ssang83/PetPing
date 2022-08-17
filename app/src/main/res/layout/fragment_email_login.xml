@@ -35,10 +35,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/subTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:orientation="vertical"
                 >
 
                 <TextView
@@ -51,7 +47,7 @@
                     android:fontFamily="@font/nanum_square_round"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:visibility="@{viewModel.focusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                    android:visibility="@{viewModel.emailFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
                     />
 
                 <EditText
@@ -66,9 +62,9 @@
                     android:background="@android:color/transparent"
                     android:layout_marginTop="8dp"
                     android:text="@={viewModel.email}"
-                    app:hintText="@{viewModel.focusHintVisible}"
+                    app:hintText="@{viewModel.emailFocusHintVisible}"
                     app:inputTextClear="@{viewModel.emailClear}"
-                    app:focusChangeListener="@{viewModel.focusChangeListener}"
+                    app:focusChangeListener="@{viewModel.emailFocusChangeListener}"
                     android:onTextChanged="@{(text, start, before, count) -> viewModel.onEmailTextChanged(text)}"
                     app:layout_constraintTop_toBottomOf="@+id/focusHint"
                     app:layout_constraintStart_toStartOf="parent"
@@ -76,11 +72,11 @@
                     />
 
                 <View
-                    android:id="@+id/nameLine"
+                    android:id="@+id/emailLine"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     tools:background="#dddddd"
-                    app:lineColor="@{viewModel.emailInputStatus}"
+                    app:lineColor="@{viewModel.emailLineStatus}"
                     android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/editEmail"
                     app:layout_constraintStart_toStartOf="parent"
@@ -108,35 +104,84 @@
                     android:textSize="12dp"
                     android:fontFamily="@font/nanum_square_round"
                     android:visibility="@{viewModel.emailValidation == true ? View.INVISIBLE : View.VISIBLE }"
-                    app:layout_constraintTop_toBottomOf="@+id/nameLine"
+                    app:layout_constraintTop_toBottomOf="@+id/emailLine"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="9dp"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/password_wrapper"
-                style="@style/CustomTextInputLayout"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="83dp"
-                android:layout_marginTop="30dp"
-                android:hint="비밀번호를 입력하세요"
-                app:endIconMode="clear_text">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                >
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password_edit"
-                    style="@style/CustomEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/passwdFocusHint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="비밀번호"
+                    android:textSize="14dp"
+                    android:textColor="@color/color_aaaaaa"
+                    android:fontFamily="@font/nanum_square_round"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="@{viewModel.passwdFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                    />
+
+                <EditText
+                    android:id="@+id/editPasswd"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:hint="비밀번호를 입력하세요"
+                    android:textColorHint="#dddddd"
+                    android:textColor="#111111"
                     android:inputType="textPassword"
-                    android:text="@={viewModel.password}" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:fontFamily="@font/nanum_square_round"
+                    android:background="@android:color/transparent"
+                    android:layout_marginTop="8dp"
+                    android:text="@={viewModel.password}"
+                    app:passwdHintText="@{viewModel.passwdFocusHintVisible}"
+                    app:inputTextClear="@{viewModel.passwdClear}"
+                    app:focusChangeListener="@{viewModel.passwdFocusChangedListener}"
+                    android:onTextChanged="@{(text, start, before, count) -> viewModel.onPasswdTextChanged(text)}"
+                    app:layout_constraintTop_toBottomOf="@+id/passwdFocusHint"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btnPasswdDel"
+                    />
+
+                <View
+                    android:id="@+id/passwdLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    tools:background="#dddddd"
+                    app:lineColor="@{viewModel.passwdLineStatus}"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/editPasswd"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/btnPasswdDel"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:src="@drawable/btn_del"
+                    android:adjustViewBounds="true"
+                    android:visibility="@{viewModel.passwdInputStatus == true ? View.VISIBLE : View.INVISIBLE}"
+                    app:onSafeClick="@{view -> viewModel.onInputPasswdClear()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/editPasswd"
+                    app:layout_constraintBottom_toBottomOf="@+id/editPasswd"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <Button
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="end"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/nanum_square_round"
                 android:onClick="@{view -> viewModel.goToFindPassword()}"
                 android:text="@string/find_passwd"

@@ -166,21 +166,26 @@ class LoginViewModel @Inject constructor() : ViewModel() {
             config.email,
             config.authWord,
             AppConstants.getAndroidId(context),
-            config.authWord
+            config.snsAuthToken
         )
-        val response = loginRepository.requestSignIn(SAPA_KEY, body)
+        val response = loginRepository.requestSignInV2(SAPA_KEY, body)
         when (response) {
             is Resource.Success -> {
                 uiState.emit(UiState.Success)
-                AppConstants.ID = response.value.data.id
-                AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
-                moveToHome.emit()
+                if (response.value.status == "200") {
+                    AppConstants.ID = response.value.data.id
+                    AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
+
+                    sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
+                    sharedPreferencesManager.saveLoginType(4)
+
+                    moveToHome.emit()
+                } else {
+                    appleLoginError.emit(response.value.error)
+                }
             }
             is Resource.Error -> {
                 uiState.emit(UiState.Failure(null))
-                response.errorBody?.let { errorBody ->
-                    appleLoginError.emit(errorBody)
-                }
             }
         }
     }

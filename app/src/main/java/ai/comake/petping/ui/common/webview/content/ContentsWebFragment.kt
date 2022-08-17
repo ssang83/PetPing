@@ -128,15 +128,22 @@ class ContentsWebFragment :
                 if (args.config.insuranceType == "join") {
                     DoubleBtnDialog(
                         requireContext(),
-                        "가입 신청을 종료하시겠어요?",
-                        "가입 신청을 종료하면 앱 화면으로 돌아가요.",
+                        "펫보험 가입을 종료하시겠어요?",
+                        "펫보험 가입을 종료하면 앱 화면으로 돌아가요.",
+                        okCallback = { requireActivity().backStack(R.id.nav_main) }
+                    ).show()
+                } else if(args.config.insuranceType == "apply") {
+                    DoubleBtnDialog(
+                        requireContext(),
+                        "청구 신청을 종료하시겠어요?",
+                        "청구 신청을 종료하면 앱 화면으로 돌아가요.",
                         okCallback = { requireActivity().backStack(R.id.nav_main) }
                     ).show()
                 } else {
                     DoubleBtnDialog(
                         requireContext(),
-                        "청구 신청을 종료하시겠어요?",
-                        "청구 신청을 종료하면 앱 화면으로 돌아가요.",
+                        "펫보험을 종료하시겠어요?",
+                        "펫보험을 종료하면 앱 화면으로 돌아가요.",
                         okCallback = { requireActivity().backStack(R.id.nav_main) }
                     ).show()
                 }
@@ -313,8 +320,10 @@ class ContentsWebFragment :
                         binding.title.apply {
                             if (args.config.insuranceType == "join") {
                                 text = "펫보험 가입"
-                            } else {
+                            } else if(args.config.insuranceType == "apply") {
                                 text = "펫보험 청구 신청"
+                            } else {
+                                text = "가입한 펫보험"
                             }
                         }
 

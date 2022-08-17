@@ -28,7 +28,7 @@
             android:padding="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="@{viewModel.needBack ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.needBack ? View.VISIBLE : View.INVISIBLE}"
             />
 
         <LinearLayout

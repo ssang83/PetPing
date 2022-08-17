@@ -8,6 +8,7 @@ import ai.comake.petping.data.vo.AgreementConfig
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.PolicyData
 import ai.comake.petping.data.vo.UserDataStore
+import ai.comake.petping.util.Coroutines
 import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.getErrorBodyConverter
 import android.content.Context
@@ -75,7 +76,7 @@ class AgreementViewModel @Inject constructor() : ViewModel() {
      * 성공 시 인증 메일 발송 안내 팝업
      * 만 14세 미만이거나 가입 이력이 있으면 에러 팝업
      */
-    fun signUp(context: Context) = viewModelScope.launch {
+    fun signUp(context: Context) = Coroutines.main(this) {
         uiState.emit(UiState.Loading)
         val body = makeSignUpBody(
             config?.emailKey ?: "",
@@ -89,87 +90,87 @@ class AgreementViewModel @Inject constructor() : ViewModel() {
             marketingAgreement.value!!,
             ageAgreement.value!!
         )
-        val response = loginRepository.requestSignUp(SAPA_KEY, body)
+
+        val response = loginRepository.requestSignUpV2(SAPA_KEY, body)
         when (response) {
             is Resource.Success -> {
                 uiState.emit(UiState.Success)
-                AppConstants.ID = response.value.data.id
-                AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
-                AppConstants.EMAIL = response.value.data.email
+                if (response.value.status == "200") {
+                    AppConstants.ID = response.value.data.id
+                    AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
+                    AppConstants.EMAIL = response.value.data.email
 
-                sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
+                    sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
 
-                if (config?.signUpType == 1) { // 이메일 가입
-                    if (response.value.data.isEmailAuthSend) {
-                        emailAuthNeedPopup.emit()
-                    } else {
+                    if (config?.signUpType == 1) { // 이메일 가입
+                        if (response.value.data.isEmailAuthSend) {
+                            emailAuthNeedPopup.emit()
+                        } else {
+                            moveToHome.emit()
+                        }
+                    } else if (config?.signUpType == 2) { // 네이버 가입
+                        moveToHome.emit()
+                    } else if(config?.signUpType == 3) { // 카카오 가입
+                        if (response.value.data.isEmailAuthSend) {
+                            emailAuthNeedPopup.emit()
+                        } else if (response.value.data.email.isNullOrEmpty()) {
+                            emailRegisterPopup.emit()
+                        } else {
+                            moveToHome.emit()
+                        }
+                    } else { // 애플 기입
                         moveToHome.emit()
                     }
-                } else if (config?.signUpType == 2) { // 네이버 가입
-                    moveToHome.emit()
-                } else if(config?.signUpType == 3) { // 카카오 가입
-                    if (response.value.data.isEmailAuthSend) {
-                        emailAuthNeedPopup.emit()
-                    } else if (response.value.data.email.isNullOrEmpty()) {
-                        emailRegisterPopup.emit()
-                    } else {
-                        moveToHome.emit()
+
+                    // airbridge
+                    Airbridge.getCurrentUser().setAlias(
+                        "FLAG_SEND_AUTHENTICATION_EMAIL",
+                        config?.sendAuthMailFlag.toString()
+                    )
+                    Airbridge.getCurrentUser().id = response.value.data.id
+                    Airbridge.getCurrentUser().email = response.value.data.email
+                    Airbridge.getCurrentUser()
+                        .setAlias("DEVICE_ID", AppConstants.getAndroidId(context))
+                    Airbridge.getCurrentUser().setAlias(
+                        "SIGN_UP_TYPE",
+                        config?.signUpType.toString()
+                    )
+                    Airbridge.getCurrentUser()
+                        .setAlias("AUTH_WORD", config?.authWord.toString())
+                    Airbridge.getCurrentUser().setAlias(
+                        "MKT_AGREEMENT",
+                        marketingAgreement.value.toString()
+                    )
+                    // airbridge sign up event
+                    Airbridge.getCurrentUser().apply {
+                        id = response.value.data.id
+                        email = response.value.data.email
+                        phone = ""
+                        setAlias("", "")
+                        setAttribute("", "")
                     }
-                } else { // 애플 기입
-                    moveToHome.emit()
-                }
 
-                // airbridge
-                Airbridge.getCurrentUser().setAlias(
-                    "FLAG_SEND_AUTHENTICATION_EMAIL",
-                    config?.sendAuthMailFlag.toString()
-                )
-                Airbridge.getCurrentUser().id = response.value.data.id
-                Airbridge.getCurrentUser().email = response.value.data.email
-                Airbridge.getCurrentUser()
-                    .setAlias("DEVICE_ID", AppConstants.getAndroidId(context))
-                Airbridge.getCurrentUser().setAlias(
-                    "SIGN_UP_TYPE",
-                    config?.signUpType.toString()
-                )
-                Airbridge.getCurrentUser()
-                    .setAlias("AUTH_WORD", config?.authWord.toString())
-                Airbridge.getCurrentUser().setAlias(
-                    "MKT_AGREEMENT",
-                    marketingAgreement.value.toString()
-                )
-                // airbridge sign up event
-                Airbridge.getCurrentUser().apply {
-                    id = response.value.data.id
-                    email = response.value.data.email
-                    phone = ""
-                    setAlias("", "")
-                    setAttribute("", "")
-                }
+                    val event = co.ab180.airbridge.event.Event(StandardEventCategory.SIGN_UP)
+                    Airbridge.trackEvent(event)
 
-                val event = co.ab180.airbridge.event.Event(StandardEventCategory.SIGN_UP)
-                Airbridge.trackEvent(event)
-
-                // airbridge sign up event
-                val eventValue = 10f
-                val eventAttributes = mutableMapOf<String, String>()
-                val semanticAttributes = SemanticAttributes()
-                Airbridge.trackEvent(
-                    "signup_event",
-                    "signup_action",
-                    "signup_label",
-                    eventValue,
-                    eventAttributes,
-                    semanticAttributes.toMap()
-                )
-            }
-            is Resource.Failure -> {
-                uiState.emit(UiState.Failure(null))
-                response.errorBody?.let { errorBody ->
-                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                    loginErrorPopup.emit(errorResponse)
+                    // airbridge sign up event
+                    val eventValue = 10f
+                    val eventAttributes = mutableMapOf<String, String>()
+                    val semanticAttributes = SemanticAttributes()
+                    Airbridge.trackEvent(
+                        "signup_event",
+                        "signup_action",
+                        "signup_label",
+                        eventValue,
+                        eventAttributes,
+                        semanticAttributes.toMap()
+                    )
+                } else {
+                    loginErrorPopup.emit(response.value.error)
                 }
             }
+
+            is Resource.Error -> uiState.emit(UiState.Failure(null))
         }
     }
 

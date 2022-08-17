@@ -46,7 +46,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     fun showKeyboardOnView(view: View) {
         view.requestFocus()
         showKeyBoard(view)
-        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+//        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         view.requestFocus()
     }
 }

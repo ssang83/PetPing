@@ -22,12 +22,28 @@ class LoginRepository @Inject constructor(private val webService: WebService) : 
         webService.requestSignIn(sapaKey, body)
     }
 
+    suspend fun requestSignInV2(sapaKey:String, body: RequestBody) = safeApiCall {
+        webService.requestSignInV2(sapaKey, body)
+    }
+
     suspend fun getPolicies(sapaKey: String) = safeApiCall {
         webService.getPolicies(sapaKey)
     }
 
     suspend fun requestSignUp(sapaKey: String, body: RequestBody) = safeApiCall {
         webService.requestSignUpSapa(
+            sapaKey,
+            BuildConfig.VERSION_NAME,
+            Build.VERSION.RELEASE,
+            Build.MODEL,
+            "temp",
+            UUID.randomUUID().toString(),
+            body
+        )
+    }
+
+    suspend fun requestSignUpV2(sapaKey: String, body: RequestBody) = safeApiCall {
+        webService.requestSignUpSapaV2(
             sapaKey,
             BuildConfig.VERSION_NAME,
             Build.VERSION.RELEASE,

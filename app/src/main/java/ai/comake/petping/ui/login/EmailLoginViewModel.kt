@@ -13,6 +13,7 @@ import ai.comake.petping.util.getErrorBodyConverter
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
+import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,10 +44,12 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     val emailInputStatus = MutableLiveData<Boolean>().apply { value = false }
     val emailValidation = MutableLiveData<Boolean>().apply { value = true }
     val emailClear = MutableLiveData<Boolean>().apply { value = false }
+    val emailFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val emailLineStatus = MutableLiveData<Boolean>().apply { value = false }
     val passwdInputStatus = MutableLiveData<Boolean>().apply { value = false }
-    val passwdValidation = MutableLiveData<Boolean>().apply { value = true }
     val passwdClear = MutableLiveData<Boolean>().apply { value = false }
-    val focusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val passwdFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val passwdLineStatus = MutableLiveData<Boolean>().apply { value = false }
 
     val emailErrorPopup = MutableLiveData<Event<ErrorResponse>>()
     val passwordErrorPopup = MutableLiveData<Event<ErrorResponse>>()
@@ -55,12 +58,58 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
     val moveToFindPasswd = MutableLiveData<Event<Unit>>()
     val moveToSignUp = MutableLiveData<Event<Unit>>()
 
-    val focusChangeListener = object : View.OnFocusChangeListener {
+    val emailFocusChangeListener = object : View.OnFocusChangeListener {
         override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
             if (hasFocus) {
-                focusHintVisible.value = true
+                emailFocusHintVisible.value = true
+                emailLineStatus.value = true
+
+                emailInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    }
+                }
             } else {
+                emailFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                emailLineStatus.value = false
                 emailInputStatus.value = false
+            }
+        }
+    }
+
+    val passwdFocusChangedListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                passwdFocusHintVisible.value = true
+                passwdLineStatus.value = true
+
+                passwdInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+            } else {
+                passwdFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                passwdLineStatus.value = false
+                passwdInputStatus.value = false
             }
         }
     }

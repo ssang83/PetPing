@@ -16,33 +16,65 @@
         android:background="@color/greyscale_1_fff"
         >
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:fillViewport="true"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="30dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tool:listitem="@layout/adapter_inquiry_item"
-            app:inquiryItem="@{viewModel.inquiryItems}"
-            app:viewModel="@{viewModel}"
-            android:visibility="@{viewModel.inquiryItems.size() == 0 ? View.GONE : View.VISIBLE}"
-            />
+            >
 
-        <TextView
-            android:visibility="@{viewModel.inquiryItems.size() == 0 ? View.VISIBLE : View.GONE, default = gone}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="@string/inquiry_history_empty"
-            android:textColor="@color/color_bbbbbb"
-            android:textSize="16dp"
-            android:fontFamily="@font/nanum_square_round"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/inquiryList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:inquiryItem="@{viewModel.inquiryItems}"
+                        app:viewModel="@{viewModel}"
+                        android:visibility="@{viewModel.inquiryItems.size() == 0 ? View.GONE : View.VISIBLE}"
+                        />
+
+                    <TextView
+                        android:visibility="@{viewModel.inquiryItems.size() == 0 ? View.VISIBLE : View.GONE, default = gone}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/inquiry_history_empty"
+                        android:textColor="@color/color_bbbbbb"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        />
+                </FrameLayout>
+
+                <Button
+                    style="@style/BottomBarButton"
+                    android:id="@+id/btnAsk"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginHorizontal="20dp"
+                    app:onSafeClick="@{view -> viewModel.goToAskPage()}"
+                    android:text="@string/inquiry_do"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/inquiryList"
+                    />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

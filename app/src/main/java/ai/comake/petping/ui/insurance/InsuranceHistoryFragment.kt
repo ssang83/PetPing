@@ -178,9 +178,16 @@ class InsuranceHistoryFragment :
                     }
 
                     else -> {
+                        val type = if (item.state == 1) {
+                            "complete"
+                        } else {
+                            "join"
+                        }
+
                         val config = WebConfig(
                             url = item.url,
-                            insurance = true
+                            insurance = true,
+                            insuranceType = type
                         )
                         requireActivity().findNavController(R.id.nav_main).navigate(
                             InsuranceHistoryFragmentDirections.actionInsuranceHistoryFragmentToContentsWebFragment(

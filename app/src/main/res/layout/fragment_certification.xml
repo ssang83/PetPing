@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="ai.comake.petping.ui.etc.CertificationViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,27 +72,99 @@
                         android:textColor="@color/greyscale_9_777"
                         android:textSize="14dp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/name_wrapper"
-                        style="@style/CustomTextInputLayout"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
-                        android:hint="이름을 입력하세요"
-                        app:endIconMode="clear_text">
+                        >
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/name_edit"
-                            style="@style/CustomEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:enabled='@{viewModel.phoneNumber == ""}'
+                        <TextView
+                            android:id="@+id/focusHint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="이름"
+                            android:textSize="14dp"
+                            android:textColor="@color/color_aaaaaa"
                             android:fontFamily="@font/nanum_square_round"
-                            android:inputType="textPersonName"
-                            android:maxLength="20"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:visibility="@{viewModel.nameFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                            />
+
+                        <EditText
+                            android:id="@+id/editName"
+                            android:layout_width="0dp"
+                            android:layout_height="34dp"
+                            android:hint="이름을 입력하세요"
+                            android:textColorHint="#dddddd"
+                            android:textColor="#111111"
+                            android:inputType="textEmailAddress"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:background="@android:color/transparent"
+                            android:layout_marginTop="8dp"
+                            android:enabled='@{viewModel.phoneNumber == ""}'
                             android:text="@={viewModel.name}"
-                            android:textSize="20dp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            app:nameHintText="@{viewModel.nameFocusHintVisible}"
+                            app:inputTextClear="@{viewModel.nameClear}"
+                            app:focusChangeListener="@{viewModel.nameFocusChangeListener}"
+                            android:onTextChanged="@{(text, start, before, count) -> viewModel.onNameTextChanged(text)}"
+                            app:layout_constraintTop_toBottomOf="@+id/focusHint"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/btnDel"
+                            />
+
+                        <View
+                            android:id="@+id/line"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            tools:background="#dddddd"
+                            app:lineColor="@{viewModel.nameLineStatus}"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@+id/editName"
+                            app:layout_constraintStart_toStartOf="parent"
+                            />
+
+                        <ImageView
+                            android:id="@+id/btnDel"
+                            android:layout_width="21dp"
+                            android:layout_height="21dp"
+                            android:src="@drawable/btn_del"
+                            android:adjustViewBounds="true"
+                            android:visibility="@{viewModel.nameInputStatus == true ? View.VISIBLE : View.INVISIBLE}"
+                            app:onSafeClick="@{view -> viewModel.onInputNameClear()}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/editName"
+                            app:layout_constraintBottom_toBottomOf="@+id/editName"
+                            />
+
+                        <TextView
+                            android:id="@+id/error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="정확한 이름을 입력해 주세요."
+                            android:textColor="#ff4857"
+                            android:textSize="12dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:visibility="@{viewModel.nameValidation == true ? View.INVISIBLE : View.VISIBLE }"
+                            app:layout_constraintTop_toBottomOf="@+id/line"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginTop="9dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/helper"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="본인 이름을 입력해 주세요."
+                            android:textColor="@color/color_aaaaaa"
+                            android:textSize="12dp"
+                            android:fontFamily="@font/nanum_square_round"
+                            android:visibility="@{viewModel.nameHelperVisible == true ? View.VISIBLE : View.INVISIBLE}"
+                            app:layout_constraintTop_toBottomOf="@+id/line"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginTop="9dp"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <ai.comake.petping.ui.common.widget.IDEditText
                         android:id="@+id/personal_id"

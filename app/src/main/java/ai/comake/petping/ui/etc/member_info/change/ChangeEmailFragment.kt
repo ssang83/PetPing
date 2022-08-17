@@ -6,6 +6,7 @@ import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.*
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -59,6 +60,16 @@ class ChangeEmailFragment :
 
         binding.header.btnBack.setSafeOnClickListener {
             requireActivity().backStack(R.id.nav_main)
+        }
+
+        binding.outSide.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_UP -> view.let {
+                    hideKeyboard()
+                    binding.outSide.clearFocus()
+                }
+            }
+            true
         }
 
         keyboardVisibilityUtils = KeyboardVisibilityUtils(

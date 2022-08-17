@@ -1,5 +1,6 @@
 package ai.comake.petping.ui.login
 
+import ai.comake.petping.BuildConfig
 import ai.comake.petping.data.vo.AppleLoginConfig
 import ai.comake.petping.util.LogUtil
 import android.annotation.SuppressLint
@@ -40,7 +41,7 @@ class AppleSignInDialog(
 
             webViewClient = AppleWebClient()
 
-            loadUrl("https://dev.petping.com/oauth/apple/login")
+            loadUrl(BuildConfig.APPLE_LOGIN_URL)
         }
 
         setContentView(webView)
@@ -73,15 +74,15 @@ class AppleSignInDialog(
             super.onPageFinished(view, url)
             //petpingapple://?email=devyeony@gmail.com
             // &authWord=000994.3da820954aad4215bf6b5378a0f781ad.0146
-            // &authorizationCode=ejxmKhGGg+K3SvwFWgCeJnD/I71ouVAtC77N2bLN3ItAfhNez0j3X/N8nJFqTLuJjUArS61QPLf5XvYVC5t76w==
+            // &snsAuthToken=ejxmKhGGg+K3SvwFWgCeJnD/I71ouVAtC77N2bLN3ItAfhNez0j3X/N8nJFqTLuJjUArS61QPLf5XvYVC5t76w==
             url?.let {
                 if (it.startsWith("petpingapple")) {
                     val uri = Uri.parse(it)
-                    LogUtil.log("email : ${uri.getQueryParameter("email")}, authWord : ${uri.getQueryParameter("authWord")}, authorizationCode : ${uri.getQueryParameter("authorizationCode")}")
+                    LogUtil.log("email : ${uri.getQueryParameter("email")}, authWord : ${uri.getQueryParameter("authWord")}, snsAuthToken : ${uri.getQueryParameter("snsAuthToken")}")
                     val config = AppleLoginConfig(
                         email = uri.getQueryParameter("email") ?: "",
                         authWord = uri.getQueryParameter("authWord") ?: "",
-                        authCode = uri.getQueryParameter("authorizationCode") ?: ""
+                        snsAuthToken = uri.getQueryParameter("snsAuthToken") ?: ""
                     )
                     callBack?.invoke(config)
                     dismiss()

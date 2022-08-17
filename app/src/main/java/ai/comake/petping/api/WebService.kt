@@ -95,6 +95,16 @@ interface WebService {
     ): CommonResponse<WalkFinish>
 
     /**
+     * 산책종료
+     */
+    @PUT("/v1/sapa/walks/{walkId}/finish")
+    suspend fun finishWalkSapa(
+        @Header("Authorization") authKey: String,
+        @Path("walkId") walkId: Int,
+        @Body body: WalkFinishRequest
+    ): CommonResponse<WalkFinish>
+
+    /**
      * 산책종료 산책기록
      */
     @Multipart
@@ -408,6 +418,12 @@ interface WebService {
         @Body body: RequestBody
     ): CommonResponse<SignInResponseData>
 
+    @POST("/v2/sapa/accounts/login")
+    suspend fun requestSignInV2(
+        @Header("Authorization") sapaAuthKey: String,
+        @Body body: RequestBody
+    ): CommonResponse<SignInResponseData>
+
     @GET("/v1/sapa/accounts/policies")
     suspend fun getPolicies(
         @Header("Authorization") sapaAuthKey: String
@@ -415,6 +431,17 @@ interface WebService {
 
     @POST("/v1/sapa/members-account")
     suspend fun requestSignUpSapa(
+        @Header("Authorization") sapaAuthKey: String,
+        @Header("appVersion") appVersion: String,
+        @Header("osVersion") osVersion: String,
+        @Header("deviceInfo") deviceInfo: String,
+        @Header("mobileCarrierInfo") mobileCarrierInfo: String,
+        @Header("deviceId") deviceId: String,
+        @Body body: RequestBody
+    ): CommonResponse<SignUpResponseData>
+
+    @POST("/v2/sapa/members-account")
+    suspend fun requestSignUpSapaV2(
         @Header("Authorization") sapaAuthKey: String,
         @Header("appVersion") appVersion: String,
         @Header("osVersion") osVersion: String,
@@ -444,6 +471,13 @@ interface WebService {
 
     @POST("/v1/petping/members/{memberId}")
     suspend fun withdrawalId(
+        @Header("Authorization") authKey: String,
+        @Path("memberId") memberId: String,
+        @Body body: RequestBody
+    ): CommonResponse<Any>
+
+    @POST("/v2/petping/members/{memberId}")
+    suspend fun withdrawalIdV2(
         @Header("Authorization") authKey: String,
         @Path("memberId") memberId: String,
         @Body body: RequestBody
@@ -699,4 +733,15 @@ interface WebService {
     suspend fun logout(
         @Header("Authorization") authKey: String,
     ): CommonResponse<Any>
+
+    @GET("/v1/petping/my-pages/newAlertInfos")
+    suspend fun requestNewBadge(
+        @Header("Authorization") authKey: String,
+        @Query("memberId") memberId: String
+    ): BadgeResponse
+
+    @GET("/v2/petping/new-authtoken")
+    suspend fun getNewToken(
+        @Header("Authorization") authKey: String
+    ): CommonResponse<NewTokenResponse>
 }

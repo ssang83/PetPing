@@ -41,6 +41,11 @@ class InquiryDoFragment :
                 }
             }
 
+            moveToAsk.observeEvent(viewLifecycleOwner) {
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(R.id.action_questionFragment_to_inquriyFragment)
+            }
+
             moveToDetail.observeEvent(viewLifecycleOwner) { url ->
                 val config = WebConfig(
                     url = url

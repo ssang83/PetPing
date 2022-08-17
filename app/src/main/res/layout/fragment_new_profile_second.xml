@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="ai.comake.petping.ui.profile.make.pet.ProfileSharedViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -102,24 +104,85 @@
                     </FrameLayout>
                 </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/CustomTextInputLayout"
-                    android:id="@+id/dropDownAutoComplete"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="79dp"
-                    android:hint="@string/new_profile_pet_breed_hint"
-                    app:endIconMode="clear_text">
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/CustomEditText"
-                        android:id="@+id/breed"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/focusHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="종류"
+                        android:textSize="14dp"
+                        android:textColor="@color/color_aaaaaa"
+                        android:fontFamily="@font/nanum_square_round"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:visibility="@{viewModel.breedFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                        />
+
+                    <EditText
+                        android:id="@+id/editBreed"
+                        android:layout_width="0dp"
+                        android:layout_height="34dp"
+                        android:hint="어떤 종류인가요?"
+                        android:textColorHint="#dddddd"
+                        android:textColor="#111111"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:background="@android:color/transparent"
+                        android:layout_marginTop="8dp"
                         android:maxLength="10"
                         android:inputType="text"
                         android:text="@={viewModel.breed}"
+                        app:breedHintText="@{viewModel.breedFocusHintVisible}"
+                        app:inputTextClear="@{viewModel.breedClear}"
+                        app:focusChangeListener="@{viewModel.breedFocusChangeListener}"
+                        android:onTextChanged="@{(text, start, before, count) -> viewModel.onBreedTextChanged(text)}"
+                        app:layout_constraintTop_toBottomOf="@+id/focusHint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnDel"
                         />
-                </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:id="@+id/breedline"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        tools:background="#dddddd"
+                        app:lineColor="@{viewModel.breedLineStatus}"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/editBreed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
+
+                    <ImageView
+                        android:id="@+id/btnDel"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:src="@drawable/btn_del"
+                        android:adjustViewBounds="true"
+                        android:visibility="@{viewModel.breedInputStatus == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:onSafeClick="@{view -> viewModel.onInputBreedClear()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/editBreed"
+                        app:layout_constraintBottom_toBottomOf="@+id/editBreed"
+                        />
+
+                    <TextView
+                        android:id="@+id/error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="영문, 숫자, 특수문자는 입력할 수 없습니다."
+                        android:textColor="#ff4857"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:visibility="@{viewModel.breedValidation == true ? View.INVISIBLE : View.VISIBLE }"
+                        app:layout_constraintTop_toBottomOf="@+id/breedline"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/filterList"
@@ -131,25 +194,100 @@
                     android:visibility="gone"
                     />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/CustomTextInputLayout"
-                    android:id="@+id/pet_birth_wrapper"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="80dp"
                     android:layout_marginBottom="120dp"
-                    android:hint="@string/new_profile_pet_birth_hint"
-                    app:endIconMode="clear_text">
+                    >
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/CustomEditText"
-                        android:id="@+id/pet_birth_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                    <TextView
+                        android:id="@+id/birthFocusHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="생년월일(6자리 숫자)"
+                        android:textSize="14dp"
+                        android:textColor="@color/color_aaaaaa"
+                        android:fontFamily="@font/nanum_square_round"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:visibility="@{viewModel.breedFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                        />
+
+                    <EditText
+                        android:id="@+id/editBirth"
+                        android:layout_width="0dp"
+                        android:layout_height="34dp"
+                        android:hint="@string/new_profile_pet_birth_hint"
+                        android:textColorHint="#dddddd"
+                        android:textColor="#111111"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:background="@android:color/transparent"
+                        android:layout_marginTop="8dp"
                         android:inputType="numberSigned"
                         android:maxLength="6"
-                        android:text="@={viewModel.birth}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:text="@={viewModel.birth}"
+                        app:birthHintText="@{viewModel.breedFocusHintVisible}"
+                        app:inputTextClear="@{viewModel.birthClear}"
+                        app:focusChangeListener="@{viewModel.birthFocusChangeListener}"
+                        android:onTextChanged="@{(text, start, before, count) -> viewModel.onBirthTextChanged(text)}"
+                        app:layout_constraintTop_toBottomOf="@+id/birthFocusHint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnBirthDel"
+                        />
+
+                    <View
+                        android:id="@+id/birthline"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        tools:background="#dddddd"
+                        app:lineColor="@{viewModel.birthLineStatus}"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/editBirth"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
+
+                    <ImageView
+                        android:id="@+id/btnBirthDel"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:src="@drawable/btn_del"
+                        android:adjustViewBounds="true"
+                        android:visibility="@{viewModel.birthInputStatus == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:onSafeClick="@{view -> viewModel.onInputBirthClear()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/editBirth"
+                        app:layout_constraintBottom_toBottomOf="@+id/editBirth"
+                        />
+
+                    <TextView
+                        android:id="@+id/birthError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정확한 생년월일을 입력해 주세요."
+                        android:textColor="#ff4857"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:visibility="@{viewModel.birthValidation == true ? View.INVISIBLE : View.VISIBLE }"
+                        app:layout_constraintTop_toBottomOf="@+id/birthline"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/helper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="생년월일은 언제든 수정할 수 있어요."
+                        android:textColor="@color/color_aaaaaa"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:visibility="@{viewModel.birthHelperVisible == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintTop_toBottomOf="@+id/birthline"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
         </ScrollView>

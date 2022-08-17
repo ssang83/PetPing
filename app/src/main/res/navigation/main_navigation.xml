@@ -603,9 +603,8 @@
         tools:layout="@layout/fragment_withdrawal"
         >
         <action
-            android:id="@+id/action_withdrawalFragment_to_homeScreen"
-            app:destination="@id/homeScreen"
-            />
+            android:id="@+id/action_withdrawalFragment_to_loginGraph"
+            app:destination="@id/loginGraph" />
     </fragment>
     <fragment
         android:id="@+id/locationHistoryFragment"

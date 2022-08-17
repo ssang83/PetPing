@@ -2,6 +2,7 @@ package ai.comake.petping.ui.login
 
 import ai.comake.petping.*
 import ai.comake.petping.data.vo.AgreementConfig
+import ai.comake.petping.data.vo.AppleLoginConfig
 import ai.comake.petping.data.vo.NaverData
 import ai.comake.petping.databinding.FragmentLoginBinding
 import ai.comake.petping.ui.base.BaseFragment
@@ -51,9 +52,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private val viewModel: LoginViewModel by viewModels()
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
 
+    var appleLoginConfig:AppleLoginConfig? = null
+
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            requireActivity().finish()
+            finishApplication()
         }
     }
 
@@ -108,7 +111,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 AppleSignInDialog(
                     requireContext(),
                     callBack = { config ->
-                        LogUtil.log("apple token : ${config.authWord}, email : ${config.email}, authCode : ${config.authCode}")
+                        LogUtil.log("apple token : ${config.authWord}, email : ${config.email}, snsAuthToken : ${config.snsAuthToken}")
+                        appleLoginConfig = config
                         loginApple(requireContext(), config)
                     }
                 ).show()
@@ -169,7 +173,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             appleLoginError.observeEvent(viewLifecycleOwner) { errorBody ->
                 when (errorBody.code) {
                     "C1090", "C1060" -> {
-                        //TODO : 애플 회원가입 후 -> 서비스 이용 동의 화면으로 이동
+                        val config = AgreementConfig(
+                            snsToken = appleLoginConfig!!.snsAuthToken,
+                            authWord = appleLoginConfig!!.authWord,
+                            signUpType = 4,
+                            emailKey = appleLoginConfig!!.email,
+                            nickName = "",
+                            sendAuthMailFlag = false
+                        )
+
+                        requireActivity().findNavController(R.id.nav_main).navigate(
+                            LoginFragmentDirections.actionLoginFragmentToAgreementFragment(config)
+                        )
                     }
                     else -> {
                         SingleBtnDialog(
@@ -325,4 +340,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         })
     }
 
+    /**
+     * '뒤로가기' 버튼 2회 연속 입력을 통한 종료를 사용자에게 안내하고 처리
+     */
+    private var backPressedTime: Long = 0
+    private fun finishApplication() {
+        if (System.currentTimeMillis() - backPressedTime < AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT) {
+            requireActivity().finish()
+            return
+        }
+        Toast.makeText(activity, getString(R.string.finish_app_guide), Toast.LENGTH_SHORT).show()
+        backPressedTime = System.currentTimeMillis()
+    }
 }

@@ -9,6 +9,7 @@ import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.*
 import android.os.Bundle
 import android.os.Handler
+import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -84,7 +85,6 @@ class CertificationFragment :
                 )
                 binding.phoneCert.background = ContextCompat.getDrawable(requireContext(), R.drawable.btn_outline)
                 binding.personalId.disableAll()
-                binding.nameWrapper.endIconMode = TextInputLayout.END_ICON_NONE
             }
 
             phoneAuthFail.observeEvent(viewLifecycleOwner) { errorBody ->
@@ -100,9 +100,9 @@ class CertificationFragment :
                         // 타이밍을 주지 않으면 nameEdit에 바로 포커스가 가지 않음
                         // 원인을 모르겠음....다니엘 알면 도와줘요...ㅠㅠ
                         Handler(requireContext().mainLooper).postDelayed({
-                            binding.nameEdit.setText("")
-                            binding.nameEdit.requestFocus()
-                            showKeyboardOnView(binding.nameEdit)
+                            binding.editName.setText("")
+                            binding.editName.requestFocus()
+                            showKeyboardOnView(binding.editName)
                         }, 100)
                     }
                 ).show()
@@ -120,16 +120,15 @@ class CertificationFragment :
     private fun setUpUi() {
         with(binding) {
 
-            setEditText(
-                requireContext(),
-                nameWrapper,
-                nameEdit,
-                Pattern.compile(CERTIFICATION_NAME_PATTERN),
-                "정확한 이름을 입력해 주세요.",
-                "이름을 입력하세요",
-                "이름",
-                "본인 이름을 입력해 주세요."
-            )
+            outSide.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_UP -> view.let {
+                        hideKeyboard()
+                        outSide.clearFocus()
+                    }
+                }
+                true
+            }
 
             keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
                 onHideKeyboard = {

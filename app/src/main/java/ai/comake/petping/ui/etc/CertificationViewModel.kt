@@ -5,8 +5,11 @@ import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.UserDataRepository
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.util.CERTIFICATION_NAME_PATTERN
+import ai.comake.petping.util.EMAIL_PATTERN
 import ai.comake.petping.util.ID_PATTERN
 import ai.comake.petping.util.getErrorBodyConverter
+import android.view.View
+import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,7 +39,50 @@ class CertificationViewModel @Inject constructor() : ViewModel() {
     val moveToNext = MutableLiveData<Event<Unit>>()
     val moveToCetWeb = MutableLiveData<Event<Unit>>()
 
+    // 인터렉션 관련 사용하는 변수들...
+    val nameInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val nameValidation = MutableLiveData<Boolean>().apply { value = true }
+    val nameClear = MutableLiveData<Boolean>().apply { value = false }
+    val nameFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val nameLineStatus = MutableLiveData<Boolean>().apply { value = false }
+    val nameHelperVisible = MutableLiveData<Boolean>().apply { value = false }
+
     var ci = ""
+
+    val nameFocusChangeListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                nameFocusHintVisible.value = true
+                nameLineStatus.value = true
+                nameHelperVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = false
+                    } else {
+                        value = true
+                    }
+                }
+
+                nameInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    }
+                }
+            } else {
+                nameFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                nameLineStatus.value = false
+                nameInputStatus.value = false
+                nameHelperVisible.value = false
+            }
+        }
+    }
 
     @Inject
     lateinit var userDataRepository: UserDataRepository
@@ -90,5 +136,32 @@ class CertificationViewModel @Inject constructor() : ViewModel() {
                 }
             }
         }
+    }
+
+    fun onNameTextChanged(text: CharSequence) {
+
+        nameInputStatus.apply {
+            if (text.length > 0) {
+                value = true
+            } else {
+                value = false
+            }
+        }
+
+        nameValidation.apply {
+            if (text.length > 0) {
+                if (Pattern.compile(CERTIFICATION_NAME_PATTERN).matcher(text.toString()).matches()) {
+                    value = true
+                } else {
+                    value = false
+                }
+            } else {
+                value = true
+            }
+        }
+    }
+
+    fun onInputNameClear() {
+        nameClear.value = true
     }
 }

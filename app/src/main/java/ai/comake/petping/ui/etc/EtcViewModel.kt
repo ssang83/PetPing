@@ -3,6 +3,7 @@ package ai.comake.petping.ui.etc
 import ai.comake.petping.AppConstants
 import ai.comake.petping.Event
 import ai.comake.petping.api.Resource
+import ai.comake.petping.data.db.badge.BadgeRepository
 import ai.comake.petping.data.repository.UserDataRepository
 import ai.comake.petping.data.vo.MyPageData
 import ai.comake.petping.data.vo.MyPet
@@ -27,7 +28,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class EtcViewModel @Inject constructor() : ViewModel() {
-
     @Inject
     lateinit var userDataRepository: UserDataRepository
 

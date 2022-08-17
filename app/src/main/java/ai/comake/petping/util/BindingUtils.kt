@@ -886,37 +886,6 @@ object BindingUtils {
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["textInputLayout", "viewModel"])
-    fun setOnFocusChangeListener(
-        editText: EditText,
-        layout: TextInputLayout,
-        viewModel: ChangeEmailViewModel
-    ) {
-        editText.setOnFocusChangeListener { v, hasFocus ->
-            var hintInfo = viewModel.focusHint
-            if (hasFocus.not()) {
-                layout.endIconMode = TextInputLayout.END_ICON_NONE
-                var str = editText.text
-                if (str.isEmpty()) {
-                    layout.isErrorEnabled = false
-                    hintInfo = viewModel.hint.toString()
-                    setTextInputLayoutHintColor(layout, editText.context, R.color.greyscale_4_ddd)
-                } else {
-                    setTextInputLayoutHintColor(layout, editText.context, R.color.greyscale_9_aaa)
-                }
-
-                if (layout.isErrorEnabled.not()) layout.helperText = ""
-            } else {
-                layout.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
-                setTextInputLayoutHintColor(layout, editText.context, R.color.greyscale_9_aaa)
-                if (!layout.isErrorEnabled) layout.helperText = viewModel.helperText
-            }
-
-            layout.hint = hintInfo
-        }
-    }
-
-    @JvmStatic
     @BindingAdapter("passwdErrorTextColor")
     fun setErrorTextColor(layout: TextInputLayout, color: String?) {
         color?.let {
@@ -1428,7 +1397,91 @@ object BindingUtils {
             if (status) {
                 view.hint = ""
             } else {
-                view.hint = "이메일 주소를 입력해 주세요."
+                view.hint = "이메일 주소를 입력해 주세요"
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("passwdHintText")
+    fun setPasswdHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "비밀번호를 입력하세요"
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("passwdConfirmHintText")
+    fun setPasswdConfrimHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "한 번 더 입력하세요"
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("nameHintText")
+    fun setNameHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "이름을 입력하세요"
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("petNameHintText")
+    fun setPetNameHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "이름이 무엇인가요?"
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("breedHintText")
+    fun setBreedHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "어떤 종류인가요?"
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("birthHintText")
+    fun setBirthHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = view.context.getString(R.string.new_profile_pet_birth_hint)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("weightHintText")
+    fun setWeightHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = view.context.getString(R.string.new_profile_pet_weight_hint)
             }
         }
     }
@@ -1448,6 +1501,18 @@ object BindingUtils {
 
 //                val centerPosition = Int.MAX_VALUE / 2 - ceil(getBannerList().size.toDouble() / 2).toInt()
                 setCurrentItem(0, false)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("emailErrorText")
+    fun setEmailErrorText(view: TextView, isInitial: Boolean) {
+        view.apply {
+            if (isInitial) {
+                view.text = "잘못된 주소 형식입니다."
+            } else {
+                view.text = view.context.getString(R.string.email_user_exists)
             }
         }
     }

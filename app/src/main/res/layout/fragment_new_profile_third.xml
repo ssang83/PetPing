@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="viewModel"
             type="ai.comake.petping.ui.profile.make.pet.ProfileSharedViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -183,25 +186,101 @@
                         />
                 </RelativeLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/CustomTextInputLayout"
-                    android:id="@+id/pet_weight_wrapper"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="47dp"
-                    android:hint="@string/new_profile_pet_weight_hint"
-                    app:endIconMode="clear_text">
+                    >
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/CustomEditText"
-                        android:id="@+id/pet_weight_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                    <TextView
+                        android:id="@+id/focusHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="몸무게 (kg)"
+                        android:textSize="14dp"
+                        android:textColor="@color/color_aaaaaa"
+                        android:fontFamily="@font/nanum_square_round"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:visibility="@{viewModel.weightFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                        />
+
+                    <EditText
+                        android:id="@+id/editWeight"
+                        android:layout_width="0dp"
+                        android:layout_height="34dp"
+                        android:hint="@string/new_profile_pet_weight_hint"
+                        android:textColorHint="#dddddd"
+                        android:textColor="#111111"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:background="@android:color/transparent"
+                        android:layout_marginTop="8dp"
                         android:inputType="numberDecimal"
-                        android:text="@={viewModel.weight}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:text="@={viewModel.weight}"
+                        app:weightHintText="@{viewModel.weightFocusHintVisible}"
+                        app:inputTextClear="@{viewModel.weightClear}"
+                        app:focusChangeListener="@{viewModel.weighFocusChangeListener}"
+                        android:onTextChanged="@{(text, start, before, count) -> viewModel.onWeightTextChanged(text)}"
+                        app:layout_constraintTop_toBottomOf="@+id/focusHint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnDel"
+                        />
 
-                <Space
+                    <View
+                        android:id="@+id/line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        tools:background="#dddddd"
+                        app:lineColor="@{viewModel.weightLineStatus}"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/editWeight"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
+
+                    <ImageView
+                        android:id="@+id/btnDel"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:src="@drawable/btn_del"
+                        android:adjustViewBounds="true"
+                        android:visibility="@{viewModel.weightInputStatus == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:onSafeClick="@{view -> viewModel.onInputWeighClear()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/editWeight"
+                        app:layout_constraintBottom_toBottomOf="@+id/editWeight"
+                        />
+
+                    <TextView
+                        android:id="@+id/error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="숫자와 소수점만 입력할 수 있습니다."
+                        android:textColor="#ff4857"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:visibility="@{viewModel.weightValidation == true ? View.INVISIBLE : View.VISIBLE }"
+                        app:layout_constraintTop_toBottomOf="@+id/line"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/helper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_profile_weight_helper"
+                        android:textColor="@color/color_aaaaaa"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:lineSpacingExtra="7dp"
+                        android:visibility="@{viewModel.weightHelperVisible == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintTop_toBottomOf="@+id/line"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     />

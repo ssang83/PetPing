@@ -125,29 +125,16 @@ class NewProfileThirdFragment :
         with(binding) {
 
             if (sharedViewModel.weight.value.toString().isNotEmpty()) {
-                petWeightWrapper.hint = "몸무게 (kg)"
-                petWeightWrapper.endIconMode = TextInputLayout.END_ICON_NONE
-                setTextInputLayoutHintColor(petWeightWrapper, requireContext(), R.color.greyscale_9_aaa)
+                sharedViewModel.weightFocusHintVisible.value = true
             }
-
-            setEditText(
-                requireContext(),
-                petWeightWrapper,
-                petWeightEdit,
-                Pattern.compile(NUMBER_DOT_PATTERN),
-                "숫자와 소수점만 입력할 수 있습니다.",
-                "몸무게는 몇 kg인가요?",
-                "몸무게 (kg)",
-                "소수점 한 자리까지 숫자로 입력해 주세요.\n몸무게는 언제든 수정할 수 있어요."
-            )
 
             /**
              * 몸무게 숫자 3자리 입력시 숫자 입력 불가
              * 몸무게 숫자 3자리 + 소수점 1자리 입력 시 입력 불가
              * 커서 앞으로 이동하여 지우고 수정 가능
              */
-            petWeightEdit.filters = arrayOf<InputFilter>(MyDecimalDigitsInputFilter(1))
-            petWeightEdit.setOnEditorActionListener { v, actionId, event ->
+            editWeight.filters = arrayOf<InputFilter>(MyDecimalDigitsInputFilter(1))
+            editWeight.setOnEditorActionListener { v, actionId, event ->
                 var handled = false
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     hideKeyboard()
@@ -170,7 +157,7 @@ class NewProfileThirdFragment :
             keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
                 onShowKeyboard = { keyboardHeight ->
                     scrollView.run {
-                        smoothScrollTo(scrollX, petWeightWrapper.top)
+                        smoothScrollTo(scrollX, editWeight.top)
                     }
                 },
                 onHideKeyboard = {

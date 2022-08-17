@@ -1,13 +1,10 @@
 package ai.comake.petping.ui.home.dashboard
 
-import ai.comake.petping.AirbridgeManager
-import ai.comake.petping.AppConstants
-import ai.comake.petping.R
+import ai.comake.petping.*
 import ai.comake.petping.data.vo.DashboardAnimationInfo
 import ai.comake.petping.data.vo.PetProfileConfig
 import ai.comake.petping.data.vo.WebConfig
 import ai.comake.petping.databinding.FragmentDashboardBinding
-import ai.comake.petping.observeEvent
 import ai.comake.petping.ui.common.dialog.HomePopupDialogFragment
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.ui.home.HomeFragmentDirections
@@ -39,15 +36,12 @@ class DashboardFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
     private val homeShareViewModel: HomeShareViewModel by activityViewModels()
-
+    private val mainShareViewModel: MainShareViewModel by activityViewModels()
     private var pageLoaded: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.apply {
-            getPingTip()
-            getPetList()
-        }
+        viewModel.getPingTip()
     }
 
     override fun onCreateView(
@@ -70,19 +64,27 @@ class DashboardFragment : Fragment() {
         setUpClickListener()
 
         with(viewModel) {
+            LogUtil.log("TAG", "isNewEtcBadge: ${isNewEtcBadge()}")
 
-            // Location 가져오는 로직은 추후에 추가 예정....
-            getDashboard(
-                requireContext(),
-                AppConstants.lastLocation.latitude,
-                AppConstants.lastLocation.longitude
-            )
+            getPetList()
+
+            petListSuccess.observeEvent(viewLifecycleOwner) {
+                // Location 가져오는 로직은 추후에 추가 예정....
+                getDashboard(
+                    requireContext(),
+                    AppConstants.lastLocation.latitude,
+                    AppConstants.lastLocation.longitude
+                )
+            }
 
             updateAnimation.observeEvent(viewLifecycleOwner) { info ->
                 updateAnimationInfo(info)
             }
 
             moveToEtc.asLiveData().observe(viewLifecycleOwner) {
+                if(isNewEtcBadge()) {
+
+                }
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(R.id.action_homeScreen_to_etcFragment)
             }
@@ -171,6 +173,18 @@ class DashboardFragment : Fragment() {
             moveToMission.observeEvent(viewLifecycleOwner) {
                 homeShareViewModel.goToReward()
             }
+
+            initialProfile.observeEvent(viewLifecycleOwner) {
+                requireActivity().findNavController(R.id.nav_main)
+                    .navigate(HomeFragmentDirections.actionHomeScreenToProfileGraph(false))
+            }
+
+            mainShareViewModel.isSucceedBadge.observe(viewLifecycleOwner, { result ->
+                LogUtil.log("TAG", "isSucceedBadge: $result")
+                if(isNewEtcBadge()) {
+                    binding.etcBadgeIcon.visibility = View.VISIBLE
+                }
+            })
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -198,6 +212,27 @@ class DashboardFragment : Fragment() {
 
     fun setUpObserver() {
 
+    }
+
+    //더보기(공지사항,1:1문의,설정) NEW 배지 확인
+    fun isNewEtcBadge(): Boolean {
+        if (mainShareViewModel.remoteBadge != null && mainShareViewModel.localBadge != null) {
+            LogUtil.log("TAG", "newNoticeId!! > localBadg: ${mainShareViewModel.remoteBadge!!.newNoticeId!! > mainShareViewModel.localBadge!!.newNoticeId!!}")
+
+            return mainShareViewModel.remoteBadge!!.newNoticeId!! > mainShareViewModel.localBadge!!.newNoticeId!! ||
+                    mainShareViewModel.remoteBadge!!.newReplyId != mainShareViewModel.localBadge!!.newReplyId ||
+                    mainShareViewModel.remoteBadge!!.androidNewAppVersion?.replace(
+                        "[^0-9]".toRegex(),
+                        ""
+                    )
+                        ?.toInt()!! > mainShareViewModel.localBadge!!.androidNewAppVersion?.replace(
+                "[^0-9]".toRegex(),
+                ""
+            )
+                ?.toInt()!!
+        } else {
+            return false
+        }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {

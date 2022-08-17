@@ -8,6 +8,8 @@ import android.content.Context
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import co.ab180.airbridge.Airbridge
@@ -46,11 +48,36 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
     val weight = MutableLiveData<String>().apply { value = "" }
     val imageSrc = MutableLiveData<String>().apply { value = "" }
 
+    // 인터렉션 관련 사용하는 변수들...
+    val petNameInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val petNameValidation = MutableLiveData<Boolean>().apply { value = true }
+    val petNameClear = MutableLiveData<Boolean>().apply { value = false }
+    val petNameFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val petNameLineStatus = MutableLiveData<Boolean>().apply { value = false }
+    val petNameHelperVisible = MutableLiveData<Boolean>().apply { value = false }
+    val breedInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val breedValidation = MutableLiveData<Boolean>().apply { value = true }
+    val breedClear = MutableLiveData<Boolean>().apply { value = false }
+    val breedFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val breedLineStatus = MutableLiveData<Boolean>().apply { value = false }
+    val birthInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val birthValidation = MutableLiveData<Boolean>().apply { value = true }
+    val birthClear = MutableLiveData<Boolean>().apply { value = false }
+    val birthFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val birthLineStatus = MutableLiveData<Boolean>().apply { value = false }
+    val birthHelperVisible = MutableLiveData<Boolean>().apply { value = false }
+    val weightInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val weightValidation = MutableLiveData<Boolean>().apply { value = true }
+    val weightClear = MutableLiveData<Boolean>().apply { value = false }
+    val weightFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val weightLineStatus = MutableLiveData<Boolean>().apply { value = false }
+    val weightHelperVisible = MutableLiveData<Boolean>().apply { value = false }
+
+
     // Event
     val uiState = MutableLiveData<Event<UiState>>()
     val moveToSecond = MutableLiveData<Event<Unit>>()
     val moveToLast = MutableLiveData<Event<Unit>>()
-    val birthErrorUI = MutableLiveData<Event<String>>()
     val moveToFirst = MutableLiveData<Event<Unit>>()
     val moveToHome = MutableLiveData<Event<Unit>>()
     val moveToMissionPet = MutableLiveData<Event<Unit>>()
@@ -67,7 +94,162 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun afterTextChanged(s: Editable?) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            petNameInputStatus.apply {
+                if (s?.length!! > 0) {
+                    value = true
+                } else {
+                    value = false
+                }
+            }
+
+            petNameValidation.apply {
+                if (s?.length!! > 0) {
+                    if (Pattern.compile(HANGUEL_PATTERN_NEW_FIX).matcher(s.toString()).matches()) {
+                        value = true
+                        petNameHelperVisible.value = true
+                    } else {
+                        value = false
+                        petNameHelperVisible.value = false
+                    }
+                } else {
+                    value = true
+                    petNameHelperVisible.value = true
+                }
+            }
+
             petName.value = petName.value.toString().replace(" ", "")
+        }
+    }
+
+    val petNameFocusChangeListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                petNameFocusHintVisible.value = true
+                petNameLineStatus.value = true
+                petNameHelperVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = false
+                    } else {
+                        value = true
+                    }
+                }
+
+                petNameInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    }
+                }
+            } else {
+                petNameFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                petNameLineStatus.value = false
+                petNameInputStatus.value = false
+                petNameHelperVisible.value = false
+            }
+        }
+    }
+
+    val breedFocusChangeListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                breedFocusHintVisible.value = true
+                breedLineStatus.value = true
+
+                breedInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    }
+                }
+            } else {
+                breedFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                breedLineStatus.value = false
+                breedInputStatus.value = false
+            }
+        }
+    }
+
+    val birthFocusChangeListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                birthFocusHintVisible.value = true
+                birthLineStatus.value = true
+                birthHelperVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = false
+                    } else {
+                        value = true
+                    }
+                }
+
+                birthInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    }
+                }
+            } else {
+                birthFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                birthLineStatus.value = false
+                birthInputStatus.value = false
+                birthHelperVisible.value = false
+            }
+        }
+    }
+
+    val weighFocusChangeListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                weightFocusHintVisible.value = true
+                weightLineStatus.value = true
+                weightHelperVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = false
+                    } else {
+                        value = true
+                    }
+                }
+
+                weightInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    }
+                }
+            } else {
+                weightFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                weightLineStatus.value = false
+                weightInputStatus.value = false
+                weightHelperVisible.value = false
+            }
         }
     }
 
@@ -129,6 +311,125 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
         birth.value = ""
         weight.value = ""
         imageSrc.value = ""
+
+        petNameInputStatus.value = false
+        petNameValidation.value = true
+        petNameClear.value = false
+        petNameFocusHintVisible.value = false
+        petNameLineStatus.value = false
+        petNameHelperVisible.value = false
+        breedInputStatus.value = false
+        breedValidation.value = true
+        breedClear.value = false
+        breedFocusHintVisible.value = false
+        breedLineStatus.value = false
+        birthInputStatus.value = false
+        birthValidation.value = true
+        birthClear.value = false
+        birthFocusHintVisible.value = false
+        birthLineStatus.value = false
+        birthHelperVisible.value = false
+        weightInputStatus.value = false
+        weightValidation.value = true
+        weightClear.value = false
+        weightFocusHintVisible.value = false
+        weightLineStatus.value = false
+        weightHelperVisible.value = false
+    }
+
+    fun onInputNameClear() {
+        petNameClear.value = true
+    }
+
+    fun onBreedTextChanged(text: CharSequence) {
+
+        breedInputStatus.apply {
+            if (text.length > 0) {
+                value = true
+            } else {
+                value = false
+            }
+        }
+
+        breedValidation.apply {
+            if (text.length > 0) {
+                if (Pattern.compile(HANGUEL_PATTERN_ADD_SPACE).matcher(text.toString()).matches()) {
+                    value = true
+                } else {
+                    value = false
+                }
+            } else {
+                value = true
+            }
+        }
+    }
+
+    fun onInputBreedClear() {
+        breedClear.value = true
+    }
+
+    fun onBirthTextChanged(text: CharSequence) {
+
+        birthInputStatus.apply {
+            if (text.length > 0) {
+                value = true
+            } else {
+                value = false
+            }
+        }
+
+        birthValidation.apply {
+            if (text.length == 6) {
+                val current = LocalDate.now()
+                val formatter = DateTimeFormatter.ofPattern("yyMMdd")
+                val formatted = current.format(formatter)
+                if (validationDate(text.toString()).not()
+                    || Integer.parseInt(formatted) < Integer.parseInt(text.toString())) {
+                    value = false
+                    birthHelperVisible.value = false
+                } else {
+                    value = true
+                    birthHelperVisible.value = true
+                }
+            } else {
+                value = true
+                birthHelperVisible.value = true
+            }
+        }
+    }
+
+    fun onInputBirthClear() {
+        birthClear.value = true
+    }
+
+    fun onWeightTextChanged(text: CharSequence) {
+
+        weightInputStatus.apply {
+            if (text.length > 0) {
+                value = true
+            } else {
+                value = false
+            }
+        }
+
+        weightValidation.apply {
+            if (text.length > 0) {
+                if(text.toString() != "." && Pattern.compile(NUMBER_DOT_PATTERN).matcher(text.toString()).matches()) {
+                    value = true
+                    weightHelperVisible.value = true
+                } else {
+                    value = false
+                    weightHelperVisible.value = false
+                }
+            } else {
+                value = true
+                weightHelperVisible.value = true
+            }
+        }
+    }
+
+    fun onInputWeighClear() {
+        weightClear.value = true
     }
 
     fun saveAndComplete(context: Context) = Coroutines.main(this) {
@@ -196,7 +497,6 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
     private fun birthValid(): Boolean {
         if (birth.value.toString().length == 6) {
             if (birth.value.toString().contains(".")) {
-                birthErrorUI.emit("정확한 생년월일을 입력해 주세요.")
                 return false
             }
 
@@ -205,7 +505,6 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
             val formatted = current.format(formatter)
             if (validationDate(birth.value.toString()).not()
                 || Integer.parseInt(formatted) < Integer.parseInt(birth.value.toString())) {
-                birthErrorUI.emit("정확한 생년월일을 입력해 주세요.")
                 return false
             } else {
                 return true

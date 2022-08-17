@@ -7,6 +7,7 @@ import ai.comake.petping.util.PASSWORD_PATTERN
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,16 +32,45 @@ class ChangePasswordViewModel @Inject constructor() : ViewModel() {
     val password = MutableLiveData<String>().apply { value = "" }
     val confirm = MutableLiveData<String>().apply { value = "" }
 
+    val passwdValidation = MutableLiveData<Boolean>().apply { value = true }
+    val passwdHelperVisible = MutableLiveData<Boolean>().apply { value = false }
+    val passwdInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val passwdClear = MutableLiveData<Boolean>().apply { value = false }
+    val passwdFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val passwdLineStatus = MutableLiveData<Boolean>().apply { value = false }
+    val passwdConfirmValidation = MutableLiveData<Boolean>().apply { value = true }
+    val passwdConfirmInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val passwdConfirmClear = MutableLiveData<Boolean>().apply { value = false }
+    val passwdConfirmFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
+    val passwdConfirmLineStatus = MutableLiveData<Boolean>().apply { value = false }
+
     val uiState = MutableLiveData<Event<UiState>>()
     val showSuccessPopup = MutableLiveData<Event<Unit>>()
-    val passwordUiUpdate = MutableLiveData<Event<String>>()
-    val passwordHasFocus = MutableLiveData<Event<Boolean>>()
-    val passwordConfirmUiUpdate = MutableLiveData<Event<String>>()
-    val passwordConfirmHasFocus = MutableLiveData<Event<Boolean>>()
 
     val passwordTextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            s?.let { passwordUiUpdate.emit(it.toString()) }
+            passwdInputStatus.apply {
+                if (s?.length!! > 0) {
+                    value = true
+                } else {
+                    value = false
+                }
+            }
+
+            passwdValidation.apply {
+                if (s?.length!! > 0) {
+                    if (Pattern.compile(PASSWORD_PATTERN).matcher(s.toString()).matches()) {
+                        value = true
+                    } else {
+                        value = false
+                        passwdHelperVisible.value = false
+                    }
+                } else {
+                    value = true
+                }
+            }
+
+            password.value = password.value!!.replace(" ", "")
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -49,13 +79,64 @@ class ChangePasswordViewModel @Inject constructor() : ViewModel() {
 
     val passwordFocusListener = object : View.OnFocusChangeListener {
         override fun onFocusChange(v: View?, hasFocus: Boolean) {
-            passwordHasFocus.emit(hasFocus)
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                passwdFocusHintVisible.value = true
+                passwdLineStatus.value = true
+                passwdHelperVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = false
+                    } else {
+                        value = true
+                    }
+                }
+
+                passwdInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+            } else {
+                passwdFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                passwdLineStatus.value = false
+                passwdInputStatus.value = false
+                passwdHelperVisible.value = false
+            }
         }
     }
 
     val passwordConfirmTextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            s?.let { passwordConfirmUiUpdate.emit(it.toString()) }
+            passwdConfirmInputStatus.apply {
+                if (s?.length!! > 0) {
+                    value = true
+                } else {
+                    value = false
+                }
+            }
+
+            passwdConfirmValidation.apply {
+                if (s?.length!! > 0) {
+                    if (password.value.toString() == s.toString()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                } else {
+                    value = true
+                }
+            }
+
+            confirm.value = confirm.value!!.replace(" ", "")
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -64,12 +145,43 @@ class ChangePasswordViewModel @Inject constructor() : ViewModel() {
 
     val passwordConfirmFocusListener = object : View.OnFocusChangeListener {
         override fun onFocusChange(v: View?, hasFocus: Boolean) {
-            passwordConfirmHasFocus.emit(hasFocus)
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                passwdConfirmFocusHintVisible.value = true
+                passwdConfirmLineStatus.value = true
+
+                passwdConfirmInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+            } else {
+                passwdConfirmFocusHintVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                }
+
+                passwdConfirmLineStatus.value = false
+                passwdConfirmInputStatus.value = false
+            }
         }
     }
 
     fun isValid(password: String, confirm: String): Boolean {
         return (Pattern.compile(PASSWORD_PATTERN).matcher(password).matches() && confirm == password)
+    }
+
+    fun onInputPasswdClear() {
+        passwdClear.value = true
+    }
+
+    fun onInputPasswdConfirmClear() {
+        passwdConfirmClear.value = true
     }
 
     /**

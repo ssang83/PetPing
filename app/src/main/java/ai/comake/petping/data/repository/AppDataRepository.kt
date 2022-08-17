@@ -93,4 +93,12 @@ class AppDataRepository @Inject constructor(private val webService: WebService) 
     suspend fun registFcmToken(authKey: String, requestBody: RequestBody) = safeApiCall {
         webService.registFcmToken(authKey, requestBody)
     }
+
+    suspend fun getNewBadge(authKey: String, memberId: String) = safeApiCall {
+        webService.requestNewBadge(authKey, memberId)
+    }
+
+    suspend fun getRefreshToken(authKey: String) = safeApiCall {
+        webService.getNewToken(authKey)
+    }
 }

@@ -6,7 +6,9 @@ import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.*
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -80,16 +82,6 @@ class FindPasswordFragment :
     private fun setUpUi() {
         with(binding) {
 
-            setEditText(
-                requireContext(),
-                emailWrapper,
-                emailEdit,
-                Pattern.compile(EMAIL_PATTERN),
-                "잘못된 주소 형식입니다.",
-                "이메일 주소를 입력하세요",
-                "이메일 주소"
-            )
-
             keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
                 onHideKeyboard = {
                     outSide.clearFocus()
@@ -99,8 +91,18 @@ class FindPasswordFragment :
                 requireActivity().backStack(R.id.nav_main)
             }
 
-            emailEdit.requestFocus()
-            showKeyboardOnView(emailEdit)
+            outSide.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_UP -> view.let {
+                        hideKeyboard()
+                        outSide.clearFocus()
+                    }
+                }
+                true
+            }
+
+            editEmail.requestFocus()
+            showKeyboardOnView(editEmail)
         }
     }
 }

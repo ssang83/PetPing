@@ -65,6 +65,10 @@ class UserDataRepository @Inject constructor(private val webService: WebService)
         webService.withdrawalId(authKey, memberId, body)
     }
 
+    suspend fun withdrawalV2(authKey: String, memberId: String, body: RequestBody) = safeApiCall {
+        webService.withdrawalIdV2(authKey, memberId, body)
+    }
+
     suspend fun getLocationHistoryList(authKey: String, memberId: String, startIndex:Int) = safeApiCall {
         webService.getLocationHistoryList(authKey, memberId, startIndex)
     }

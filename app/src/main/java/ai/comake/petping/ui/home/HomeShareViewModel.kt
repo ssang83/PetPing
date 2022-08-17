@@ -21,6 +21,8 @@ class HomeShareViewModel : ViewModel() {
 
     var screenName: String = ""
 
+    val isSucceedBadge = MutableLiveData<Event<Boolean>>()
+
     fun isVisibleBottomNavigation(value: Boolean) {
         _isVisibleBottomNavigation.value = Event(value)
     }

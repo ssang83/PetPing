@@ -323,6 +323,7 @@
     <string name="db_desc_06">+ 펫핑 리워드 40,000 Ping</string>
     <string name="pet_insurance_apply_do">펫보험 청구하기</string>
     <string name="pet_insurance_desc">펫핑은 금융위원회 혁신금융서비스로 지정된 국내 최초 \'펫보험 건강증진형 리워드 서비스\'를 제공합니다.</string>
+    <string name="new_profile_weight_helper">소수점 한 자리까지 숫자로 입력해 주세요.\n몸무게는 언제든 수정할 수 있어요.</string>
 
     <string name="mission_pet_setting_title">
         <![CDATA[

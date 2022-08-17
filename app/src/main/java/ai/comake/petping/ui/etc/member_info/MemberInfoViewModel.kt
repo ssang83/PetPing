@@ -72,6 +72,8 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
     val uiState = MutableLiveData<Event<UiState>>()
     val logoutErrorPopup = MutableLiveData<Event<ErrorResponse>>()
 
+    var loginType = -1
+
     val scrollChangeListener = object : View.OnScrollChangeListener {
         override fun onScrollChange(
             v: View?,
@@ -111,6 +113,7 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
 
                 _login.value = data.typeStr
                 _phone.value = data.phone
+                loginType = data.type
 
                 data.birthAndGender?.let {
                     _birth.value = data.birthAndGender.substring(0, 6)

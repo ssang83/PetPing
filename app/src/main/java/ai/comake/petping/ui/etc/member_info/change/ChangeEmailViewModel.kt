@@ -7,6 +7,8 @@ import ai.comake.petping.util.EMAIL_PATTERN
 import ai.comake.petping.util.getErrorBodyConverter
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,33 +40,66 @@ class ChangeEmailViewModel @Inject constructor() : ViewModel() {
     private val _hint = MutableLiveData<String>()
     val hint:LiveData<String> get() = _hint
 
-    val errorText = MutableLiveData<String>()
-    val errorEnable = MutableLiveData<Boolean>().apply { value = false }
+    // 인터렉션 관련 사용하는 변수들...
+    val emailInputStatus = MutableLiveData<Boolean>().apply { value = false }
+    val emailValidation = MutableLiveData<Boolean>().apply { value = true }
+    val emailClear = MutableLiveData<Boolean>().apply { value = false }
+    val emailLineStatus = MutableLiveData<Boolean>().apply { value = false }
+    val emailInitialErrorText = MutableLiveData<Boolean>().apply { value = true }
+    val emailHintVisible = MutableLiveData<Boolean>().apply { value = true }
+
     val email = MutableLiveData<String>().apply { value = "" }
     val showSuccessPopup = MutableLiveData<Event<Unit>>()
     val uiState = MutableLiveData<Event<UiState>>()
 
-    var focusHint = ""
-    var helperText = ""
+    val emailFocusChangeListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                emailLineStatus.value = true
+
+                emailInputStatus.apply {
+                    if (str.isNotEmpty()) {
+                        value = true
+                    }
+                }
+            } else {
+                emailLineStatus.value = false
+                emailInputStatus.value = false
+            }
+        }
+    }
 
     val textWatcherListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s!!.isNotEmpty() && Pattern.compile(EMAIL_PATTERN).matcher(s.toString())
-                    .matches().not()
-            ) {
-                errorEnable.value = true
-                errorText.value = "잘못된 주소 형식입니다."
-            } else {
-                errorEnable.value = false
+            emailInitialErrorText.value = true
+
+            emailInputStatus.apply {
+                if (s?.length!! > 0) {
+                    value = true
+                } else {
+                    value = false
+                    emailHintVisible.value = false
+                }
+            }
+
+            emailValidation.apply {
+                if (s?.length!! > 0) {
+                    if (Pattern.compile(EMAIL_PATTERN).matcher(s.toString()).matches()) {
+                        value = true
+                    } else {
+                        value = false
+                    }
+                } else {
+                    value = true
+                }
             }
         }
 
         override fun afterTextChanged(s: Editable?) {
-            if (errorEnable.value == false) {
-                checkEmailDuplicate(s.toString())
-            }
+            checkEmailDuplicate(s.toString())
         }
     }
 
@@ -112,22 +147,26 @@ class ChangeEmailViewModel @Inject constructor() : ViewModel() {
         email.value = _email
         viewModelScope.launch {
             val response = userDataRepository.requestHasDuplicateEmail(
-                AppConstants.AUTH_KEY,
+                AppConstants.SAPA_KEY,
                 _email
             )
             when (response) {
                 is Resource.Success -> _isDuplicate.value = false
-                is Resource.Failure -> {
+                is Resource.Error -> {
                     _isDuplicate.value = true
                     response.errorBody?.let { errorBody ->
-                        val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                        if (errorResponse.code == "C3000") {
-                            errorEnable.value = true
-                            errorText.value = "다른 회원이 사용하는 이메일 주소입니다."
+                        if (errorBody.code == "C3000") {
+                            emailInitialErrorText.value = false
+                            emailValidation.value = false
                         }
                     }
                 }
             }
         }
+    }
+
+    fun onInputEmailClear() {
+        emailClear.value = true
+        emailHintVisible.value = false
     }
 }

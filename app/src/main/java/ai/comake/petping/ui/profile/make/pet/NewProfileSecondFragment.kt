@@ -80,14 +80,9 @@ class NewProfileSecondFragment :
                     .navigate(R.id.action_newProfileSecondFragment_to_newProfileThirdFragment)
             }
 
-            birthErrorUI.observeEvent(viewLifecycleOwner) { errorTxt ->
-                binding.petBirthWrapper.error = errorTxt
-            }
-
             clickBreed.observeEvent(viewLifecycleOwner) { breed ->
-                binding.breed.setText(breed)
+                binding.editBreed.setText(breed)
                 binding.filterList.visibility = View.GONE
-                binding.dropDownAutoComplete.isEndIconVisible = false
                 hideKeyboard()
                 binding.outSide.clearFocus()
             }
@@ -108,51 +103,15 @@ class NewProfileSecondFragment :
     private fun setUI() {
         with(binding) {
 
-            /**
-             * 입력 후 다른화면 갔다가 다시 돌아왔을 때 TextInputLayout 세팅
-             */
             if (sharedViewModel.breed.value.toString().isNotEmpty()) {
-                dropDownAutoComplete.hint = "종류"
-                dropDownAutoComplete.endIconMode = TextInputLayout.END_ICON_NONE
-                setTextInputLayoutHintColor(
-                    dropDownAutoComplete,
-                    requireContext(),
-                    R.color.greyscale_9_aaa
-                )
+                sharedViewModel.breedFocusHintVisible.value = true
             }
 
             if (sharedViewModel.birth.value.toString().isNotEmpty()) {
-                petBirthWrapper.hint = "생년월일"
-                petBirthWrapper.endIconMode = TextInputLayout.END_ICON_NONE
-                setTextInputLayoutHintColor(
-                    petBirthWrapper,
-                    requireContext(),
-                    R.color.greyscale_9_aaa
-                )
+                sharedViewModel.birthFocusHintVisible.value = true
             }
 
-            setEditText(
-                requireContext(),
-                dropDownAutoComplete,
-                breed,
-                Pattern.compile(HANGUEL_PATTERN_ADD_SPACE),
-                "영문, 숫자, 특수문자는 입력할 수 없습니다.",
-                "어떤 종류인가요?",
-                "종류"
-            )
-
-            setEditText(
-                requireContext(),
-                petBirthWrapper,
-                petBirthEdit,
-                Pattern.compile(NUMBER_PATTERN),
-                "숫자만 입력할 수 있습니다.",
-                "YYMMDD 언제 태어났나요?",
-                "생년월일(6자리 숫자)",
-                "생년월일은 언제든 수정할 수 있어요."
-            )
-
-            breed.setOnEditorActionListener { v, actionId, event ->
+            editBreed.setOnEditorActionListener { v, actionId, event ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_NEXT -> {
                         LogUtil.log("IME_ACTION_NEXT clicked!!")
@@ -203,7 +162,7 @@ class NewProfileSecondFragment :
                 layoutManager = LinearLayoutManager(requireContext())
             }
 
-            breed.addTextChangedListener(object : TextWatcher {
+            editBreed.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun afterTextChanged(s: Editable?) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

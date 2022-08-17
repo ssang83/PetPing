@@ -62,10 +62,11 @@
                 app:onSafeClick="@{view -> viewModel.goToMyPage()}" />
 
             <View
+                android:id="@+id/etcBadgeIcon"
                 android:layout_width="4dp"
                 android:layout_height="4dp"
                 android:background="@drawable/orange_circle"
-                android:visibility="@{viewModel.isBadge == true ? View.VISIBLE : View.GONE, default = visible}"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/etc"
                 app:layout_constraintTop_toTopOf="@+id/etc" />
 

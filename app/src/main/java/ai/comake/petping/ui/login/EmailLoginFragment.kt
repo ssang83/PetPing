@@ -97,9 +97,9 @@ class EmailLoginFragment :
     private fun emailErrorUI() {
         binding.apply {
             editEmail.setText("")
-            passwordEdit.setText("")
+            editPasswd.setText("")
             editEmail.requestFocus()
-            passwordEdit.requestFocus()
+            editPasswd.requestFocus()
             showKeyboardOnView(editEmail)
         }
     }
@@ -109,32 +109,14 @@ class EmailLoginFragment :
      */
     private fun passwordErrorUI() {
         binding.apply {
-            passwordEdit.setText("")
-            passwordEdit.requestFocus()
-            showKeyboardOnView(passwordEdit)
+            editPasswd.setText("")
+            editPasswd.requestFocus()
+            showKeyboardOnView(editPasswd)
         }
     }
 
     private fun setUi() {
         with(binding) {
-
-//            setEditText(
-//                requireContext(),
-//                emailWrapper,
-//                emailEdit,
-//                Pattern.compile(EMAIL_PATTERN),
-//                "잘못된 주소 형식입니다.",
-//                "이메일 주소를 입력하세요",
-//                "이메일 주소"
-//            )
-
-            setEditText(
-                requireContext(),
-                passwordWrapper,
-                passwordEdit,
-                "비밀번호를 입력하세요",
-                "비밀번호"
-            )
 
             keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
                 onHideKeyboard = {

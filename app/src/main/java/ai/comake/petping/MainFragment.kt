@@ -4,11 +4,12 @@ import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.AppConstants.FCM_LINK
 import ai.comake.petping.AppConstants.FCM_TYPE
 import ai.comake.petping.AppConstants.ID
+import ai.comake.petping.AppConstants.SAPA_KEY
 import ai.comake.petping.AppConstants.SYSTEM_CHECKING_INFO
-import ai.comake.petping.AppConstants.SYSTEM_CHECKING_INFO_DEV
 import ai.comake.petping.AppConstants.closeMissionAlert
 import ai.comake.petping.AppConstants.closeMissionPetAlert
 import ai.comake.petping.data.db.walk.Walk
+import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.data.vo.WalkFinishRequest
 import ai.comake.petping.databinding.FragmentMainBinding
@@ -29,6 +30,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -52,6 +54,7 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private val mainShareViewModel: MainShareViewModel by activityViewModels()
 
     var walkData = listOf<Walk>()
 
@@ -73,8 +76,8 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().window.let { updateDarkStatusBar(it) }
         setUpObserver()
-        checkMenuDirection()
         initAppConstant()
+//        checkMenuDirection()
 
         with(viewModel) {
 
@@ -94,6 +97,10 @@ class MainFragment : Fragment() {
                         )
                     }
                 }
+            }
+
+            tokenRefresh.observeEvent(viewLifecycleOwner) {
+                checkSavedLogin()
             }
         }
 
@@ -186,14 +193,7 @@ class MainFragment : Fragment() {
                 override fun onComplete(task: Task<Boolean>) {
                     if (task.isSuccessful) {
                         try {
-                            val info = RemoteConfigMangaer.getInstance().getString(
-                                if (BuildConfig.DEBUG) {
-                                    SYSTEM_CHECKING_INFO_DEV
-                                } else {
-                                    SYSTEM_CHECKING_INFO
-                                }
-                            )
-
+                            val info = RemoteConfigMangaer.getInstance().getString(SYSTEM_CHECKING_INFO)
                             val obj = JSONObject(info)
                             val modeObj = obj["isCheckingMode"] as JSONObject
                             val mode = modeObj["Android"] as Boolean
@@ -226,9 +226,6 @@ class MainFragment : Fragment() {
         closeMissionAlert = false
         closeMissionPetAlert = false
 
-        ID = sharedPreferencesManager.getDataStoreLoginId()
-        AUTH_KEY = sharedPreferencesManager.getDataStoreAccessToken()
-
         val type = activity?.intent?.getStringExtra("type") ?: ""
         val link = activity?.intent?.getStringExtra("link") ?: ""
         menuLink =  MenuLink.Fcm(type,link)
@@ -252,6 +249,9 @@ class MainFragment : Fragment() {
         is MainViewModel.MainEvent.SystemCheck -> {
             checkSystemInfo()
         }
+        is MainViewModel.MainEvent.ExpireToken -> {
+            findNavController().navigate(R.id.action_main_to_login)
+        }
     }
 
     private fun goToGuide() {
@@ -274,10 +274,11 @@ class MainFragment : Fragment() {
                         walkData[0].path,
                         walkData[0].walkEndDatetimeMilli
                     )
-                viewModel.asyncWalkFinish(AUTH_KEY, id, body)
+                viewModel.asyncWalkFinish(SAPA_KEY, id, body)
             } else {
                 withContext(Dispatchers.Main) {
-                    checkSavedLogin()
+//                    checkSavedLogin()
+                    viewModel.checkAccessToken()
                 }
             }
         }

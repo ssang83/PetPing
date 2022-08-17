@@ -3,6 +3,7 @@ package ai.comake.petping.ui.etc
 import ai.comake.petping.AirbridgeManager
 import ai.comake.petping.MainShareViewModel
 import ai.comake.petping.R
+import ai.comake.petping.data.db.badge.BadgeRepository
 import ai.comake.petping.data.vo.MyPageData
 import ai.comake.petping.data.vo.WebConfig
 import ai.comake.petping.databinding.FragmentEtcBinding
@@ -18,12 +19,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import co.ab180.airbridge.Airbridge
 import co.ab180.airbridge.event.model.SemanticAttributes
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.random.Random
 
 /**
@@ -40,6 +44,9 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
 
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
 
+    @Inject
+    lateinit var badgeRepository: BadgeRepository
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putIntArray(
@@ -52,7 +59,7 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.let { state ->
             val position = state.getIntArray("SCROLL_POSITION")
-            if (position != null) binding.scrollView.post( {
+            if (position != null) binding.scrollView.post({
                 binding.scrollView.scrollTo(
                     position[0],
                     position[1]
@@ -78,6 +85,8 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        updateBadgeIcon()
+
         with(viewModel) {
 
             uiSetUp.observeEvent(viewLifecycleOwner) {
@@ -102,6 +111,10 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
                     "notice_gnbmore_click_label"
                 )
 
+                viewLifecycleOwner.lifecycleScope.launch {
+                    updateNewBadge(R.id.ic_new_notice)
+                }
+
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(R.id.action_etcFragment_to_noticeFragment)
             }
@@ -123,6 +136,10 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
                     "appinfo_gnbmore_notice_action",
                     "appinfo_gnbmore_notice_label"
                 )
+
+                viewLifecycleOwner.lifecycleScope.launch {
+                    updateNewBadge(R.id.ic_new_setting)
+                }
 
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(R.id.action_etcFragment_to_appSettingFragment)
@@ -157,6 +174,10 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
                     "contact_gnbmore_notice_label",
                 )
 
+                viewLifecycleOwner.lifecycleScope.launch {
+                    updateNewBadge(R.id.ic_new_question)
+                }
+
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(R.id.action_etcFragment_to_questionFragment)
             }
@@ -185,6 +206,111 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
         }
     }
 
+    //클릭한 배지 저장
+    suspend fun updateNewBadge(menuId: Int) {
+        when (menuId) {
+            R.id.ic_new_notice -> {
+                mainShareViewModel.remoteBadge?.let { remote ->
+                    mainShareViewModel.localBadge?.newNoticeId = remote.newNoticeId
+                    mainShareViewModel.localBadge?.let { local ->
+                        badgeRepository.insert(local)
+                        binding.icNewNotice.visibility = View.GONE
+                    }
+                }
+            }
+            R.id.ic_new_question -> {
+                mainShareViewModel.remoteBadge?.let { remote ->
+                    mainShareViewModel.localBadge?.newReplyId = remote.newReplyId
+                    mainShareViewModel.localBadge?.let { local ->
+                        badgeRepository.insert(local)
+                        binding.icNewQuestion.visibility = View.GONE
+                    }
+                }
+            }
+            R.id.ic_new_setting -> {
+                mainShareViewModel.remoteBadge?.let { remote ->
+                    mainShareViewModel.localBadge?.androidNewAppVersion =
+                        remote.androidNewAppVersion
+                    mainShareViewModel.localBadge?.let { local ->
+                        badgeRepository.insert(local)
+                        binding.icNewSetting.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
+
+    fun updateBadgeIcon() {
+        if (isNewNoticeBadge()) {
+            showBadgeIcon(R.id.ic_new_notice)
+        }
+        if (isNewQuestionBadge()) {
+            showBadgeIcon(R.id.ic_new_question)
+        }
+        if (isNewSettingBadge()) {
+            showBadgeIcon(R.id.ic_new_setting)
+        }
+    }
+
+    fun showBadgeIcon(menuId: Int) {
+        when (menuId) {
+            R.id.ic_new_notice -> {
+                binding.icNewNotice.visibility = View.VISIBLE
+            }
+            R.id.ic_new_question -> {
+                binding.icNewQuestion.visibility = View.VISIBLE
+            }
+            R.id.ic_new_setting -> {
+                binding.icNewSetting.visibility = View.VISIBLE
+            }
+        }
+    }
+
+
+    //공지사항 NEW 배지 확인
+    fun isNewNoticeBadge(): Boolean {
+        try {
+            return mainShareViewModel.remoteBadge?.newNoticeId!! > mainShareViewModel.localBadge?.newNoticeId!!
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
+    //문의하 NEW 배지 확인
+    fun isNewQuestionBadge(): Boolean {
+        return try {
+            mainShareViewModel.remoteBadge?.newReplyId!! > mainShareViewModel.localBadge?.newReplyId!!
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    //설정 NEW 배지 확인
+    fun isNewSettingBadge(): Boolean {
+        try {
+            return mainShareViewModel.remoteBadge?.androidNewAppVersion?.replace(
+                "[^0-9]".toRegex(),
+                ""
+            )
+                ?.toInt()!! > mainShareViewModel.localBadge?.androidNewAppVersion?.replace(
+                "[^0-9]".toRegex(),
+                ""
+            )
+                ?.toInt()!!
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.etcFragmentInfo?.popupInfos?.size ?: 0 > 0) {
+            binding.bannerLayer.visibility = View.VISIBLE
+        } else {
+            binding.bannerLayer.visibility = View.GONE
+        }
+    }
+
     private fun setUpBanner() {
         binding.apply {
             viewPager.apply {
@@ -192,12 +318,13 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
             }
 
             if (viewModel?.etcFragmentInfo?.popupInfos?.size ?: 0 > 0) {
+                bannerLayer.visibility = View.VISIBLE
                 viewPager.setCurrentItem(
                     Random.nextInt(0, viewModel?.etcFragmentInfo?.popupInfos?.size ?: 0),
                     false
                 )
             } else {
-                viewPager.visibility = View.GONE
+                bannerLayer.visibility = View.GONE
             }
 
             TabLayoutMediator(indicator, viewPager) { _tab, _position -> }.attach()
@@ -208,15 +335,15 @@ class EtcFragment : BaseFragment<FragmentEtcBinding>(FragmentEtcBinding::inflate
         }
     }
 
-    fun checkFcmMenuLink(){
+    fun checkFcmMenuLink() {
         val fcmMenuLink = mainShareViewModel.getOnceFCMLink()
-        if(fcmMenuLink.isNotEmpty()){
+        if (fcmMenuLink.isNotEmpty()) {
             val webConfig = WebConfig(fcmMenuLink)
             goContentsWebViewScreen(webConfig)
         }
     }
 
-    fun goContentsWebViewScreen(webConfig : WebConfig){
+    fun goContentsWebViewScreen(webConfig: WebConfig) {
         requireActivity().findNavController(R.id.nav_main)
             .navigate(EtcFragmentDirections.actionEtcFragmentToContentsWebFragment(webConfig))
     }

@@ -78,5 +78,5 @@ data class FamilyConfrimConfig(
 data class AppleLoginConfig(
     var email: String,
     var authWord: String,
-    var authCode: String
+    var snsAuthToken: String
 ) : Parcelable

@@ -42,6 +42,7 @@
             />
 
         <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/color_e4e4e4"
@@ -58,7 +59,7 @@
             app:tipAllItem="@{viewModel.tipList}"
             app:addOnScrollListener="@{viewModel.scrollListener}"
             android:scrollbars="none"
-            app:layout_constraintTop_toBottomOf="@+id/btnBack"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
