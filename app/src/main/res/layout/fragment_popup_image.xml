@@ -20,7 +20,6 @@
             app:topRoundImageUrl="@{viewModel.imageUrl}"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="h,3:2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

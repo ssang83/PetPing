@@ -99,7 +99,7 @@ class MissionPetFragment :
                             errorBody.message,
                             false
                         ){
-                            requireActivity().findNavController(R.id.action_missionPetFragment_to_certificationFragment)
+                            requireActivity().findNavController(R.id.nav_main).navigate(R.id.action_missionPetFragment_to_certificationFragment)
                         }.show()
                     }
                     "C2130" -> {

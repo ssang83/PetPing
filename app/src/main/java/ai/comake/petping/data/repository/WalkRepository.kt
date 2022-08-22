@@ -2,15 +2,10 @@ package ai.comake.petping.data.repository
 
 import ai.comake.petping.api.WebService
 import ai.comake.petping.data.repository.base.BaseRepository
-import ai.comake.petping.data.vo.MyMarkingPoi
-import ai.comake.petping.data.vo.WalkFinishRequest
-import ai.comake.petping.data.vo.WalkStartRequest
+import ai.comake.petping.data.vo.*
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.Part
-import retrofit2.http.Path
 import javax.inject.Inject
 
 class WalkRepository @Inject constructor(private val webService: WebService) : BaseRepository() {
@@ -61,8 +56,15 @@ class WalkRepository @Inject constructor(private val webService: WebService) : B
         webService.getWalkStats(authKey, petId)
     }
 
-    suspend fun walkAudioGuide(authKey: String, pageNo: Int) = safeApiCall {
-        webService.walkAudioGuide(authKey, pageNo)
+    suspend fun audioGuideList(authKey: String, pageNo: Int) = safeApiCall {
+        webService.audioGuideList(authKey, pageNo)
+    }
+
+    suspend fun audioGuideLog(
+        authKey: String,
+        body: AudioGuideLog
+    ) = safeApiCall {
+        webService.audioGuideLog(authKey, body)
     }
 
     suspend fun downLoadFileUrl(url: String): ResponseBody =

@@ -19,6 +19,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:paddingBottom="56dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -223,19 +224,19 @@
                 android:visibility="@{viewModel.isStartWalk ? View.GONE : View.VISIBLE}"
                 app:constraint_referenced_ids="startWalkButton,walkStopTrackingLocationButton" />
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/markingGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.MARKING ? View.VISIBLE : View.GONE}"
-                app:constraint_referenced_ids="markingHeaderView" />
+<!--            <androidx.constraintlayout.widget.Group-->
+<!--                android:id="@+id/markingGroup"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.MARKING ? View.VISIBLE : View.GONE}"-->
+<!--                app:constraint_referenced_ids="markingHeaderView" />-->
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/placeGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.PLACE ? View.VISIBLE : View.GONE}"
-                app:constraint_referenced_ids="placeHeaderView" />
+<!--            <androidx.constraintlayout.widget.Group-->
+<!--                android:id="@+id/placeGroup"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:visibility="@{viewModel.walkBottomUi == WalkBottomUi.PLACE ? View.VISIBLE : View.GONE}"-->
+<!--                app:constraint_referenced_ids="placeHeaderView" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

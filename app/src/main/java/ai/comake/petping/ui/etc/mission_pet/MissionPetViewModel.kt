@@ -89,11 +89,10 @@ class MissionPetViewModel @Inject constructor() : ViewModel() {
                 _uiState.emit(UiState.Success)
                 _showPetSelectPopup.emit(response.value.data)
             }
-            is Resource.Failure -> {
+            is Resource.Error -> {
                 _uiState.emit(UiState.Failure(null))
                 response.errorBody?.let { errorBody ->
-                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                    _showChangePetErrorPopup.emit(errorResponse)
+                    _showChangePetErrorPopup.emit(errorBody)
                 }
             }
         }
@@ -124,11 +123,10 @@ class MissionPetViewModel @Inject constructor() : ViewModel() {
 
                 getRepresentativePet()
             }
-            is Resource.Failure -> {
+            is Resource.Error -> {
                 _uiState.emit(UiState.Failure(null))
                 response.errorBody?.let { errorBody ->
-                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                    _showErrorPopup.emit(errorResponse)
+                    _showErrorPopup.emit(errorBody)
                 }
             }
         }

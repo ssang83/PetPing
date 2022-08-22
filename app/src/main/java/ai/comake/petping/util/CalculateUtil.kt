@@ -72,7 +72,7 @@ fun hasOverTimePassedSinceTheStopWalk(walkPathList: List<WalkPath>, walkTime: Lo
 
 //제한속도 초과
 fun hasOverWalkSpeed(walkPathList: List<WalkPath>): Boolean {
-    val copyList = walkPathList
+    val copyList = walkPathList.toMutableList()
     if (copyList.size >= 5) {
         val checkOverSpeed = copyList.zipWithNext { startPoint, endPoint ->
             val distance = endPoint.location.distanceTo(startPoint.location)

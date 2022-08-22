@@ -3,6 +3,7 @@ package ai.comake.petping.ui.home.walk
 import ai.comake.petping.AppConstants
 import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.Event
+import ai.comake.petping.SingleLiveEvent
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.WalkRepository
 import ai.comake.petping.data.vo.*
@@ -25,6 +26,7 @@ import ai.comake.petping.util.getAudioGuideList
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.*
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -71,6 +73,16 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     val isFailedReadyForWalk: LiveData<Event<ErrorResponse?>>
         get() = _isFailedReadyForWalk
 
+    private val _readyToGuideProgress = MutableLiveData<Event<Int>>()
+    val readyToGuideProgress = MutableLiveData<Int>(0)
+
+//    private val _downloadProgress = MutableStateFlow(DownLoadProgress(0, 0))
+//    val downloadProgress = _downloadProgress.asStateFlow()
+
+    private val _downloadComplete = MutableLiveData<Event<File>>()
+    val downloadComplete: LiveData<Event<File>>
+        get() = _downloadComplete
+
     private val _clearMarker = MutableLiveData<Event<Boolean>>()
     val clearMarker: LiveData<Event<Boolean>>
         get() = _clearMarker
@@ -96,20 +108,16 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     private val _walkBottomUi = MutableStateFlow(WalkBottomUi.NONE)
     val walkBottomUi = _walkBottomUi.asStateFlow()
 
-    private val _readyToGuideProgress = MutableLiveData<Event<Int>>()
-    val readyToGuideProgress: LiveData<Event<Int>>
-        get() = _readyToGuideProgress
-
     private val _downloadProgress = MutableStateFlow(DownLoadProgress(0, 0))
     val downloadProgress = _downloadProgress.asStateFlow()
-
-    private val _downloadComplete = MutableLiveData<Event<File>>()
-    val downloadComplete: LiveData<Event<File>>
-        get() = _downloadComplete
 
     var selectedMarkerId: Int = 0
 
     var walkGuideListItem = ArrayList<AudioGuideItem>()
+
+    private val _walkGuideItem = MutableLiveData<Event<List<AudioGuideItem>>>()
+    val walkGuideItem: LiveData<Event<List<AudioGuideItem>>>
+        get() = _walkGuideItem
 
     private val _walkGuideListFlow = MutableSharedFlow<List<AudioGuideItem>?>()
     val walkGuideListFlow = _walkGuideListFlow.asSharedFlow()
@@ -119,9 +127,26 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
         get() = _isSucceedWalkFinish
 
     var walkGuidePageNo: Int = 1
+    var walkGuideTotalCount: Int = 0
     var hasMoreWalkGuideItem: Boolean = false
     var walkAblePetList = ArrayList<WalkablePet.Pets>()
     var myMarkingPOIs = ArrayList<MyMarkingPoi>()
+
+    val downloadProgressUpdate = MutableStateFlow(ProgressVo(0, 0))
+    val lodedWalkGuide = SingleLiveEvent<ArrayList<AudioGuideItem>>()
+    val addWalkGuide = SingleLiveEvent<ArrayList<AudioGuideItem>>()
+    val addWalkGuideProgress = MutableLiveData<Int>(0)
+    val downloadNetworkError = MutableLiveData(DownloadNetworkErrorVo(0, "", "", 0))
+
+//    private val _readyToGuideProgress = MutableLiveData<Event<Int>>()
+//    val readyToGuideProgress: LiveData<Event<Int>>
+//        get() = _readyToGuideProgress
+
+//    private val _downloadComplete = MutableLiveData<Event<File>>()
+//    val downloadComplete: LiveData<Event<File>>
+//        get() = _downloadComplete
+
+//    val readyToGuideProgress = MutableLiveData<Int>(0)
 
     fun startWalk(isStart: Boolean) {
         _isStartWalk.value = isStart
@@ -266,25 +291,6 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
         }
     }
 
-    fun asyncWalkGuide(pageNo: Int) {
-        LogUtil.log("TAG", "asyncWalkGuide $pageNo")
-        viewModelScope.launch {
-            val response = walkRepository.walkAudioGuide(
-                AUTH_KEY,
-                pageNo
-            )
-
-            when (response) {
-                is Resource.Success -> {
-                    addWalkGuide(response.value.data)
-                }
-                else -> {
-                    //Do Nothing
-                }
-            }
-        }
-    }
-
     fun asyncWalkFinish(authKey: String, walkId: Int, body: WalkFinishRequest) {
         LogUtil.log("TAG", ": $")
         viewModelScope.launch(Dispatchers.IO) {
@@ -325,7 +331,57 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
         }
     }
 
-    private suspend fun addWalkGuide(data: WalkAudioGuide) {
+    fun asyncWalkGuide(pageNo: Int, isAdd: Boolean = false) {
+        LogUtil.log("TAG", "asyncWalkGuide $pageNo")
+        viewModelScope.launch {
+            val response = walkRepository.audioGuideList(
+                AUTH_KEY,
+                pageNo
+            )
+
+            when (response) {
+                is Resource.Success -> {
+                    addWalkGuide(response.value.data)
+                    if (isAdd) {
+                        walkGuidePageNo++
+                    }
+                }
+                else -> {
+                    //Do Nothing
+                }
+            }
+        }
+    }
+
+//    fun asyncAddWalkGuide(pageNo: Int) {
+//        viewModelScope.launch {
+//            LogUtil.log("TAG", "addGuideInfo")
+//            try {
+//                addWalkGuideProgress.postValue(1)
+//                val response = walkRepository.walkAudioGuide(
+//                    AUTH_KEY,
+//                    pageNo
+//                )
+//
+//                addWalkGuideProgress.postValue(0)
+//                when (response) {
+//                    is Resource.Success -> {
+//                        addWalkGuide(response.value.data)
+//                        walkGuidePageNo++
+//                    }
+//                    else -> {
+//                        //Do Nothing
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                FirebaseCrashlytics.getInstance().recordException(e)
+//            } finally {
+//                addWalkGuideProgress.postValue(0)
+//            }
+//        }
+//    }
+
+    private fun addWalkGuide(data: WalkAudioGuide) {
         LogUtil.log("TAG", "")
         data.audioGuideList?.let { items ->
             if (items.size > 0) {
@@ -341,7 +397,10 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
                 hasMoreWalkGuideItem = data.listSize > walkGuideListItem.size
                 walkGuidePageNo++
 
-                _walkGuideListFlow.emit(walkGuideListItem)
+                val list = walkGuideListItem.toList()
+                _walkGuideItem.postValue(Event(list))
+
+//                _walkGuideListFlow.emit(walkGuideListItem)
             }
         }
 //        if (data.audioGuideList?.size ?: 0 > 0) {
@@ -352,12 +411,11 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
 //                    }
 //                }
 //            }
-
     }
 
     fun downloadFile(context: Context, url: String, fileName: String, position: Int) {
         viewModelScope.launch {
-            _readyToGuideProgress.postValue(Event(position))
+            readyToGuideProgress.postValue(position)
             walkRepository.downLoadFileUrl(url).downloadToFileWithProgress(
                 context.filesDir!!,
                 fileName,
@@ -378,7 +436,18 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
         }
     }
 
-    fun onTestClick() {
-        LogUtil.log("TAG", ": $")
+    //단순 로그 전송
+    fun requestAudioGuideLog(walkId: String, audioId: String) {
+        LogUtil.log("TAG", "walkId ${walkId} audioId ${audioId}")
+        viewModelScope.launch {
+            val body = AudioGuideLog(
+                audioId.toInt(), walkId.toInt()
+            )
+
+            val response = walkRepository.audioGuideLog(
+                AUTH_KEY,
+                body
+            )
+        }
     }
 }

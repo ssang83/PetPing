@@ -41,29 +41,29 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/audioGuideDownloadButton"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/tracking_location_bg"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/audioGuideDownloadButton"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:background="@drawable/tracking_location_bg"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent">-->
 
-            <ImageView
-                android:layout_marginBottom="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+<!--            <ImageView-->
+<!--                android:layout_marginBottom="2dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
 
-                android:layout_width="19dp"
-                android:layout_height="18dp"
-                android:backgroundTint="@android:color/white"
-                android:src="@drawable/ic_audio_guide_menu_icon"/>
+<!--                android:layout_width="19dp"-->
+<!--                android:layout_height="18dp"-->
+<!--                android:backgroundTint="@android:color/white"-->
+<!--                android:src="@drawable/ic_audio_guide_menu_icon"/>-->
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
 <!--            android:id="@+id/audioGuideDownloadButton"-->

@@ -107,10 +107,10 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginStart="18dp"
-                        android:src="@drawable/kakao_icon"/>
+                        android:src="@drawable/kakao_icon" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -141,17 +141,34 @@
                 android:layout_marginTop="12dp"
                 >
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:background="@drawable/img_apple_login"
-                    android:adjustViewBounds="true"
+                    android:background="@drawable/btn_apple_bg"
                     app:onSafeClick="@{view -> viewModel.goToAppleLogin()}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    />
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="18dp"
+                        android:src="@drawable/apple_icon"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/nanum_square_round_b"
+                        android:text="@string/apple_login"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="15dp" />
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"

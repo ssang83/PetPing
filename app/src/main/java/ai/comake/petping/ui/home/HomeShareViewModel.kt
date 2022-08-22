@@ -10,8 +10,7 @@ import androidx.lifecycle.ViewModel
  프래그먼트간의 이벤트 전달(공유 ViewModel)
  */
 class HomeShareViewModel : ViewModel() {
-    private val _isVisibleBottomNavigation = MutableLiveData<Event<Boolean>>()
-    val isVisibleBottomNavigation: LiveData<Event<Boolean>> = _isVisibleBottomNavigation
+    val isVisibleBottomNavigation = MutableLiveData<Event<Boolean>>()
 
     private val _moveToWalk = MutableLiveData<Event<Unit>>()
     val moveToWalk: LiveData<Event<Unit>> = _moveToWalk
@@ -23,9 +22,9 @@ class HomeShareViewModel : ViewModel() {
 
     val isSucceedBadge = MutableLiveData<Event<Boolean>>()
 
-    fun isVisibleBottomNavigation(value: Boolean) {
-        _isVisibleBottomNavigation.value = Event(value)
-    }
+//    fun isVisibleBottomNavigation(value: Boolean) {
+//        _isVisibleBottomNavigation.value = Event(value)
+//    }
 
     fun goToWalk() {
         _moveToWalk.emit()

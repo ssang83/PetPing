@@ -1,15 +1,14 @@
 package ai.comake.petping.ui.home
 
-import ai.comake.petping.*
 import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT
 import ai.comake.petping.AppConstants.ID
-import ai.comake.petping.data.db.badge.Badge
+import ai.comake.petping.MainShareViewModel
+import ai.comake.petping.R
 import ai.comake.petping.data.db.badge.BadgeRepository
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentHomeBinding
 import ai.comake.petping.observeEvent
-import ai.comake.petping.ui.home.walk.service.LocationUpdatesService
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.readTextFromUri
 import android.app.Activity
@@ -32,9 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -218,6 +215,10 @@ class HomeFragment : Fragment() {
             setGraph(R.navigation.home_navigation)
         }
 
+        navController?.addOnDestinationChangedListener { _controller, destination, arguments ->
+            LogUtil.log("TAG", "destination: $destination")
+        }
+
         changeUnSelectedMenuIcon(R.id.dashBoardScreen)
 
 //        bottomNavigationView = view.findViewById(R.id.homeBottomNavigation)
@@ -296,11 +297,11 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner,
             { isVisibile ->
                 LogUtil.log("TAG", "isVisibile " + isVisibile)
-//                if (isVisibile) {
-//                    binding.homeBottomNavigation.visibility = View.VISIBLE
-//                } else {
-//                    binding.homeBottomNavigation.visibility = View.GONE
-//                }
+                if (isVisibile) {
+                    binding.layoutHomeBottomNav.root.visibility = View.VISIBLE
+                } else {
+                    binding.layoutHomeBottomNav.root.visibility = View.GONE
+                }
             })
 
         viewModel.isStartWalk.observe(viewLifecycleOwner) { isStartWalk ->

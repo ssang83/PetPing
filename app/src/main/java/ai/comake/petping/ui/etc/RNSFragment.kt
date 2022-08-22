@@ -8,6 +8,7 @@ import ai.comake.petping.util.*
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -31,7 +32,7 @@ class RNSFragment : BaseFragment<FragmentRnsBinding>(FragmentRnsBinding::inflate
 
     private val args:RNSFragmentArgs by navArgs()
 
-    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
+//    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,10 +86,6 @@ class RNSFragment : BaseFragment<FragmentRnsBinding>(FragmentRnsBinding::inflate
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.animal.go.kr"))
                 startActivity(intent)
             }
-
-            helperTextUpdate.observeEvent(viewLifecycleOwner) { text ->
-                binding.familyCodeWrapper.helperText = text
-            }
         }
 
         setUpUi()
@@ -96,55 +93,43 @@ class RNSFragment : BaseFragment<FragmentRnsBinding>(FragmentRnsBinding::inflate
 
     override fun onResume() {
         super.onResume()
-        if (binding.familyCodeEdit.hasFocus() == true) {
-            showKeyboardOnView(binding.familyCodeEdit)
+        if (binding.editRns.hasFocus() == true) {
+            showKeyboardOnView(binding.editRns)
         }
     }
 
-    override fun onDestroyView() {
-        keyboardVisibilityUtils.detachKeyboardListeners()
-        super.onDestroyView()
-    }
+//    override fun onDestroyView() {
+//        keyboardVisibilityUtils.detachKeyboardListeners()
+//        super.onDestroyView()
+//    }
 
     private fun setUpUi() {
         with(binding) {
 
-            setEditText(
-                requireContext(),
-                familyCodeWrapper,
-                familyCodeEdit,
-                Pattern.compile(NUMBER_PATTERN),
-                "숫자만 입력할 수 있습니다.",
-                "동물등록번호를 입력하세요",
-                "동물등록번호",
-                "15자리의 숫자를 입력해 주세요."
-            )
-
-            setEditText(
-                requireContext(),
-                nameWrapper,
-                nameEdit,
-                Pattern.compile(CERTIFICATION_NAME_PATTERN),
-                "정확한 이름을 입력해 주세요.",
-                "보호자 이름을 입력하세요",
-                "보호자 이름",
-                "동물 등록을 신청한 보호자의 이름을 입력해 주세요."
-            )
-
             /**
              * 키보드가 내려갈 때 clear focus, 15자리 미만이면 숫자인지 체크 후 에러메시지
              */
-            keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
-                onHideKeyboard = {
-                    binding.outSide.clearFocus()
-                    if (viewModel?.registerNumber?.value.toString().length < 15) {
-                        viewModel?.isValidRNS?.value = false
-                        if (Pattern.compile(NUMBER_PATTERN).matcher(viewModel?.registerNumber?.value.toString()).matches()) {
-                            familyCodeWrapper.error = "동물등록번호를 확인해 주세요."
-                        }
+//            keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
+//                onHideKeyboard = {
+//                    binding.outSide.clearFocus()
+//                    if (viewModel?.registerNumber?.value.toString().length < 15) {
+//                        viewModel?.isValidRNS?.value = false
+//                        if (Pattern.compile(NUMBER_PATTERN).matcher(viewModel?.registerNumber?.value.toString()).matches()) {
+//                            binding.rnsError.text = "동물등록번호를 확인해 주세요."
+//                        }
+//                    }
+//                }
+//            )
+
+            outSide.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_UP -> view.let {
+                        hideKeyboard()
+                        outSide.clearFocus()
                     }
                 }
-            )
+                true
+            }
 
             header.btnBack.setSafeOnClickListener {
                 requireActivity().backStack(R.id.nav_main)

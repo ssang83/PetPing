@@ -211,7 +211,7 @@
                         android:fontFamily="@font/nanum_square_round"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:visibility="@{viewModel.breedFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                        android:visibility="@{viewModel.birthFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
                         />
 
                     <EditText
@@ -227,7 +227,7 @@
                         android:inputType="numberSigned"
                         android:maxLength="6"
                         android:text="@={viewModel.birth}"
-                        app:birthHintText="@{viewModel.breedFocusHintVisible}"
+                        app:birthHintText="@{viewModel.birthFocusHintVisible}"
                         app:inputTextClear="@{viewModel.birthClear}"
                         app:focusChangeListener="@{viewModel.birthFocusChangeListener}"
                         android:onTextChanged="@{(text, start, before, count) -> viewModel.onBirthTextChanged(text)}"

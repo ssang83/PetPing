@@ -134,6 +134,8 @@ class CertificationFragment :
                 onHideKeyboard = {
                     outSide.clearFocus()
                 })
+
+            header.btnBack.setSafeOnClickListener { requireActivity().backStack(R.id.nav_main) }
         }
     }
 

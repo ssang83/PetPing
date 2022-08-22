@@ -49,10 +49,12 @@
                         />
 
                     <TextView
-                        android:visibility="@{viewModel.inquiryItems.size() == 0 ? View.VISIBLE : View.GONE, default = gone}"
+                        android:visibility="@{viewModel.inquiryItems.size() == 0 ? View.VISIBLE : View.GONE}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:layout_marginBottom="50dp"
                         android:text="@string/inquiry_history_empty"
                         android:textColor="@color/color_bbbbbb"
                         android:textSize="16dp"

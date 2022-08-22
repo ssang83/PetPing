@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="ai.comake.petping.ui.etc.RNSViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +27,7 @@
             app:layout_constraintTop_toBottomOf="@+id/header"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnTitle"
             android:scrollbars="none"
             >
 
@@ -62,44 +64,191 @@
                     android:textSize="14dp"
                     />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/nCustomTextInputLayout"
-                    android:id="@+id/name_wrapper"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/pet_owner_name_input_hint"
                     android:layout_marginTop="62dp"
-                    app:endIconMode="clear_text">
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/CustomEditText"
-                        android:id="@+id/name_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:inputType="text"
-                        android:onTextChanged="@{(text, start, before, count) -> viewModel.onNameTextChanged(text)}"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
+                    >
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/family_code_wrapper"
-                    style="@style/nCustomTextInputLayout"
+                    <TextView
+                        android:id="@+id/ownerfocusHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="보호자 이름"
+                        android:textSize="14dp"
+                        android:textColor="@color/color_aaaaaa"
+                        android:fontFamily="@font/nanum_square_round"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:visibility="@{viewModel.ownerFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                        />
+
+                    <EditText
+                        android:id="@+id/editOwner"
+                        android:layout_width="0dp"
+                        android:layout_height="34dp"
+                        android:hint="보호자 이름을 입력하세요"
+                        android:textColorHint="#dddddd"
+                        android:textColor="#111111"
+                        android:inputType="text"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:background="@android:color/transparent"
+                        android:layout_marginTop="8dp"
+                        app:petOwnHintText="@{viewModel.ownerFocusHintVisible}"
+                        app:inputTextClear="@{viewModel.ownerClear}"
+                        app:focusChangeListener="@{viewModel.ownerFocusChangedListener}"
+                        android:onTextChanged="@{(text, start, before, count) -> viewModel.onNameTextChanged(text)}"
+                        app:layout_constraintTop_toBottomOf="@+id/ownerfocusHint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnDel"
+                        />
+
+                    <View
+                        android:id="@+id/ownerLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        tools:background="#dddddd"
+                        app:lineColor="@{viewModel.ownerLineStatus}"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/editOwner"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
+
+                    <ImageView
+                        android:id="@+id/btnDel"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:src="@drawable/btn_del"
+                        android:adjustViewBounds="true"
+                        android:visibility="@{viewModel.ownerInputStatus == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:onSafeClick="@{view -> viewModel.onInputOwnerClear()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/editOwner"
+                        app:layout_constraintBottom_toBottomOf="@+id/editOwner"
+                        />
+
+                    <TextView
+                        android:id="@+id/ownerError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정확한 이름을 입력해 주세요."
+                        android:textColor="#ff4857"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:visibility="@{viewModel.petOwnNameValidation == true ? View.INVISIBLE : View.VISIBLE }"
+                        app:layout_constraintTop_toBottomOf="@+id/ownerLine"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/ownerHelper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="동물 등록을 신청한 보호자의 이름을 입력해 주세요."
+                        android:textColor="@color/color_aaaaaa"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:visibility="@{viewModel.ownerHelperVisible == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintTop_toBottomOf="@+id/ownerLine"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/rns_input_hint"
-                    android:layout_marginTop="90dp"
-                    app:endIconMode="clear_text">
+                    android:layout_marginTop="60dp"
+                    >
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        style="@style/CustomEditText"
-                        android:id="@+id/family_code_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                    <TextView
+                        android:id="@+id/rnsfocusHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="동물등록번호"
+                        android:textSize="14dp"
+                        android:textColor="@color/color_aaaaaa"
+                        android:fontFamily="@font/nanum_square_round"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:visibility="@{viewModel.rnsFocusHintVisible == true ? View.VISIBLE : View.INVISIBLE }"
+                        />
+
+                    <EditText
+                        android:id="@+id/editRns"
+                        android:layout_width="0dp"
+                        android:layout_height="34dp"
+                        android:hint="동물등록번호를 입력하세요"
+                        android:textColorHint="#dddddd"
+                        android:textColor="#111111"
                         android:inputType="numberDecimal"
                         android:maxLength="15"
                         android:text="@={viewModel.registerNumber}"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:background="@android:color/transparent"
+                        android:layout_marginTop="8dp"
+                        app:rnsHintText="@{viewModel.rnsFocusHintVisible}"
+                        app:inputTextClear="@{viewModel.rnsClear}"
+                        app:focusChangeListener="@{viewModel.rnsFocusChangedListener}"
                         app:addTextChangedListener="@{viewModel.familyCodeEditTextWatcher}"
+                        app:layout_constraintTop_toBottomOf="@+id/rnsfocusHint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnRnsDel"
                         />
-                </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:id="@+id/rnsLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        tools:background="#dddddd"
+                        app:lineColor="@{viewModel.rnsLineStatus}"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/editRns"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
+
+                    <ImageView
+                        android:id="@+id/btnRnsDel"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:src="@drawable/btn_del"
+                        android:adjustViewBounds="true"
+                        android:visibility="@{viewModel.rnsInputStatus == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:onSafeClick="@{view -> viewModel.onInputRnsClear()}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/editRns"
+                        app:layout_constraintBottom_toBottomOf="@+id/editRns"
+                        />
+
+                    <TextView
+                        android:id="@+id/rnsError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="숫자만 입력할 수 있습니다."
+                        android:textColor="#ff4857"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:visibility="@{viewModel.isValidRNS == true ? View.INVISIBLE : View.VISIBLE }"
+                        app:layout_constraintTop_toBottomOf="@+id/rnsLine"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/rnsHelper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15자리의 숫자를 입력해 주세요."
+                        android:textColor="@color/color_aaaaaa"
+                        android:textSize="12dp"
+                        android:fontFamily="@font/nanum_square_round"
+                        android:visibility="@{viewModel.rnsHelperVisible == true ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintTop_toBottomOf="@+id/rnsLine"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="9dp"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

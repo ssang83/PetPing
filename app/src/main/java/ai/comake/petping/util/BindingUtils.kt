@@ -1397,7 +1397,7 @@ object BindingUtils {
             if (status) {
                 view.hint = ""
             } else {
-                view.hint = "이메일 주소를 입력해 주세요"
+                view.hint = "이메일 주소를 입력하세요"
             }
         }
     }
@@ -1482,6 +1482,30 @@ object BindingUtils {
                 view.hint = ""
             } else {
                 view.hint = view.context.getString(R.string.new_profile_pet_weight_hint)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("petOwnHintText")
+    fun setPetOwnHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "보호자 이름을 입력하세요"
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("rnsHintText")
+    fun setRnsHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "동물등록번호를 입력하세요"
             }
         }
     }

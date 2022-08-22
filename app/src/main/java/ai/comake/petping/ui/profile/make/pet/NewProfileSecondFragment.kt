@@ -166,8 +166,10 @@ class NewProfileSecondFragment :
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun afterTextChanged(s: Editable?) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    mAdapter.filter.filter(s.toString())
-                    filterList.visibility = View.VISIBLE
+                    if (s.toString().isNotEmpty()) {
+                        mAdapter.filter.filter(s.toString())
+                        filterList.visibility = View.VISIBLE
+                    }
                 }
             })
         }

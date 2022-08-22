@@ -241,7 +241,7 @@ class LocationUpdatesService() : LifecycleService() {
                 .setContentIntent(contentIntent)
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
-                .setSmallIcon(R.mipmap.ic_notification)
+                .setSmallIcon(R.mipmap.ic_launcher_new)
                 .setWhen(System.currentTimeMillis())
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
 
@@ -552,13 +552,12 @@ class LocationUpdatesService() : LifecycleService() {
 
         val _isStopWalkService = MutableLiveData(Event(false))
 
-        val _cameraZoom = MutableStateFlow(8.0)
+        val _cameraZoom = MutableStateFlow(16.0)
         val _walkDistanceKm = MutableStateFlow("0.00")
         val _walkPathList = MutableStateFlow(ArrayList<WalkPath>())
         val _myMarkingList = MutableStateFlow(ArrayList<MyMarkingPoi>())
 
         val _audioGuideStatus = MutableStateFlow(AudioGuideStatus())
-        val _isWithAudioGuide = MutableStateFlow(true)
         var _lastLocation = Location("")
 
         val _cameraPosition = MutableStateFlow(LatLng(37.566573, 126.978179))

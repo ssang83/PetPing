@@ -18,8 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_ffffff"
-        android:paddingBottom="56dp"
-        >
+        android:paddingBottom="56dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
@@ -173,14 +172,13 @@
                 </RelativeLayout>
 
                 <include
-                    bind:viewModel="@{viewModel}"
                     android:id="@+id/fragment_dashboard_walk_report"
                     layout="@layout/fragment_dashboard_walk_report"
                     android:layout_width="match_parent"
                     android:layout_height="144dp"
-                    android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"
-                    >
+                    android:layout_marginEnd="15dp"
+                    bind:viewModel="@{viewModel}">
 
                 </include>
 
@@ -291,8 +289,8 @@
             android:visibility="@{viewModel.expandedMissionPetAlert &amp;&amp; viewModel.missionPetAlert != null &amp;&amp; !viewModel.closeMissionPetAlert ? View.VISIBLE : View.GONE}"
             app:cardCornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="gone"
-            app:onSafeClick="@{view -> viewModel.collapseAlertMissionPet()}">
+            app:onSafeClick="@{view -> viewModel.collapseAlertMissionPet()}"
+            tools:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -437,8 +435,8 @@
             android:visibility="@{viewModel.expandedAlert &amp;&amp; viewModel.missionAlert != null &amp;&amp; !viewModel.closeMissionAlert ? View.VISIBLE : View.GONE}"
             app:cardCornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="gone"
-            app:onSafeClick="@{view -> viewModel.collapseAlert()}">
+            app:onSafeClick="@{view -> viewModel.collapseAlert()}"
+            tools:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -504,10 +502,10 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/nanum_square_round_b"
-                        app:onSafeClick="@{view -> viewModel.goToWalk()}"
                         android:text="산책하기"
                         android:textColor="@color/greyscale_1_fff"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        app:onSafeClick="@{view -> viewModel.goToWalk()}" />
 
                     <View
                         android:layout_width="1dp"
@@ -520,10 +518,10 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/nanum_square_round_b"
-                        app:onSafeClick="@{view -> viewModel.goToMission()}"
                         android:text="확인하기"
                         android:textColor="@color/greyscale_1_fff"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        app:onSafeClick="@{view -> viewModel.goToMission()}" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

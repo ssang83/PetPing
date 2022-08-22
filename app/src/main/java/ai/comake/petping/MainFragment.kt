@@ -188,38 +188,35 @@ class MainFragment : Fragment() {
     //여기서 순서대로 실행
     private fun checkSystemInfo() {
         RemoteConfigMangaer.getInstance().init()
-        RemoteConfigMangaer.getInstance().fetchAndActivate(requireActivity(),
-            object : OnCompleteListener<Boolean> {
-                override fun onComplete(task: Task<Boolean>) {
-                    if (task.isSuccessful) {
-                        try {
-                            val info = RemoteConfigMangaer.getInstance().getString(SYSTEM_CHECKING_INFO)
-                            val obj = JSONObject(info)
-                            val modeObj = obj["isCheckingMode"] as JSONObject
-                            val mode = modeObj["Android"] as Boolean
-                            if (mode) {
-                                viewModel.systemCheckMode.value = true
-                                viewModel.systemCheckTitle.value = obj["title"].toString()
-                                viewModel.systemCheckDesc.value = obj["contents"].toString()
-                            } else {
-                                viewModel.systemCheckMode.value = false
-                                if (sharedPreferencesManager.getAuthorityPopup().not()) {
-                                    goToGuide()
-                                } else {
-                                    checkUnProcessedWalk()
-                                }
-                            }
-                        } catch (e: Exception) {
-                            if (sharedPreferencesManager.getAuthorityPopup().not()) {
-                                goToGuide()
-                            } else {
-                                checkUnProcessedWalk()
-                            }
+        RemoteConfigMangaer.getInstance().fetchAndActivate(requireActivity()
+        ) { task ->
+            if (task.isSuccessful) {
+                try {
+                    val info = RemoteConfigMangaer.getInstance().getString(SYSTEM_CHECKING_INFO)
+                    val obj = JSONObject(info)
+                    val modeObj = obj["isCheckingMode"] as JSONObject
+                    val mode = modeObj["Android"] as Boolean
+                    if (mode) {
+                        viewModel.systemCheckMode.value = true
+                        viewModel.systemCheckTitle.value = obj["title"].toString()
+                        viewModel.systemCheckDesc.value = obj["contents"].toString()
+                    } else {
+                        viewModel.systemCheckMode.value = false
+                        if (sharedPreferencesManager.getAuthorityPopup().not()) {
+                            goToGuide()
+                        } else {
+                            checkUnProcessedWalk()
                         }
+                    }
+                } catch (e: Exception) {
+                    if (sharedPreferencesManager.getAuthorityPopup().not()) {
+                        goToGuide()
+                    } else {
+                        checkUnProcessedWalk()
                     }
                 }
             }
-        )
+        }
     }
 
     private fun initAppConstant() {

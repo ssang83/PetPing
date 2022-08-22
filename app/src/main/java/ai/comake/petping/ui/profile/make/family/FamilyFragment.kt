@@ -10,6 +10,7 @@ import ai.comake.petping.ui.base.BaseFragment
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.util.*
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -42,8 +43,8 @@ class FamilyFragment : BaseFragment<FragmentFamilyBinding>(FragmentFamilyBinding
                 setUI()
             }
 
-            binding.familyCodeEdit.requestFocus()
-            showKeyboardOnView(binding.familyCodeEdit)
+            binding.editCode.requestFocus()
+            showKeyboardOnView(binding.editCode)
         }
 
         with(viewModel) {
@@ -99,20 +100,22 @@ class FamilyFragment : BaseFragment<FragmentFamilyBinding>(FragmentFamilyBinding
     private fun setUI() {
         with(binding) {
 
-            setEditText(
-                requireContext(),
-                familyCodeWrapper,
-                familyCodeEdit,
-                "가족코드를 입력하세요",
-                "가족코드"
-            )
-
-            familyCodeEdit.setText("")
-            familyCodeEdit.requestFocus()
-            showKeyboardOnView(binding.familyCodeEdit)
+            editCode.setText("")
+            editCode.requestFocus()
+            showKeyboardOnView(editCode)
 
             btnBack.setSafeOnClickListener {
                 requireActivity().backStack(R.id.nav_main)
+            }
+
+            outSide.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_UP -> view.let {
+                        hideKeyboard()
+                        outSide.clearFocus()
+                    }
+                }
+                true
             }
 
             keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,

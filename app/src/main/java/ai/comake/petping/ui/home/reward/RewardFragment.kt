@@ -56,7 +56,7 @@ class RewardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         LogUtil.log("TAG","onViewCreated")
-        updateWhiteStatusBar(requireActivity().window)
+//        updateWhiteStatusBar(requireActivity().window)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 

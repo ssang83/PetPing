@@ -115,6 +115,11 @@ data class WalkAudioGuide(
     val numOfRows: Int = 0
 )
 
+data class AudioGuideLog(
+    val audioGuideId: Int,
+    val walkId: Int
+)
+
 data class AudioGuideItem(
     var audioFileUrl: String = "",
     var speakerThumbnailFileSeq: Int = 0,
@@ -187,4 +192,18 @@ data class WalkPicture(
 sealed class Download {
     data class Progress(val percent: Int) : Download()
     data class Finished(val file: File) : Download()
+}
+
+data class ProgressVo(
+    val percent: Int = 0,
+    val position: Int = 0
+) {
+}
+
+data class DownloadNetworkErrorVo(
+    val code: Int = 0,
+    val url: String,
+    val fileName: String,
+    val position: Int = 0
+) {
 }

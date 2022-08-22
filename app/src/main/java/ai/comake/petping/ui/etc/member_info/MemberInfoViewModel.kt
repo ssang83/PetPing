@@ -64,7 +64,7 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
     val moveToWithDrawal = MutableLiveData<Event<Unit>>()
     val moveToChangePw = MutableLiveData<Event<Unit>>()
     val moveToChangePhoneNumber = MutableLiveData<Event<Unit>>()
-    val moveToAddPhoneNumber = MutableLiveData<Event<Unit>>()
+    val moveToCert = MutableLiveData<Event<Unit>>()
     val moveToChangeEmail = MutableLiveData<Event<Unit>>()
     val moveToRegisterEmail = MutableLiveData<Event<Unit>>()
     val moveToLocationHistory = MutableLiveData<Event<Unit>>()
@@ -73,6 +73,7 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
     val logoutErrorPopup = MutableLiveData<Event<ErrorResponse>>()
 
     var loginType = -1
+    var genderValue = ""
 
     val scrollChangeListener = object : View.OnScrollChangeListener {
         override fun onScrollChange(
@@ -117,9 +118,8 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
 
                 data.birthAndGender?.let {
                     _birth.value = data.birthAndGender.substring(0, 6)
-                    if ("1" == data.birthAndGender.substring(data.birthAndGender.length - 1)
-                        || "3" == data.birthAndGender.substring(data.birthAndGender.length - 1)
-                    ) {
+                    genderValue = data.birthAndGender.substring(data.birthAndGender.length - 1)
+                    if ("1" == genderValue || "3" == genderValue) {
                         _gender.value = "남성"
                     } else {
                         _gender.value = "여성"
@@ -148,8 +148,8 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
         moveToChangePhoneNumber.emit()
     }
 
-    fun goToAddPhoneNumber() {
-        moveToAddPhoneNumber.emit()
+    fun goToCert() {
+        moveToCert.emit()
     }
 
     fun goToChangeEmail() {

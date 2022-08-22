@@ -391,10 +391,16 @@ interface WebService {
     ): CommonResponse<WalkStatsData>
 
      @GET(" /v2/petping/walks/audio-guide")
-    suspend fun walkAudioGuide(
+    suspend fun audioGuideList(
          @Header("Authorization") authKey: String,
          @Query("pageNo") pageNo: Int
     ): CommonResponse<WalkAudioGuide>
+
+    @POST("/v2/petping/walks/audio-guide-log")
+    suspend fun audioGuideLog(
+        @Header("Authorization") authKey: String,
+        @Body body: AudioGuideLog
+    ): CommonResponse<Any>
 
     // 이메일 중복
     @GET("/v1/sapa/accounts/email/duplication-chk")

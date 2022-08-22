@@ -82,9 +82,6 @@ class DashboardFragment : Fragment() {
             }
 
             moveToEtc.asLiveData().observe(viewLifecycleOwner) {
-                if(isNewEtcBadge()) {
-
-                }
                 requireActivity().findNavController(R.id.nav_main)
                     .navigate(R.id.action_homeScreen_to_etcFragment)
             }

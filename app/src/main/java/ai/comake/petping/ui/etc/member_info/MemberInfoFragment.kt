@@ -2,6 +2,7 @@ package ai.comake.petping.ui.etc.member_info
 
 import ai.comake.petping.*
 import ai.comake.petping.data.vo.CIConfig
+import ai.comake.petping.data.vo.CertWebConfig
 import ai.comake.petping.data.vo.ChangePhoneNumberConfig
 import ai.comake.petping.databinding.FragmentMemberInfoBinding
 import ai.comake.petping.ui.base.BaseFragment
@@ -98,9 +99,15 @@ class MemberInfoFragment : BaseFragment<FragmentMemberInfoBinding>(FragmentMembe
                 )
             }
 
-            moveToAddPhoneNumber.observeEvent(viewLifecycleOwner) {
+            moveToCert.observeEvent(viewLifecycleOwner) {
+                val config = CertWebConfig(
+                    name = name.value.toString(),
+                    birth = birth.value.toString(),
+                    gender = genderValue
+                )
+
                 requireActivity().findNavController(R.id.nav_main)
-                    .navigate(R.id.action_memberInfoFragment_to_certWebFragment)
+                    .navigate(MemberInfoFragmentDirections.actionMemberInfoFragmentToCertWebFragment(config))
             }
 
             moveToChangeEmail.observeEvent(viewLifecycleOwner) {

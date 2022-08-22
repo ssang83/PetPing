@@ -100,6 +100,14 @@ class SignUpEmailViewModel @Inject constructor() : ViewModel() {
                 passwdLineStatus.value = true
                 passwdHelperVisible.value = true
 
+                passwdHelperVisible.apply {
+                    if (str.isNotEmpty()) {
+                        value = false
+                    } else {
+                        value = true
+                    }
+                }
+
                 passwdInputStatus.apply {
                     if (str.isNotEmpty()) {
                         value = true
