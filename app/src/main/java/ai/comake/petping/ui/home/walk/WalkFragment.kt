@@ -9,9 +9,11 @@ import ai.comake.petping.data.vo.*
 import ai.comake.petping.databinding.FragmentWalkBinding
 import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.observeEvent
+import ai.comake.petping.ui.common.dialog.DoubleBtnDialog
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.ui.home.HomeFragmentDirections
 import ai.comake.petping.ui.home.HomeShareViewModel
+import ai.comake.petping.ui.home.walk.AudioGuidePlayer.Companion._audioGuideStatus
 import ai.comake.petping.ui.home.walk.adapter.WalkClusterAdapter
 import ai.comake.petping.ui.home.walk.adapter.WalkGuideAdapter
 import ai.comake.petping.ui.home.walk.dialog.MarkingBottomSheetDialog
@@ -22,7 +24,6 @@ import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.E
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.EXTRA_WALK_STATUS
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.PAUSE
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion.PLAY
-import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._audioGuideStatus
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraPosition
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraZoom
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._lastLocation
@@ -66,6 +67,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.naver.maps.geometry.Coord
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.CameraUpdate.REASON_DEVELOPER
@@ -77,7 +79,6 @@ import com.naver.maps.map.overlay.PolylineOverlay
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -120,6 +121,8 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         LogUtil.log("TAG", "")
         requestLocationPermission()
+        //오디오 가이드 상태 초기화
+        initialAudioGuideStatus()
     }
 
     override fun onCreateView(
@@ -169,6 +172,12 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                         }
                         _lastLocation = lastLocation
                         _cameraPosition.value = lastLatLng
+
+                        val locationOverlay = mNaverMap.locationOverlay
+                        val latLng = LatLng(_lastLocation.latitude, _lastLocation.longitude)
+                        locationOverlay.position = latLng
+                        locationOverlay.icon = OverlayImage.fromResource(R.drawable.here_moving)
+                        locationOverlay.isVisible = true
                     } else {
                         LogUtil.log(
                             TAG,
@@ -207,17 +216,10 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             LayoutInflater.from(activity).inflate(R.layout.view_marking_cluster, null, false)
         mPetClusterSelectedView = LayoutInflater.from(activity)
             .inflate(R.layout.view_marking_cluster_selected, null, false)
+    }
 
-        //오디오 가이드 상태 초기화
-        _audioGuideStatus.value = AudioGuideStatus(
-            false,
-            "00:00",
-            "00:00",
-            "",
-            "",
-            0,
-            0
-        )
+    private fun initialAudioGuideStatus() {
+        _audioGuideStatus.value = AudioGuideStatus()
     }
 
     private fun setUpClickListener() {
@@ -229,12 +231,16 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             activity?.window?.let { updateDarkStatusBar(it) }
             mService?.pauseWalk(true)
             viewModel.pauseWalk(true)
+
+            mService?.pauseAudioGuide(true)
         }
 
         binding.walkTracker.walkControlView.walkPlayButton.setSafeOnClickListener {
             activity?.window?.let { updateLightStatusBar(it) }
             mService?.pauseWalk(false)
             viewModel.pauseWalk(false)
+
+            mService?.pauseAudioGuide(false)
         }
 
         binding.walkTracker.walkStopTrackingLocationImage.setSafeOnClickListener {
@@ -265,8 +271,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.walkAudio.walkGuideBtnBack.setSafeOnClickListener {
-            binding.walkViewFlipper.displayedChild = 0
-            homeShareViewModel.isVisibleBottomNavigation.value = Event(true)
+            hideAudioGuide()
         }
 
         binding.walkAudio.walkGuideTopButton.setOnClickListener {
@@ -361,10 +366,16 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                     petIds = walkstart.walk.petIds
                 )
 
-            if(binding.walkAudio.root.isVisible && _audioGuideStatus.value.id != 0) {
-                viewModel.requestAudioGuideLog(localWalkData.walkId.toString(),
-                    _audioGuideStatus.value.id.toString()
+            if (binding.walkAudio.root.isVisible && _audioGuideStatus.value!!.audioFileId != 0) {
+                hideAudioGuide()
+                mService?.setUpAudioPlayer()
+                viewModel.requestAudioGuideLog(
+                    localWalkData.walkId.toString(),
+                    _audioGuideStatus.value!!.id.toString()
                 )
+            } else {
+                initialAudioGuideStatus()
+                binding.walkTracker.guideHeaderView.root.visibility = View.GONE
             }
 
             mService?.startWalk(true)
@@ -417,13 +428,48 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-//        viewModel.downloadNetworkError.observe(viewLifecycleOwner) { vo ->
-//            if (vo.code == 1) {
-//                networkFailDialog(vo.url, vo.fileName, vo.position)
-//            }
-//        }
+        viewModel.startAudioGuide.observe(viewLifecycleOwner) {
+            LogUtil.log("TAG", "it: $it")
+            if (it) {
+                startAudioGuide()
+            }
+        }
 
-        viewModel.downloadProgressUpdate.asLiveData().observe(viewLifecycleOwner) { progressVo ->
+        viewModel.endAudioGuide.observe(viewLifecycleOwner) {
+            LogUtil.log("TAG", "it: $it")
+            if (it) {
+                endAudioGuide()
+            }
+        }
+
+        viewModel.isPauseAudioGuide.observe(viewLifecycleOwner) {
+            LogUtil.log("TAG", "it: $it")
+            if (_audioGuideStatus.value?.isEndAudio == false) {
+                isPauseAudioGuide(it)
+            }
+        }
+
+        viewModel.downloadNetworkError.observe(viewLifecycleOwner) { vo ->
+            if (vo.code == 1) {
+                activity?.let {
+                    DoubleBtnDialog(
+                        it,
+                        "네트워크 오류",
+                        "네트워크 연결 상태가 좋지 않습니다. 확인 후 다시 시도해 주세요.",
+                        false,
+                        "앱 종료",
+                        "재시도",
+                        {
+                            it.finish()
+                        },
+                        {
+                            viewModel.downloadFile(it, vo.url, vo.fileName, vo.position)
+                        }).show()
+                }
+            }
+        }
+
+        viewModel.downloadProgress.asLiveData().observe(viewLifecycleOwner) { progressVo ->
             lifecycleScope.launch(Dispatchers.Main) {
                 if (binding.walkViewFlipper.displayedChild == 1) {
                     if (progressVo.percent > 0) {
@@ -441,6 +487,16 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         }
+    }
+
+    fun hideAudioGuide() {
+        binding.walkViewFlipper.displayedChild = 0
+        homeShareViewModel.isVisibleBottomNavigation.value = Event(true)
+//        mAudioGuideListAdapter = WalkGuideAdapter(
+//            this::startWalkWithAudioGuide,
+//            this::downloadAudioGuide,
+//            requireContext()
+//        )
     }
 
     private fun requestWalkFinish() {
@@ -531,6 +587,8 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setUpNaverMapUi() {
+
+
         if (viewModel.walkPathList.value.size > 1) {
             drawPath(viewModel.walkPathList.value)
         }
@@ -575,7 +633,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         markings.forEach { item ->
             mMarkingMarkers.add(Marker().apply {
                 if (item.clusteredCount == 1) {
-                    globalZIndex = PathOverlay.DEFAULT_GLOBAL_Z_INDEX - 1
+                    globalZIndex = 2
                     position = LatLng(item.lat.decrypt(), item.lng.decrypt())
                     icon = OverlayImage.fromResource(R.drawable.ic_poi_marking)
                     tag = MarkerTag(item.pois[0].id, WalkBottomUi.MARKING)
@@ -586,7 +644,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                     }
                 } else {
                     position = LatLng(item.lat.decrypt(), item.lng.decrypt())
-                    globalZIndex = PathOverlay.DEFAULT_GLOBAL_Z_INDEX - 1
+                    globalZIndex = 2
                     val count = item.clusteredCount
                     icon = OverlayImage.fromBitmap(getClusterMarkerImage(count, false))
                     tag = MarkerTag(item.clusteredId, WalkBottomUi.CLUSTER, count)
@@ -602,13 +660,13 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun displayPlacePOIs(places: List<PlacePoi.Places>) {
+    private fun displayPlacePOIs(places: List<PlacePoi>) {
         places.forEach { item ->
             mMarkingMarkers.add(Marker().apply {
-                globalZIndex = PathOverlay.DEFAULT_GLOBAL_Z_INDEX - 1
+                globalZIndex = 2
                 position = LatLng(item.lat.decrypt(), item.lng.decrypt())
                 icon = OverlayImage.fromResource(R.drawable.ic_poi_place_ground)
-                tag = MarkerTag(item.id, WalkBottomUi.PLACE)
+                tag = MarkerTag(item.id, WalkBottomUi.PLACE, 1, item)
                 setOnClickListener {
                     unSelectPreviousPOI()
                     selectCurrentPOI(this)
@@ -623,7 +681,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         LogUtil.log("TAG", "item: $myMarkings")
         myMarkings.forEach { item ->
             Marker().apply {
-                globalZIndex = PathOverlay.DEFAULT_GLOBAL_Z_INDEX + 1
+                globalZIndex = 4
                 position = LatLng(item.lat.decrypt(), item.lng.decrypt())
                 icon = OverlayImage.fromResource(R.drawable.ic_poi_my_marking)
                 map = mNaverMap
@@ -656,11 +714,12 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             WalkBottomUi.PLACE -> {
                 marker.icon =
                     OverlayImage.fromResource(R.drawable.ic_poi_place_ground_select)
-                asyncPlaceDeTail(clickTag.id)
+                viewModel.updatePOIUi(WalkBottomUi.PLACE)
+                viewModel._placeDetail.value = clickTag.placePoi
             }
         }
 
-        marker.globalZIndex = PathOverlay.DEFAULT_GLOBAL_Z_INDEX + 2
+        marker.globalZIndex = 5
         marker.map = mNaverMap
     }
 
@@ -681,6 +740,9 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                             OverlayImage.fromResource(R.drawable.ic_poi_place_ground)
                     }
                 }
+
+                marker.globalZIndex = 2
+                marker.map = mNaverMap
             }
         }
     }
@@ -706,19 +768,17 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         viewModel.updatePOIUi(WalkBottomUi.CLUSTER)
     }
 
-    fun asyncPlaceDeTail(id: Int) {
-        viewModel.updatePOIUi(WalkBottomUi.PLACE)
-        viewModel.asyncPlaceDetail(id)
-    }
-
     fun drawPath(walkPathList: ArrayList<WalkPath>) {
         val coords = ArrayList<LatLng>()
         for (i in 0 until walkPathList.size) {
             coords.add(LatLng(walkPathList[i].location))
         }
 
+        val locationOverlay = mNaverMap.locationOverlay
+        locationOverlay.position = coords.last()
+
         PolylineOverlay().also {
-            it.zIndex = 2
+            it.globalZIndex = 3
             it.width = 10
             it.color = ResourcesCompat.getColor(resources, R.color.color_ff4857, null)
             it.coords = coords
@@ -727,7 +787,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun openWalkablePetDialog(items: ArrayList<WalkablePet.Pets>) {
-        LogUtil.log("TAG", "items: $items")
         walkablePetDialog = WalkablePetDialog(items) { item ->
             viewModel.walkAblePetList = item as ArrayList<WalkablePet.Pets>
             val petIds = item.map {
@@ -745,11 +804,11 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     fun startWalkWithAudioGuide(item: AudioGuideItem) {
-        LogUtil.log("TAG", "")
-        _audioGuideStatus.value.id = item.id
-        _audioGuideStatus.value.audioFileId = item.audioFileId
-        _audioGuideStatus.value.titleName = item.title
-        _audioGuideStatus.value.speakerImageUrl = item.speakerThumbnailFileUrl
+        LogUtil.log("TAG", "item: $item")
+        _audioGuideStatus.value!!.id = item.id
+        _audioGuideStatus.value!!.audioFileId = item.audioFileId
+        _audioGuideStatus.value!!.setTitleName(item.title)
+        _audioGuideStatus.value!!.setSpeakerImageUrl(item.speakerThumbnailFileUrl)
         viewModel.asyncWalkablePet()
     }
 
@@ -909,13 +968,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
             }
         }
     }
-//    , {
-//            SingleBtnDialog(
-//                requireActivity(),
-//                "권한 오류",
-//                "저장공간 권한이 필요합니다. 권한을 허용해 주세요."
-//            ) {}.show()
-//        }
 
     private fun createImageFile(): File {
         // Create an image file name
@@ -975,7 +1027,41 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 //        viewModel.asyncWalkGuide(pageNo)
 //    }
 
-    fun isWalkGuidePause(isPause: Boolean) {
+    fun endAudioGuide() {
+        try {
+            binding.walkTracker.guideHeaderView.layoutRipplepulse.stopRippleAnimation()
+            binding.walkTracker.guideHeaderView.audioGuideTitle.visibility = View.GONE
+            binding.walkTracker.guideHeaderView.audioGuideTitleEnd.visibility = View.VISIBLE
+            binding.walkTracker.guideHeaderView.audioRunningTime.visibility = View.GONE
+            binding.walkTracker.guideHeaderView.audioTimeDivider.visibility = View.GONE
+            binding.walkTracker.guideHeaderView.progressBottomLine.setBackgroundColor(
+                Color.parseColor(
+                    "#14000000"
+                )
+            )
+            binding.walkTracker.guideHeaderView.speakerRoundBg.setBackgroundResource(R.drawable.circle_border_gray)
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+        }
+    }
+
+    fun startAudioGuide() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            try {
+                binding.walkTracker.guideHeaderView.layoutRipplepulse.startRippleAnimation()
+                binding.walkTracker.guideHeaderView.progressBottomLine.setBackgroundColor(
+                    Color.parseColor(
+                        "#FF4857"
+                    )
+                )
+                binding.walkTracker.guideHeaderView.speakerRoundBg.setBackgroundResource(R.drawable.circle_border_red)
+            } catch (e: Exception) {
+                FirebaseCrashlytics.getInstance().recordException(e)
+            }
+        }
+    }
+
+    fun isPauseAudioGuide(isPause: Boolean) {
         LogUtil.log("TAG", "")
         lifecycleScope.launch(Dispatchers.Main) {
             try {

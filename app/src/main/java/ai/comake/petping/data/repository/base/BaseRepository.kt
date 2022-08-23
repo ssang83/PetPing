@@ -52,7 +52,7 @@ abstract class BaseRepository {
                     }
                     is UnknownHostException -> {
                         LogUtil.log("TAG", "UnknownHostException}")
-                        EventBus.getDefault().post(NetworkErrorEvent())
+                        EventBus.getDefault().post(NetworkErrorEvent(apiCall))
                         Resource.Failure(null, null)
                     }
 

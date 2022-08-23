@@ -43,9 +43,10 @@ fun Long.toHHMMSSFormat(): String {
 
 //산책중 움직임이 없는 시점
 fun hasOverTimePassedSinceTheStopWalk(walkPathList: List<WalkPath>, walkTime: Long): Boolean {
-    if (walkPathList.size > 1) {
-        val startPoint = walkPathList[0].location
-        val distance = walkPathList.map { endPoint ->
+    val copyList = walkPathList.toMutableList()
+    if (copyList.size > 1) {
+        val startPoint = copyList[0].location
+        val distance = copyList.map { endPoint ->
             startPoint.distanceTo(endPoint.location).toInt()
         }.maxOrNull() ?: 0
 
@@ -62,7 +63,7 @@ fun hasOverTimePassedSinceTheStopWalk(walkPathList: List<WalkPath>, walkTime: Lo
                 STOP_WALK_OVER_TIME_MINUTE
             )
         ) {
-            if (walkPathList.size <= 1) {
+            if (copyList.size <= 1) {
                 return true
             }
         }

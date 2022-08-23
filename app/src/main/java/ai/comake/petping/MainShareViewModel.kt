@@ -47,14 +47,15 @@ class MainShareViewModel @Inject constructor() : ViewModel() {
         showPopUp.value = Event(value)
     }
 
-    var menuLink = MenuLink.Fcm("", "")
+    var menuLinkFcm = MenuLink.Fcm("", "")
+    var menuLinkPetPing= MenuLink.PetPing("")
 
     fun getOnceFCMType(): String {
-        return menuLink.type.also { menuLink.type = "" }
+        return menuLinkFcm.type.also { menuLinkFcm.type = "" }
     }
 
     fun getOnceFCMLink(): String {
-        return menuLink.link.also { menuLink.link = "" }
+        return menuLinkFcm.link.also { menuLinkFcm.link = "" }
     }
 
     //로그인시 토큰 등록
@@ -63,7 +64,7 @@ class MainShareViewModel @Inject constructor() : ViewModel() {
             val fcmToken = sharedPreferencesManager.getFCMTokenDataStore()
             LogUtil.log("TAG", "registFCMToken: $fcmToken")
 
-            if (AppConstants.ID.isNotEmpty() && AppConstants.AUTH_KEY.isNotEmpty() && fcmToken.isNotEmpty()) {
+            if (ID.isNotEmpty() && AppConstants.AUTH_KEY.isNotEmpty() && fcmToken.isNotEmpty()) {
                 val body = makeFCMBody(AppConstants.ID, fcmToken)
                 val response = appDataRepository.registFcmToken(AppConstants.AUTH_KEY, body)
                 when (response) {

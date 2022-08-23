@@ -14,7 +14,7 @@ data class ContentsResponse(
 )
 
 data class Content(
-    val contents: List<Tip>
+    val boardBannerList: List<Tip>
 )
 
 data class Tip(

@@ -9,7 +9,6 @@ import ai.comake.petping.data.repository.PetRepository
 import ai.comake.petping.data.vo.*
 import ai.comake.petping.emit
 import ai.comake.petping.util.Coroutines
-import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.encrypt
 import android.content.Context
@@ -280,11 +279,11 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getPingTip() = Coroutines.main(this) {
-        val response = dashboardRepo.getPingTip(AppConstants.AUTH_KEY)
+    fun getPingTip() = Coroutines.io(this) {
+        val response = dashboardRepo.getPingTip(AppConstants.AUTH_KEY,1)
         when(response) {
             is Resource.Success -> {
-                _tipList.value = response.value.data.contents
+                _tipList.postValue(response.value.data.boardBannerList)
             }
         }
     }
@@ -359,9 +358,6 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
 
         _walkDayCount.value = dashboardData.walk.dayCount.toInt()
         _walkTotalTime.value = dashboardData.walk.totalTime
-
-        LogUtil.log("TAG", "dashboardData.walk.totalTime: ${dashboardData.walk.dayCount.toInt()}")
-        LogUtil.log("TAG", "dashboardData.walk.totalTime: ${dashboardData.walk.totalTime}")
 
         _walkTotalDistance.apply {
             if (dashboardData.walk.totalDistance == "0.0") {

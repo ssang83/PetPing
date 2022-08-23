@@ -64,8 +64,6 @@ class DashboardFragment : Fragment() {
         setUpClickListener()
 
         with(viewModel) {
-            LogUtil.log("TAG", "isNewEtcBadge: ${isNewEtcBadge()}")
-
             getPetList()
 
             petListSuccess.observeEvent(viewLifecycleOwner) {
@@ -205,10 +203,6 @@ class DashboardFragment : Fragment() {
 
             }
         }
-    }
-
-    fun setUpObserver() {
-
     }
 
     //더보기(공지사항,1:1문의,설정) NEW 배지 확인

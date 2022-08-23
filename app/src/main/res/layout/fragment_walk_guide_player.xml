@@ -30,7 +30,7 @@
                 android:id="@+id/walk_guide_ready"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.audioGuideStatus.playing ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.audioGuideStatus.isPlaying ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -87,7 +87,7 @@
                 android:id="@+id/walk_guide_progress"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:visibility="@{viewModel.audioGuideStatus.playing ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewModel.audioGuideStatus.isPlaying ? View.VISIBLE : View.GONE}"
                 tools:visibility="visible">
 
                 <com.gauravbhola.ripplepulsebackground.RipplePulseLayout

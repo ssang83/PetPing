@@ -8,7 +8,10 @@ import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.WalkRepository
 import ai.comake.petping.data.vo.*
 import ai.comake.petping.google.database.room.walk.WalkDBRepository
-import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._audioGuideStatus
+import ai.comake.petping.ui.home.walk.AudioGuidePlayer.Companion._audioGuideStatus
+import ai.comake.petping.ui.home.walk.AudioGuidePlayer.Companion._endAudioGuide
+import ai.comake.petping.ui.home.walk.AudioGuidePlayer.Companion._isPauseAudioGuide
+import ai.comake.petping.ui.home.walk.AudioGuidePlayer.Companion._startAudioGuide
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraPosition
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._cameraZoom
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isPauseWalk
@@ -65,6 +68,10 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
 
     val audioGuideStatus = _audioGuideStatus
 
+    val startAudioGuide = _startAudioGuide
+    val endAudioGuide = _endAudioGuide
+    val isPauseAudioGuide = _isPauseAudioGuide
+
     private val _isSucceedReadyForWalk = MutableLiveData<Event<WalkStart>>()
     val isSucceedReadyForWalk: LiveData<Event<WalkStart>>
         get() = _isSucceedReadyForWalk
@@ -91,14 +98,14 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     val markingPOIs: LiveData<Event<List<MarkingPoi>>>
         get() = _markingPOIs
 
-    private val _placePOIs = MutableLiveData<Event<List<PlacePoi.Places>>>()
-    val placePOIs: LiveData<Event<List<PlacePoi.Places>>>
+    private val _placePOIs = MutableLiveData<Event<List<PlacePoi>>>()
+    val placePOIs: LiveData<Event<List<PlacePoi>>>
         get() = _placePOIs
 
     private val _markingDetail = MutableStateFlow<MarkingDetail?>(null)
     val markingDetail = _markingDetail.asStateFlow()
 
-    private val _placeDetail = MutableStateFlow<PlaceDetail?>(null)
+    val _placeDetail = MutableStateFlow<PlacePoi?>(null)
     val placeDetail = _placeDetail.asStateFlow()
 
     private val _walkablePetList = MutableLiveData<Event<List<WalkablePet.Pets>>>()
@@ -203,32 +210,32 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     }
 
     fun asyncPlaceDetail(id: Int) {
-        viewModelScope.launch() {
-            val response = walkRepository.placeDetail(
-                AUTH_KEY,
-                id
-            )
-            when (response) {
-                is Resource.Success -> {
-                    _placeDetail.emit(response.value.data)
-                }
-                is Resource.Failure -> {
-                    Unit
-                }
-            }
-        }
+//        viewModelScope.launch() {
+//            val response = walkRepository.placeDetail(
+//                AUTH_KEY,
+//                id
+//            )
+//            when (response) {
+//                is Resource.Success -> {
+//                    _placeDetail.emit(response.value.data)
+//                }
+//                is Resource.Failure -> {
+//                    Unit
+//                }
+//            }
+//        }
     }
 
     fun asyncAllPOIs() {
         LogUtil.log("TAG", "")
         viewModelScope.launch() {
             var markingPoiList = emptyList<MarkingPoi>()
-            var placePoiList = emptyList<PlacePoi.Places>()
+            var placePoiList = emptyList<PlacePoi>()
             val deferreds = listOf(
                 async {
                     val encryptLatitude = cameraPosition.value.latitude.encrypt()
                     val encryptLongitude = cameraPosition.value.longitude.encrypt()
-                    val zoomLevel = 15 - cameraZoom.value.toInt()
+                    val zoomLevel = cameraZoom.value.toInt()
                     val response = walkRepository.markingPoiList(
                         AUTH_KEY,
                         encryptLatitude,
@@ -253,7 +260,7 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
                     )
                     when (response) {
                         is Resource.Success -> {
-                            placePoiList = response.value.data.places
+                            placePoiList = response.value.data
                         }
                         is Resource.Failure -> {
                             Unit
@@ -285,6 +292,7 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
                 }
 
                 is Resource.Error -> {
+                    LogUtil.log("TAG", "Resource.Error")
                     _isFailedReadyForWalk.postValue(Event(response.errorBody))
                 }
             }
@@ -415,24 +423,29 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
 
     fun downloadFile(context: Context, url: String, fileName: String, position: Int) {
         viewModelScope.launch {
-            readyToGuideProgress.postValue(position)
-            walkRepository.downLoadFileUrl(url).downloadToFileWithProgress(
-                context.filesDir!!,
-                fileName,
-                position
-            ).catch {
-                LogUtil.log("TAG", "catch")
-            }
-                .collect { download ->
-                    when (download) {
-                        is Download.Progress -> {
-                            _downloadProgress.emit(DownLoadProgress(download.percent, position))
-                        }
-                        is Download.Finished -> {
-                            _downloadComplete.postValue(Event(download.file))
+            try {
+                readyToGuideProgress.postValue(position)
+                walkRepository.downLoadFileUrl(url).downloadToFileWithProgress(
+                    context.filesDir!!,
+                    fileName,
+                    position
+                ).catch {
+                    LogUtil.log("TAG", "catch")
+                }
+                    .collect { download ->
+                        when (download) {
+                            is Download.Progress -> {
+                                _downloadProgress.emit(DownLoadProgress(download.percent, position))
+                            }
+                            is Download.Finished -> {
+                                _downloadComplete.postValue(Event(download.file))
+                            }
                         }
                     }
-                }
+            } catch (e: Exception) {
+                val exception = DownloadNetworkErrorVo(1, url,fileName,position)
+                downloadNetworkError.postValue(exception)
+            }
         }
     }
 

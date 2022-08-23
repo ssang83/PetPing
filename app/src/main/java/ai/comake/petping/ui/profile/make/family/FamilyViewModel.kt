@@ -100,4 +100,8 @@ class FamilyViewModel @Inject constructor() : ViewModel() {
             }
         }
     }
+
+    fun onInputClear() {
+        familyCode.value = ""
+    }
 }

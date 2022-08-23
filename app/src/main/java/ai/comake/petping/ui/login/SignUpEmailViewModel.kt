@@ -48,7 +48,6 @@ class SignUpEmailViewModel @Inject constructor() : ViewModel() {
     val emailLineStatus = MutableLiveData<Boolean>().apply { value = false }
     val emailInitialErrorText = MutableLiveData<Boolean>().apply { value = true }
     val passwdValidation = MutableLiveData<Boolean>().apply { value = true }
-    val passwdHelperVisible = MutableLiveData<Boolean>().apply { value = false }
     val passwdInputStatus = MutableLiveData<Boolean>().apply { value = false }
     val passwdClear = MutableLiveData<Boolean>().apply { value = false }
     val passwdFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
@@ -98,15 +97,6 @@ class SignUpEmailViewModel @Inject constructor() : ViewModel() {
             if (hasFocus) {
                 passwdFocusHintVisible.value = true
                 passwdLineStatus.value = true
-                passwdHelperVisible.value = true
-
-                passwdHelperVisible.apply {
-                    if (str.isNotEmpty()) {
-                        value = false
-                    } else {
-                        value = true
-                    }
-                }
 
                 passwdInputStatus.apply {
                     if (str.isNotEmpty()) {
@@ -126,7 +116,6 @@ class SignUpEmailViewModel @Inject constructor() : ViewModel() {
 
                 passwdLineStatus.value = false
                 passwdInputStatus.value = false
-                passwdHelperVisible.value = false
             }
         }
     }
@@ -214,7 +203,6 @@ class SignUpEmailViewModel @Inject constructor() : ViewModel() {
                         value = true
                     } else {
                         value = false
-                        passwdHelperVisible.value = false
                     }
                 } else {
                     value = true

@@ -12,7 +12,6 @@ import ai.comake.petping.util.SharedPreferencesManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -29,6 +28,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val mainShareViewModel: MainShareViewModel by viewModels()
+    private var networkErrorDialog: SingleBtnDialog? = null
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _controller, destination, arguments ->
             LogUtil.log("TAG", "destination " + destination.label)
             destinationScreen = destination.label.toString()
-            if(destinationScreen == "homeScreen") {
+            if (destinationScreen == "homeScreen") {
                 checkNewBadge()
             }
         }
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        LogUtil.log("TAG2", "")
+        LogUtil.log("TAG", "")
         checkMenuDirection(intent)
     }
 
@@ -116,22 +116,25 @@ class MainActivity : AppCompatActivity() {
             LogUtil.log("TAG", "type: $type")
             LogUtil.log("TAG", "link: $link")
 
-            mainShareViewModel.menuLink = MenuLink.Fcm(type, link)
-            openHomeNavMenu(mainShareViewModel.menuLink)
+            mainShareViewModel.menuLinkFcm = MenuLink.Fcm(type, link)
+            openHomeNavMenu(mainShareViewModel.menuLinkFcm)
+        } else if (intent?.hasExtra("menu") == true) {
+            val type = intent.getStringExtra("menu") ?: ""
+
+            LogUtil.log("TAG", "type: $type")
+
+            mainShareViewModel.menuLinkPetPing = MenuLink.PetPing(type)
+            openHomeNavMenu(mainShareViewModel.menuLinkPetPing)
         }
     }
 
     private fun openHomeNavMenu(menuLink: MenuLink) {
-        when (menuLink) {
-            is MenuLink.Fcm -> {
-                if (destinationScreen == "homeScreen") {
-                    mainShareViewModel.moveLinkedScreen.value = Event(menuLink)
-                } else {
-                    findNavController(R.id.nav_main).navigate(
-                        MainFragmentDirections.actionMainToHome().setMenulink(menuLink)
-                    )
-                }
-            }
+        if (destinationScreen == "homeScreen") {
+            mainShareViewModel.moveLinkedScreen.value = Event(menuLink)
+        } else {
+            findNavController(R.id.nav_main).navigate(
+                MainFragmentDirections.actionMainToHome().setMenulink(menuLink)
+            )
         }
     }
 
@@ -179,9 +182,19 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEventMainThread(event: NetworkErrorEvent) {
+    fun onEventMainThread(event: NetworkErrorEvent<Any>) {
         LogUtil.log("TAG", "")
-        Toast.makeText(this, "네트워크 에러", Toast.LENGTH_SHORT).show()
+        if (networkErrorDialog == null) {
+            networkErrorDialog = SingleBtnDialog(
+                this,
+                "네트워크 오류",
+                "네트워크 연결 상태가 좋지 않습니다. 확인 후 다시 시도해 주세요.",
+                btnCallback = {
+
+                }
+            )
+        }
+        networkErrorDialog!!.show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -196,34 +209,6 @@ class MainActivity : AppCompatActivity() {
             ID = ""
             findNavController(R.id.nav_main).navigate(R.id.loginGraph)
         }.show()
-
-//        if (event.code == 401) { // 자동 로그아웃
-
-//        }
-
-//        if (event.code == 401) { // 자동 로그아웃
-//            SingleBtnDialog(
-//                this,
-//                getString(R.string.logout_title),
-//                getString(R.string.auto_logout_desc)
-//            ) {
-//                AppConstants.LOGIN_HEADER_IS_VISIBLE = true
-//                AppConstants.PROFILE_HEADER_IS_VISIBLE = true
-//                AppConstants.AUTH_KEY = ""
-//                AppConstants.ID = ""
-//            }.show()
-//        } else if (event.code == 500) {
-////            SingleBtnDialog(
-////                this,
-////                getString(R.string.server_error_title),
-////                getString(R.string.server_error_desc)
-////            ) {
-////                AppConstants.LOGIN_HEADER_IS_VISIBLE = true
-////                AppConstants.PROFILE_HEADER_IS_VISIBLE = true
-////                AppConstants.AUTH_KEY = ""
-////                AppConstants.ID = ""
-////            }.show()
-//        }
     }
 
     fun showLoadingDialog() {

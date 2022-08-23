@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">펫핑</string>
+    <string name="app_name">펫핑 1.3</string>
     <string name="nav_dashboard">대쉬보드</string>
     <string name="nav_walk">산책</string>
     <string name="walk_start">산책 시작</string>

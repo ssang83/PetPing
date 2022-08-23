@@ -219,7 +219,6 @@
                         android:inputType="numberDecimal"
                         android:text="@={viewModel.weight}"
                         app:weightHintText="@{viewModel.weightFocusHintVisible}"
-                        app:inputTextClear="@{viewModel.weightClear}"
                         app:focusChangeListener="@{viewModel.weighFocusChangeListener}"
                         android:onTextChanged="@{(text, start, before, count) -> viewModel.onWeightTextChanged(text)}"
                         app:layout_constraintTop_toBottomOf="@+id/focusHint"

@@ -51,24 +51,20 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
     // 인터렉션 관련 사용하는 변수들...
     val petNameInputStatus = MutableLiveData<Boolean>().apply { value = false }
     val petNameValidation = MutableLiveData<Boolean>().apply { value = true }
-    val petNameClear = MutableLiveData<Boolean>().apply { value = false }
     val petNameFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
     val petNameLineStatus = MutableLiveData<Boolean>().apply { value = false }
     val petNameHelperVisible = MutableLiveData<Boolean>().apply { value = false }
     val breedInputStatus = MutableLiveData<Boolean>().apply { value = false }
     val breedValidation = MutableLiveData<Boolean>().apply { value = true }
-    val breedClear = MutableLiveData<Boolean>().apply { value = false }
     val breedFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
     val breedLineStatus = MutableLiveData<Boolean>().apply { value = false }
     val birthInputStatus = MutableLiveData<Boolean>().apply { value = false }
     val birthValidation = MutableLiveData<Boolean>().apply { value = true }
-    val birthClear = MutableLiveData<Boolean>().apply { value = false }
     val birthFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
     val birthLineStatus = MutableLiveData<Boolean>().apply { value = false }
     val birthHelperVisible = MutableLiveData<Boolean>().apply { value = false }
     val weightInputStatus = MutableLiveData<Boolean>().apply { value = false }
     val weightValidation = MutableLiveData<Boolean>().apply { value = true }
-    val weightClear = MutableLiveData<Boolean>().apply { value = false }
     val weightFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
     val weightLineStatus = MutableLiveData<Boolean>().apply { value = false }
     val weightHelperVisible = MutableLiveData<Boolean>().apply { value = false }
@@ -314,31 +310,27 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
 
         petNameInputStatus.value = false
         petNameValidation.value = true
-        petNameClear.value = false
         petNameFocusHintVisible.value = false
         petNameLineStatus.value = false
         petNameHelperVisible.value = false
         breedInputStatus.value = false
         breedValidation.value = true
-        breedClear.value = false
         breedFocusHintVisible.value = false
         breedLineStatus.value = false
         birthInputStatus.value = false
         birthValidation.value = true
-        birthClear.value = false
         birthFocusHintVisible.value = false
         birthLineStatus.value = false
         birthHelperVisible.value = false
         weightInputStatus.value = false
         weightValidation.value = true
-        weightClear.value = false
         weightFocusHintVisible.value = false
         weightLineStatus.value = false
         weightHelperVisible.value = false
     }
 
     fun onInputNameClear() {
-        petNameClear.value = true
+        petName.value = ""
     }
 
     fun onBreedTextChanged(text: CharSequence) {
@@ -353,7 +345,7 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
 
         breedValidation.apply {
             if (text.length > 0) {
-                if (Pattern.compile(HANGUEL_PATTERN_ADD_SPACE).matcher(text.toString()).matches()) {
+                if (text.trim().isNotEmpty() && Pattern.compile(HANGUEL_PATTERN_ADD_SPACE).matcher(text.toString()).matches()) {
                     value = true
                 } else {
                     value = false
@@ -365,7 +357,7 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onInputBreedClear() {
-        breedClear.value = true
+        breed.value = ""
     }
 
     fun onBirthTextChanged(text: CharSequence) {
@@ -379,6 +371,12 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
         }
 
         birthValidation.apply {
+            if (text.toString().contains("-")) {
+                value = false
+                birthHelperVisible.value = false
+                return@apply
+            }
+
             if (text.length == 6) {
                 val current = LocalDate.now()
                 val formatter = DateTimeFormatter.ofPattern("yyMMdd")
@@ -399,7 +397,7 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onInputBirthClear() {
-        birthClear.value = true
+        birth.value = ""
     }
 
     fun onWeightTextChanged(text: CharSequence) {
@@ -429,7 +427,7 @@ class ProfileSharedViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onInputWeighClear() {
-        weightClear.value = true
+        weight.value = ""
     }
 
     fun saveAndComplete(context: Context) = Coroutines.main(this) {

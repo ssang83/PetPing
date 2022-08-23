@@ -47,10 +47,10 @@ class TipAllViewModel @Inject constructor() : ViewModel() {
     }
 
     fun loadData() = Coroutines.main(this) {
-        val response = tipRepo.getPingTip(AppConstants.AUTH_KEY)
+        val response = tipRepo.getPingTip(AppConstants.AUTH_KEY,1)
         when(response) {
             is Resource.Success -> {
-                _tipList.value = response.value.data.contents
+                _tipList.value = response.value.data.boardBannerList
             }
         }
     }

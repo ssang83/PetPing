@@ -38,6 +38,7 @@ import ai.comake.petping.ui.profile.DogProfileViewModel
 import ai.comake.petping.ui.profile.FamilyAdapter
 import ai.comake.petping.ui.profile.SettingFamilyViewModel
 import ai.comake.petping.ui.profile.SettingViewModel
+import ai.comake.petping.ui.profile.make.pet.ProfileSharedViewModel
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -1506,6 +1507,18 @@ object BindingUtils {
                 view.hint = ""
             } else {
                 view.hint = "동물등록번호를 입력하세요"
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("familyCodeHintText")
+    fun setFamilyCodeHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "가족코드를 입력하세요"
             }
         }
     }

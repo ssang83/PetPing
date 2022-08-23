@@ -220,37 +220,6 @@ class HomeFragment : Fragment() {
         }
 
         changeUnSelectedMenuIcon(R.id.dashBoardScreen)
-
-//        bottomNavigationView = view.findViewById(R.id.homeBottomNavigation)
-//        bottomNavigationView.itemIconTintList = null
-//        bottomNavigationView.setupWithNavController(navController)
-
-//        bottomNavigationView.setOnItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.dashBoardScreen -> {
-//                    true
-//                }
-//
-//                R.id.walkScreen -> {
-//                    findNavController().navigate(R.id.walkScreen)
-//                    true
-//                }
-//                R.id.rewardScreen -> {
-//                    true
-//                }
-//                R.id.shopScreen -> {
-//                    true
-//                }
-//                R.id.insuranceScreen -> {
-//                    true
-//                }
-//
-//                else -> {
-//                    false
-//                }
-//
-//            }
-//        }
     }
 
     private fun checkMenuLink(args: MenuLink?) {
@@ -272,10 +241,18 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
+
+            is MenuLink.PetPing -> {
+                when (args.type) {
+                    "walk" -> {
+                        showWalkScreen()
+                    }
+                }
 //            else -> {
 //                LogUtil.log("TAG","binding.homeBottomNavigation.selectedItemId")
 //                binding.homeBottomNavigation.selectedItemId = R.id.dashBoardScreen
 //            }
+            }
         }
     }
 
@@ -373,7 +350,8 @@ class HomeFragment : Fragment() {
             activity?.finish()
             return
         }
-        Toast.makeText(activity, getString(R.string.finish_app_guide), Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, getString(R.string.finish_app_guide), Toast.LENGTH_SHORT)
+            .show()
         backPressedTime = System.currentTimeMillis()
     }
 

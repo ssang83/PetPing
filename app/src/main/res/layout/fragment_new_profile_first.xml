@@ -90,7 +90,6 @@
                         android:text="@={viewModel.petName}"
                         app:addTextChangedListener="@{viewModel.petNameTextWatcher}"
                         app:petNameHintText="@{viewModel.petNameFocusHintVisible}"
-                        app:inputTextClear="@{viewModel.petNameClear}"
                         app:focusChangeListener="@{viewModel.petNameFocusChangeListener}"
                         app:layout_constraintTop_toBottomOf="@+id/focusHint"
                         app:layout_constraintStart_toStartOf="parent"

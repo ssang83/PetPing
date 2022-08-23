@@ -31,10 +31,10 @@ class EtcViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var userDataRepository: UserDataRepository
 
-    private val _name = MutableLiveData<String>().apply { value = "스몰일" }
+    private val _name = MutableLiveData<String>().apply { value = "" }
     val name:LiveData<String> get() = _name
 
-    private val _email = MutableLiveData<String>().apply { value = "small01@smallticket.com" }
+    private val _email = MutableLiveData<String>().apply { value = "" }
     val email:LiveData<String> get() = _email
 
     private val _isEmailAuth = MutableLiveData<Boolean>()

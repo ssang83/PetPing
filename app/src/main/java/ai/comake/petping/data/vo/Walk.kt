@@ -1,8 +1,11 @@
 package ai.comake.petping.data.vo
 
+import ai.comake.petping.BR
 import ai.comake.petping.util.toWalkTimeFormat
 import android.location.Location
 import android.os.Parcelable
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import kotlinx.android.parcel.Parcelize
 import java.io.File
 
@@ -68,6 +71,7 @@ data class WalkFinish(
         var distanceString: String,
         var endState: Int
     ) : Parcelable
+
     @Parcelize
     data class Pets(
         var id: Int,
@@ -143,15 +147,55 @@ data class AudioGuideItem(
 }
 
 data class AudioGuideStatus(
-    var isPlaying: Boolean = false,
-    var totalTime: String = "00:00",
-    var progressTime: String = "00:00",
-    var titleName: String = "",
-    var speakerImageUrl: String = "",
+    private var isPlaying: Boolean = false,
+    private var totalTime: String = "00:00",
+    private var progressTime: String = "00:00",
+    private var titleName: String = "",
+    private var speakerImageUrl: String = "",
     var id: Int = 0,
-    var audioFileId: Int = 0
-) {
+    var audioFileId: Int = 0,
+    var isEndAudio: Boolean = false,
+) : BaseObservable() {
 
+    @Bindable
+    fun getIsPlaying() = isPlaying
+
+    fun setIsPlaying(isPlaying: Boolean) {
+        this.isPlaying = isPlaying
+        notifyPropertyChanged(BR.isPlaying)
+    }
+
+    @Bindable
+    fun getTotalTime() = totalTime
+
+    fun setTotalTime(totalTime: String) {
+        this.totalTime = totalTime
+        notifyPropertyChanged(BR.totalTime)
+    }
+
+    @Bindable
+    fun getProgressTime() = progressTime
+
+    fun setProgressTime(progressTime: String) {
+        this.progressTime = progressTime
+        notifyPropertyChanged(BR.progressTime)
+    }
+
+    @Bindable
+    fun getTitleName() = titleName
+
+    fun setTitleName(titleName: String) {
+        this.titleName = titleName
+        notifyPropertyChanged(BR.titleName)
+    }
+
+    @Bindable
+    fun getSpeakerImageUrl() = speakerImageUrl
+
+    fun setSpeakerImageUrl(speakerImageUrl: String) {
+        this.speakerImageUrl = speakerImageUrl
+        notifyPropertyChanged(BR.speakerImageUrl)
+    }
 }
 
 data class DownLoadProgress(

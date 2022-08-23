@@ -19,12 +19,12 @@ import ai.comake.petping.Event
 import ai.comake.petping.MainActivity
 import ai.comake.petping.R
 import ai.comake.petping.data.db.walk.Walk
-import ai.comake.petping.data.vo.AudioGuideItem
-import ai.comake.petping.data.vo.AudioGuideStatus
 import ai.comake.petping.data.vo.MyMarkingPoi
 import ai.comake.petping.data.vo.WalkPath
 import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.ui.home.walk.EndState
+import ai.comake.petping.ui.home.walk.AudioGuidePlayer
+import ai.comake.petping.ui.home.walk.AudioGuidePlayer.Companion._audioGuideStatus
 import ai.comake.petping.util.*
 import android.annotation.SuppressLint
 import android.app.*
@@ -35,8 +35,8 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.*
 import android.util.Log
-import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -66,13 +66,14 @@ class LocationUpdatesService() : LifecycleService() {
     private var mServiceHandler: Handler? = null
     private var mLocation: Location = Location(LocationManager.GPS_PROVIDER)
     private var mContext: Context? = null
-    private var mWalkStatus = START
+
     private var mWalEndState = EndState.FORCE_END
 
     private var elapsedStartMilliSeconds = 0L
     private var elapsedPauseMilliSeconds = 0L
 
     private var walkPauseTimeMillis = 0L
+    private var audioGuidePlayer: AudioGuidePlayer? = null
 
     var wakeLock: PowerManager.WakeLock? = null
 
@@ -99,6 +100,13 @@ class LocationUpdatesService() : LifecycleService() {
         onDeviceCpu()
     }
 
+    fun setUpAudioPlayer() {
+        audioGuidePlayer = AudioGuidePlayer(mContext)
+        audioGuidePlayer?.setUpMediaPlayer()
+        audioGuidePlayer?.setUpMediaIntentFilter()
+        audioGuidePlayer?.setUpAudioFocus()
+    }
+
     @SuppressLint("MissingSuperCall")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.i(TAG, "Service started")
@@ -113,6 +121,9 @@ class LocationUpdatesService() : LifecycleService() {
             START -> {
                 playWalkTimer()
                 startForeground(NOTIFICATION_ID, notification())
+                if (_audioGuideStatus.value!!.audioFileId != 0) {
+                    audioGuidePlayer?.startAudioGuide()
+                }
             }
             PLAY -> {
                 pauseWalk(false)
@@ -126,6 +137,12 @@ class LocationUpdatesService() : LifecycleService() {
         return START_NOT_STICKY
     }
 
+    fun pauseAudioGuide(isPause: Boolean) {
+        if (_audioGuideStatus.value!!.audioFileId != 0) {
+            audioGuidePlayer?.pauseAudioGuide(isPause)
+        }
+    }
+
     override fun onDestroy() {
         LogUtil.log("TAG", "")
         clearWalkResource()
@@ -135,6 +152,7 @@ class LocationUpdatesService() : LifecycleService() {
 
     private fun clearWalkResource() {
         LogUtil.log("TAG", "")
+
         localWalkData = Walk()
         _walkTimeSeconds.value = "00:00"
         _isStartWalk.value = false
@@ -144,7 +162,11 @@ class LocationUpdatesService() : LifecycleService() {
         _walkPathList.value = ArrayList()
         _picturePaths.value = ArrayList()
         _myMarkingList.value = ArrayList()
+
+        audioGuidePlayer?.clearAudioResource()
+
         lifecycleScope.coroutineContext.cancelChildren()
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -175,7 +197,7 @@ class LocationUpdatesService() : LifecycleService() {
     private fun startLocationService() {
         LogUtil.log("TAG", "")
         val intent = Intent(this, LocationUpdatesService::class.java).apply {
-            putExtra("status", mWalkStatus)
+            putExtra("status", _walkStatus)
         }
         startService(intent)
     }
@@ -210,34 +232,36 @@ class LocationUpdatesService() : LifecycleService() {
                 intent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
-        val notificationLayout = RemoteViews(packageName, R.layout.view_notification)
+//        val notificationLayout = RemoteViews(packageName, R.layout.view_notification)
         val serviceIntent = Intent(this, LocationUpdatesService::class.java)
 
-        if (mWalkStatus == START || mWalkStatus == PLAY) {
-            serviceIntent.putExtra("status", PAUSE)
-            notificationLayout.setImageViewResource(R.id.status, R.drawable.ic_walk_pause)
-            notificationLayout.setTextViewText(R.id.distance, "${_walkDistanceKm.value} Km")
-        } else {
-            serviceIntent.putExtra("status", PLAY)
-            notificationLayout.setImageViewResource(R.id.status, R.drawable.ic_walk_play)
-            notificationLayout.setTextViewText(R.id.distance, "일시중지")
-        }
+//        if (mWalkStatus == START || mWalkStatus == PLAY) {
+//            serviceIntent.putExtra("status", PAUSE)
+//            notificationLayout.setImageViewResource(R.id.status, R.drawable.ic_walk_pause)
+//            notificationLayout.setTextViewText(R.id.distance, "${_walkDistanceKm.value} Km")
+//        } else {
+//            serviceIntent.putExtra("status", PLAY)
+//            notificationLayout.setImageViewResource(R.id.status, R.drawable.ic_walk_play)
+//            notificationLayout.setTextViewText(R.id.distance, "일시중지")
+//        }
+
         val servicePendingIntent = PendingIntent.getService(
             this, 0, serviceIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        notificationLayout.setOnClickPendingIntent(
-            R.id.status,
-            servicePendingIntent
-        )
+//        notificationLayout.setOnClickPendingIntent(
+//            R.id.status,
+//            servicePendingIntent
+//        )
         val notificationBuilder: NotificationCompat.Builder =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationCompat.Builder(this, CHANNEL_ID)
             } else {
                 NotificationCompat.Builder(this)
             }
-                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayout)
+                .setContentTitle("산책 중")
+                .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setContentText("즐거운 산책을 하고 있어요.")
                 .setContentIntent(contentIntent)
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
@@ -250,11 +274,11 @@ class LocationUpdatesService() : LifecycleService() {
 
     fun startWalk(isStart: Boolean) {
         if (isStart) {
-            mWalkStatus = START
+            _walkStatus = START
             createLocationThread()
             startLocationService()
         } else {
-            mWalkStatus = STOP
+            _walkStatus = STOP
             stopLocationService()
             removeLocationThread()
             saveAndStopWalk()
@@ -263,11 +287,11 @@ class LocationUpdatesService() : LifecycleService() {
 
     fun pauseWalk(isPause: Boolean) {
         if (isPause) {
-            mWalkStatus = PAUSE
+            _walkStatus = PAUSE
             startWalkPauseTimer()
             removeLocationThread()
         } else {
-            mWalkStatus = PLAY
+            _walkStatus = PLAY
             startWalkPlayTimer()
             createLocationThread()
         }
@@ -286,7 +310,7 @@ class LocationUpdatesService() : LifecycleService() {
 
     suspend fun saveLocalDatabase() {
 //        LogUtil.log("TAG", "mWalEndState ${mWalEndState.ordinal} ")
-        if(localWalkData.walkId != -1){
+        if (localWalkData.walkId != -1) {
             localWalkData.path = _walkPathList.value
             localWalkData.endState = mWalEndState.ordinal
             localWalkData.time = elapsedStartMilliSeconds.toHHMMSSFormat()
@@ -299,7 +323,7 @@ class LocationUpdatesService() : LifecycleService() {
 
     private fun updateWalkStatusBroadcast() {
         val intent = Intent(ACTION_BROADCAST)
-        intent.putExtra(EXTRA_WALK_STATUS, mWalkStatus)
+        intent.putExtra(EXTRA_WALK_STATUS, _walkStatus)
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
     }
 
@@ -315,7 +339,7 @@ class LocationUpdatesService() : LifecycleService() {
             mLocation = location
             val walkPath = WalkPath(
                 mLocation,
-                mWalkStatus,
+                _walkStatus,
                 mLocation.latitude.encrypt(),
                 mLocation.longitude.encrypt()
             )
@@ -438,6 +462,12 @@ class LocationUpdatesService() : LifecycleService() {
                 elapsedStartMilliSeconds =
                     ((System.currentTimeMillis() - timerStartTimeMillis) + elapsedPauseMilliSeconds)
                 _walkTimeSeconds.value = elapsedStartMilliSeconds.toWalkTimeFormat()
+
+                val currentPosition = audioGuidePlayer?.mediaPlayer?.currentPosition ?: 0
+                _audioGuideStatus.value!!.setProgressTime(currentPosition.toWalkTimeFormat())
+
+//                LogUtil.log("TAG", "ProgressTime: ${_audioGuideStatus.value!!.getProgressTime()}")
+
                 delay(1000)
             }
         }
@@ -458,7 +488,7 @@ class LocationUpdatesService() : LifecycleService() {
     }
 
     private fun checkConditionsForStopWalking() {
-        when (mWalkStatus) {
+        when (_walkStatus) {
             START, PLAY -> {
                 if (hasOverWalkSpeed(walkSpeedPathList.value)) {
                     mWalEndState = EndState.OVER_WALK_SPEED_END
@@ -543,7 +573,6 @@ class LocationUpdatesService() : LifecycleService() {
         private const val NOTIFICATION_ID = 111
 
         var localWalkData = Walk()
-        var walkAudioGuideData = AudioGuideItem()
 
         var _picturePaths = MutableStateFlow(ArrayList<String>())
 
@@ -557,11 +586,13 @@ class LocationUpdatesService() : LifecycleService() {
         val _walkPathList = MutableStateFlow(ArrayList<WalkPath>())
         val _myMarkingList = MutableStateFlow(ArrayList<MyMarkingPoi>())
 
-        val _audioGuideStatus = MutableStateFlow(AudioGuideStatus())
-        var _lastLocation = Location("")
+        var _lastLocation = Location("").apply {
+            latitude = 37.566573
+            longitude = 126.978179
+        }
 
         val _cameraPosition = MutableStateFlow(LatLng(37.566573, 126.978179))
-
         val _walkTimeSeconds = MutableStateFlow("00:00")
+        var _walkStatus = START
     }
 }

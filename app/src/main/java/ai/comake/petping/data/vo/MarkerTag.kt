@@ -6,5 +6,6 @@ import android.os.Parcelable
 data class MarkerTag(
     val id: Int,
     val type: WalkBottomUi,
-    val count: Int = 1
+    val count: Int = 1,
+    val placePoi: PlacePoi? = null,
 )

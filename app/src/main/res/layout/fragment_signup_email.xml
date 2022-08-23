@@ -222,20 +222,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="9dp"
                         />
-
-                    <TextView
-                        android:id="@+id/passwdHelper"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="8자 이상 영문, 숫자, 특수문자를 포함해 만들어 주세요."
-                        android:textColor="@color/color_aaaaaa"
-                        android:textSize="12dp"
-                        android:fontFamily="@font/nanum_square_round"
-                        android:visibility="@{viewModel.passwdHelperVisible == true ? View.VISIBLE : View.INVISIBLE}"
-                        app:layout_constraintTop_toBottomOf="@+id/passwdLine"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginTop="9dp"
-                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

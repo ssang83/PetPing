@@ -17,14 +17,17 @@ data class MarkingPoi(
 }
 
 data class PlacePoi(
-    val places: List<Places>
-) {
-    data class Places(
-        val id: Int,
-        val type: Int,
-        val lat: String,
-        val lng: String
-    )
+    val id: Int,
+    val type: Int,
+    val lat: String,
+    val lng: String,
+    val name : String,
+    val poiDesc0 : String,
+    val poiDesc1 : String,
+    val poiDesc2 : String,
+    val poiDesc3 : String
+){
+    val poiTitle get() = "플레이스 · ${poiDesc0}"
 }
 
 data class MyMarkingPoi(
