@@ -19,6 +19,7 @@ import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._isStopWalkService
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._myMarkingList
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._picturePaths
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._walkBottomUi
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._walkDistanceKm
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._walkPathList
 import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._walkTimeSeconds
@@ -64,7 +65,6 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     var takePhotoPath: String = ""
 
     val isAudioGuideHeader = MutableStateFlow(true)
-    val isAudioGuideBottom = MutableStateFlow(false)
 
     val audioGuideStatus = _audioGuideStatus
 
@@ -112,7 +112,6 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     val walkablePetList: LiveData<Event<List<WalkablePet.Pets>>>
         get() = _walkablePetList
 
-    private val _walkBottomUi = MutableStateFlow(WalkBottomUi.NONE)
     val walkBottomUi = _walkBottomUi.asStateFlow()
 
     private val _downloadProgress = MutableStateFlow(DownLoadProgress(0, 0))
@@ -137,13 +136,12 @@ class WalkViewModel @Inject constructor(application: Application) : AndroidViewM
     var walkGuideTotalCount: Int = 0
     var hasMoreWalkGuideItem: Boolean = false
     var walkAblePetList = ArrayList<WalkablePet.Pets>()
-    var myMarkingPOIs = ArrayList<MyMarkingPoi>()
-
-    val downloadProgressUpdate = MutableStateFlow(ProgressVo(0, 0))
-    val lodedWalkGuide = SingleLiveEvent<ArrayList<AudioGuideItem>>()
-    val addWalkGuide = SingleLiveEvent<ArrayList<AudioGuideItem>>()
-    val addWalkGuideProgress = MutableLiveData<Int>(0)
     val downloadNetworkError = MutableLiveData(DownloadNetworkErrorVo(0, "", "", 0))
+
+//    val showAudioGuideList: LiveData<Event<Boolean>>
+//        get() = _showAudioGuideList
+
+
 
 //    private val _readyToGuideProgress = MutableLiveData<Event<Int>>()
 //    val readyToGuideProgress: LiveData<Event<Int>>

@@ -26,6 +26,7 @@ import ai.comake.petping.ui.godomall.JSConfirmConfig
 import ai.comake.petping.ui.history.walk.ImagePagerAdapter
 import ai.comake.petping.ui.history.walk.WalkHistoryViewModel
 import ai.comake.petping.ui.home.dashboard.DashboardViewModel
+import ai.comake.petping.ui.home.dashboard.FriendAdapter
 import ai.comake.petping.ui.home.dashboard.tip.TipAdapter
 import ai.comake.petping.ui.home.dashboard.tip.TipAllAdapter
 import ai.comake.petping.ui.home.dashboard.tip.TipAllViewModel
@@ -1017,7 +1018,7 @@ object BindingUtils {
                 4 -> {
                     visibility = View.VISIBLE
                     text = "인수 심사 거절"
-                    setTextColor(ContextCompat.getColor(view.context, R.color.colorPrimary))
+                    setTextColor(ContextCompat.getColor(view.context, R.color.color_ff4857))
                 }
                 else -> visibility = View.GONE
             }
@@ -1452,6 +1453,18 @@ object BindingUtils {
     }
 
     @JvmStatic
+    @BindingAdapter("petEditNameHintText")
+    fun setPetEditNameHintText(view: EditText, status: Boolean) {
+        view.apply {
+            if (status) {
+                view.hint = ""
+            } else {
+                view.hint = "이름"
+            }
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("breedHintText")
     fun setBreedHintText(view: EditText, status: Boolean) {
         view.apply {
@@ -1551,6 +1564,34 @@ object BindingUtils {
             } else {
                 view.text = view.context.getString(R.string.email_user_exists)
             }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter(value = ["viewModel", "friendItems"])
+    fun bindFriendItems(
+        recyclerView: RecyclerView,
+        viewModel: DashboardViewModel,
+        items: List<PingZoneMeetPet>?
+    ) {
+        items?.let {
+            recyclerView.apply {
+                itemAnimator = DefaultItemAnimator()
+                adapter = FriendAdapter(viewModel).apply { submitList(it) }
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("petFriendTitle")
+    fun setPingzoneFriendTitle(textView: TextView, name: String?) {
+        name?.let {
+            textView.text = Html.fromHtml(
+                String.format(
+                    textView.context.getString(R.string.dashboard_friend_title_s),
+                    it
+                )
+            )
         }
     }
 }

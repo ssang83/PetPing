@@ -148,7 +148,7 @@
     <string name="service_policy">서비스 이용약관</string>
     <string name="location_service_policy">위치기반 서비스 이용약관</string>
     <string name="privacy_policy">개인정보 처리방침</string>
-    <string name="walk_analytics">산책통계</string>
+    <string name="walk_analytics">산책 통계</string>
     <string name="walk_record_start_time">· 시작 시간</string>
     <string name="walk_record_end_time">· 종료 시간</string>
     <string name="with_parent">· 함께한 보호자</string>
@@ -222,7 +222,7 @@
     <string name="phone_certification">휴대폰 본인인증</string>
     <string name="phone_certification_guide">본인 명의 휴대폰으로 인증해 주세요.</string>
     <string name="phone_certification_complete">인증 완료</string>
-    <string name="rns_input_guide">동물등록번호가 확인된 반려견만\n리워드 혜택을 받을 수 있어요.</string>
+    <string name="rns_input_guide">동물등록번호 유효성 확인을 위해\n등록을 신청한 보호자 이름이 필요해요.</string>
     <string name="pet_owner_name_input_hint">보호자 이름을 입력하세요</string>
     <string name="rns_input_hint">동물등록번호를 입력하세요</string>
     <string name="pet_register_number_agree_desc">입력하는 \'보호자 이름\'은 동물등록번호가 유효한지 확인하는 용도로만 사용하고, 별도 저장하지 않는 것에 동의합니다.</string>
@@ -256,6 +256,7 @@
     <string name="setting_profile_mission_pet_complete">설정 완료</string>
     <string name="setting_profile_modify">프로필 수정</string>
     <string name="mission_pet_not_setting">미설정</string>
+    <string name="profile_public">설정</string>
     <string name="walk_possible">가능</string>
     <string name="walk_impossible">불가능</string>
     <string name="setting_character_modify">캐릭터 수정</string>
@@ -629,6 +630,15 @@
             <span>
             <font color="#ff4857">%1$s</font>의 사정으로<br>
             산책을 할 수 없어요
+            <span>
+        ]]>
+    </string>
+
+    <string name="dashboard_friend_title_s">
+        <![CDATA[
+            <span>
+            최근 <font color="#ff4857">%1$s</font>의<br>
+            핑존에서 만난 친구가 없어요
             <span>
         ]]>
     </string>

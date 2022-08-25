@@ -44,10 +44,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.IBinder
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.ActivityCompat
@@ -79,6 +78,7 @@ import com.naver.maps.map.overlay.PolylineOverlay
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -265,7 +265,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.walkTracker.guideHeaderView.audioGuideButton.setSafeOnClickListener {
-            binding.walkViewFlipper.displayedChild = 1
+            showAudioGuide()
             homeShareViewModel.isVisibleBottomNavigation.value = Event(false)
             viewModel.asyncWalkGuide(viewModel.walkGuidePageNo)
         }
@@ -327,15 +327,26 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setUpObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.walkBottomUi.collectLatest {ui ->
+                LogUtil.log("TAG", "walkBottomUi ui $ui")
+                if(ui != WalkBottomUi.NONE){
+                    unSelectPreviousPOI()
+                }
+            }
+        }
+
+        homeShareViewModel.showAudioGuideList.observeEvent(viewLifecycleOwner) {isVisible ->
+            if(isVisible) {
+                showAudioGuide()
+            } else {
+                hideAudioGuide()
+            }
+        }
+
         viewModel.walkablePetList.observeEvent(viewLifecycleOwner) {
             openWalkablePetDialog(it as ArrayList<WalkablePet.Pets>)
         }
-//
-//        lifecycleScope.launch {
-//            viewModel.walkGuideListFlow.collectLatest { items ->
-//                mAudioGuideListAdapter.submitList(items)
-//            }
-//        }
 
         viewModel.walkGuideItem.observeEvent(viewLifecycleOwner) { items ->
             LogUtil.log("TAG", "items: $items")
@@ -375,7 +386,7 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                 )
             } else {
                 initialAudioGuideStatus()
-                binding.walkTracker.guideHeaderView.root.visibility = View.GONE
+                viewModel.isAudioGuideHeader.value = false
             }
 
             mService?.startWalk(true)
@@ -489,9 +500,15 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    fun showAudioGuide() {
+        binding.walkViewFlipper.displayedChild = 1
+        homeShareViewModel.isVisibleAudioGuideList = true
+    }
+
     fun hideAudioGuide() {
         binding.walkViewFlipper.displayedChild = 0
         homeShareViewModel.isVisibleBottomNavigation.value = Event(true)
+        homeShareViewModel.isVisibleAudioGuideList = false
 //        mAudioGuideListAdapter = WalkGuideAdapter(
 //            this::startWalkWithAudioGuide,
 //            this::downloadAudioGuide,
@@ -574,8 +591,11 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
         mNaverMap = naverMap
         mNaverMap.uiSettings.isZoomControlEnabled = false
+        mNaverMap.uiSettings.isCompassEnabled = false
+        mNaverMap.uiSettings.logoGravity = Gravity.END or Gravity.BOTTOM
         mNaverMap.maxZoom = 20.0
         mNaverMap.minZoom = 13.0
+
         setUpLastLocation()
         setUpNaverMapUi()
         setUpNaverMapEvent()
@@ -587,8 +607,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setUpNaverMapUi() {
-
-
         if (viewModel.walkPathList.value.size > 1) {
             drawPath(viewModel.walkPathList.value)
         }
@@ -597,7 +615,6 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
     private fun setUpNaverMapEvent() {
         mNaverMap.setOnMapClickListener { _, _ ->
             viewModel.cancelPOI()
-            unSelectPreviousPOI()
         }
 
         mNaverMap.addOnCameraChangeListener { reason, _ ->
@@ -914,11 +931,21 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
                     val walkStatus = intent.getIntExtra(EXTRA_WALK_STATUS, 0)
                     when (walkStatus) {
                         PAUSE -> {
-                            activity?.window?.let { updateDarkStatusBar(it) }
+                            activity?.let {
+                                updateWhiteIconStatusBar(
+                                    it,
+                                    Color.parseColor("#FF4857")
+                                )
+                            }
                             viewModel.pauseWalk(true)
                         }
                         PLAY -> {
-                            activity?.window?.let { updateLightStatusBar(it) }
+                            activity?.let {
+                                updateBlackIconStatusBar(
+                                    it,
+                                    Color.parseColor("#FFFFFF")
+                                )
+                            }
                             viewModel.pauseWalk(false)
                         }
                     }
@@ -1106,7 +1133,16 @@ class WalkFragment : Fragment(), OnMapReadyCallback {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
+        if(hidden){
+
+        } else {
+
+        }
         LogUtil.log("TAG", " $hidden")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     override fun onDestroy() {

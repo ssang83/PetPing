@@ -10,6 +10,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -66,12 +67,17 @@ class WalkRecordFragment :
 
     override fun onResume() {
         super.onResume()
-        activity?.let { AndroidBug5497Workaround(it).addListener() }
+//        activity?.let { AndroidBug5497Workaround(it).addListener() }
     }
 
     override fun onPause() {
         super.onPause()
-        activity?.let { AndroidBug5497Workaround(it).removeListener() }
+//        activity?.let { AndroidBug5497Workaround(it).removeListener() }
+    }
+
+    override fun onDestroyView() {
+        onBackPressedCallback.remove()
+        super.onDestroyView()
     }
 
     private fun setUpView() {
@@ -118,16 +124,20 @@ class WalkRecordFragment :
         val markingCount = walkFinish?.walk?.markingCount.toString()
         val walkDistance = walkFinish?.walk?.distanceString ?: "0km"
         if (walkHours > 0) {
-            if (walkMinutes > 0) viewModel.markingTitle.value = ("${walkHours}시간 ${walkMinutes}분 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
-            else viewModel.markingTitle.value = ("${walkHours}시간 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
+            if (walkMinutes > 0) viewModel.markingTitle.value =
+                ("${walkHours}시간 ${walkMinutes}분 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
+            else viewModel.markingTitle.value =
+                ("${walkHours}시간 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
         } else if (walkMinutes > 0) {
-            viewModel.markingTitle.value = ("${walkMinutes}분 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
+            viewModel.markingTitle.value =
+                ("${walkMinutes}분 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
         } else {
-            viewModel.markingTitle.value = ("${walkSeconds}초 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
+            viewModel.markingTitle.value =
+                ("${walkSeconds}초 동안\n${walkDistance} 산책을 하고\n${markingCount}개의 마킹을 남겼어요")
         }
 
         val markingDetail = walkFinish?.pets?.joinToString { pet ->
-            if(pet.markingCount > 0) {
+            if (pet.markingCount > 0) {
                 "${pet.name} ${pet.markingCount}개"
             } else {
                 ""
@@ -198,11 +208,11 @@ class WalkRecordFragment :
             }
         }
 
-        binding.pictureCloseButton.setOnClickListener{
+        binding.pictureCloseButton.setOnClickListener {
             binding.pictureView.visibility = View.GONE
         }
 
-        binding.rewardCloseButton.setOnClickListener{
+        binding.rewardCloseButton.setOnClickListener {
             binding.rewardView.visibility = View.GONE
         }
     }
@@ -307,7 +317,9 @@ class WalkRecordFragment :
     }
 
     private fun changeUIForceStopWalk() {
-        activity?.window?.let { updateLightStatusBar(it) }
+        activity?.let {
+            updateWhiteIconStatusBar(it, Color.parseColor("#FF4857"))
+        }
         binding.normalStopWalkHeader.visibility = View.GONE
         binding.forceStopHeader.visibility = View.VISIBLE
         binding.forceStopHeaderText2.text =
@@ -315,14 +327,18 @@ class WalkRecordFragment :
     }
 
     private fun changeUIAutoStopWalk() {
-        activity?.window?.let { updateLightStatusBar(it) }
+        activity?.let {
+            updateWhiteIconStatusBar(it, Color.parseColor("#FF4857"))
+        }
         binding.normalStopWalkHeader?.visibility = View.GONE
         binding.forceStopHeader.visibility = View.VISIBLE
         binding.forceStopHeaderText2.text = "산책 활동이 감지되지 않아 자동 종료되고\n종료 전 기록은 프로필에 안전하게 저장되었어요."
     }
 
     private fun changeUINormalStopWalk() {
-        activity?.window?.let { updateDarkStatusBar(it) }
+        activity?.let {
+            updateWhiteIconStatusBar(it, Color.parseColor("#444444"))
+        }
         binding.forceStopHeader.visibility = View.GONE
         binding.normalStopWalkHeader.visibility = View.VISIBLE
     }

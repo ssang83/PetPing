@@ -42,7 +42,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        updateWhiteStatusBar(requireActivity().window)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

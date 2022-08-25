@@ -221,14 +221,14 @@ class InquriyFragment : BaseFragment<FragmentInquiryBinding>(FragmentInquiryBind
     private fun requestPermission() {
         when {
             hasPermission(requireContext(), WRITE_EXTERNAL_STORAGE) -> {
-                LogUtil.log("이미 권한 있음")
+                LogUtil.log("TAG","이미 권한 있음")
                 imagePick()
             }
             ActivityCompat.shouldShowRequestPermissionRationale(
                 requireActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) -> {
-                LogUtil.log("한번 거절")
+                LogUtil.log("TAG","한번 거절")
                 permReqLuncher.launch(WRITE_EXTERNAL_STORAGE)
             }
             else -> {

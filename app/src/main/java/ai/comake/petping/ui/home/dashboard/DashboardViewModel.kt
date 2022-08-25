@@ -170,6 +170,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
     var petInfoList: List<DashboardPet> = listOf()
 
     var petId : Int? = null
+    var petList: List<Pet> = listOf()
 
     val scrollChangeListener = object : View.OnScrollChangeListener {
         override fun onScrollChange(
@@ -220,6 +221,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         when (response) {
             is Resource.Success -> {
                 profileList.value = response.value.data.pets
+                petList = response.value.data.pets
                 _petListSuccess.emit()
             }
             is Resource.Error -> {
@@ -344,6 +346,10 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         _moveToMission.emit()
     }
 
+    fun goToPetWalkHistory(petId: Int, viewMode: String) {
+
+    }
+
     private fun processDashboardData(
         context: Context,
         dashboardData: DashboardData,
@@ -400,7 +406,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
 
         processPopup(dashboardData.popup)
         updateCityName(context, lat, lng)
-//        if(needUpdate) getPingZoneFriend(dashboardData.pet.id)
+        if(needUpdate) getPingZoneFriend(dashboardData.pet.id)
     }
 
     /**
@@ -453,7 +459,6 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
 
     /**
      * 핑존에서 만난 친구
-     * 1.3.0 버전에는 포함 안되고 추후 개선 예정임.
      *
      * @param petId
      */

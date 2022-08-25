@@ -25,6 +25,7 @@ import ai.comake.petping.google.database.room.walk.WalkDBRepository
 import ai.comake.petping.ui.home.walk.EndState
 import ai.comake.petping.ui.home.walk.AudioGuidePlayer
 import ai.comake.petping.ui.home.walk.AudioGuidePlayer.Companion._audioGuideStatus
+import ai.comake.petping.ui.home.walk.WalkBottomUi
 import ai.comake.petping.util.*
 import android.annotation.SuppressLint
 import android.app.*
@@ -158,7 +159,7 @@ class LocationUpdatesService() : LifecycleService() {
         _isStartWalk.value = false
         _isPauseWalk.value = false
         _isStopWalkService.value = Event(false)
-        _walkDistanceKm.value = "0.000"
+        _walkDistanceKm.value = "0.00"
         _walkPathList.value = ArrayList()
         _picturePaths.value = ArrayList()
         _myMarkingList.value = ArrayList()
@@ -344,7 +345,7 @@ class LocationUpdatesService() : LifecycleService() {
                 mLocation.longitude.encrypt()
             )
             _walkPathList.value.add(walkPath)
-            _walkDistanceKm.value = _walkPathList.value.calculateWalkDistance().format(3)
+            _walkDistanceKm.value = _walkPathList.value.calculateWalkDistance().format(2)
             updateNotification()
             updateWalkPathBroadcast()
 
@@ -594,5 +595,6 @@ class LocationUpdatesService() : LifecycleService() {
         val _cameraPosition = MutableStateFlow(LatLng(37.566573, 126.978179))
         val _walkTimeSeconds = MutableStateFlow("00:00")
         var _walkStatus = START
+        var _walkBottomUi = MutableStateFlow(WalkBottomUi.NONE)
     }
 }

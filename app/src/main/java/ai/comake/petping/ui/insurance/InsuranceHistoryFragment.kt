@@ -197,6 +197,19 @@ class InsuranceHistoryFragment :
                     }
                 }
             }
+
+            showProfilePopup.observeEvent(viewLifecycleOwner) {
+                SingleBtnDialog(
+                    requireContext(),
+                    "반려견 프로필을 만들어 주세요.",
+                    "보험료 확인과 펫보험 가입을 위해 반려견 프로필을 만들어 주세요.",
+                    btnCallback = {
+                        requireActivity().findNavController(R.id.nav_main).navigate(
+                            InsuranceHistoryFragmentDirections.actionInsuranceHistoryFragmentToProfileGraph(true)
+                        )
+                    }
+                ).show()
+            }
         }
 
         binding.header.btnBack.setSafeOnClickListener {

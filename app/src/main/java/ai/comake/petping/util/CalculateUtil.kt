@@ -17,7 +17,13 @@ fun List<WalkPath>.calculateWalkDistance(): Float {
             ret += this[index].location.distanceTo(this[index + 1].location)
         }
     }
-    return ret / 1000.0f
+
+    val distance = ret / 1000.0f
+    return if (distance >= 999.99f) {
+        999.99f
+    } else {
+        distance
+    }
 }
 
 fun Long.toWalkTimeFormat(): String {

@@ -402,13 +402,12 @@
             app:destination="@id/withdrawalFragment"
             />
         <action
-            android:id="@+id/action_memberInfoFragment_to_certWebFragment"
-            app:destination="@id/certWebFragment"
-            />
-        <action
             android:id="@+id/action_memberInfoFragment_to_locationHistoryFragment"
             app:destination="@id/locationHistoryFragment"
             />
+        <action
+            android:id="@+id/action_memberInfoFragment_to_certificationFragment"
+            app:destination="@id/certificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/questionFragment"
@@ -498,11 +497,11 @@
         tools:layout="@layout/fragment_change_password"
         />
     <navigation android:id="@+id/loginGraph"
-        app:startDestination="@id/loginFragment">
+        app:startDestination="@id/loginScreen">
         <fragment
-            android:id="@+id/loginFragment"
+            android:id="@+id/loginScreen"
             android:name="ai.comake.petping.ui.login.LoginFragment"
-            android:label="LoginFragment"
+            android:label="loginScreen"
             tools:layout="@layout/fragment_login">
             <action
                 android:id="@+id/action_loginFragment_to_emailLoginFragment"
@@ -555,7 +554,7 @@
             >
             <action
                 android:id="@+id/action_findPasswordFragment_to_loginFragment"
-                app:destination="@id/loginFragment"
+                app:destination="@id/loginScreen"
                 />
         </fragment>
         <fragment
@@ -657,6 +656,9 @@
             android:id="@+id/action_insuranceHistoryFragment_to_connectFragment"
             app:destination="@id/connectFragment"
             />
+        <action
+            android:id="@+id/action_insuranceHistoryFragment_to_profileGraph"
+            app:destination="@id/profileGraph" />
     </fragment>
     <fragment
         android:id="@+id/connectFragment"

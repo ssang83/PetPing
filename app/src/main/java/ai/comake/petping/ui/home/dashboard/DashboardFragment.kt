@@ -109,8 +109,8 @@ class DashboardFragment : Fragment() {
             }
 
             showHomePopup.observeEvent(viewLifecycleOwner) { popupList ->
-                LogUtil.log("screenName : ${homeShareViewModel.screenName}")
-                if (homeShareViewModel.screenName == "dashBoardScreen") {
+                LogUtil.log("screenName : ${homeShareViewModel.destinationScreen}")
+                if (homeShareViewModel.destinationScreen == "dashBoardScreen") {
                     val bottomDialog = HomePopupDialogFragment(popupList)
                     bottomDialog.show(childFragmentManager, "HomePopupDialog")
                 }
@@ -193,15 +193,13 @@ class DashboardFragment : Fragment() {
 
     fun setUpClickListener() {
         binding.fragmentDashboardWalkReport.walkHistoryDetail.setSafeOnClickListener {
-            viewModel.petId?.let { id ->
-                val config = PetProfileConfig(
-                    petId = id,
-                    viewMode = "others"
-                )
-                requireActivity().findNavController(R.id.nav_main)
-                    .navigate(HomeFragmentDirections.actionHomeScreenToDogProfileFragment(config))
-
-            }
+            val viewMode = if(viewModel.petList.find { it.id.toInt() == viewModel.petId!! }?.isFamilyProfile == true) "family" else "master"
+            val config = PetProfileConfig(
+                petId = viewModel.petId!!,
+                viewMode = viewMode
+            )
+            requireActivity().findNavController(R.id.nav_main)
+                .navigate(HomeFragmentDirections.actionHomeScreenToDogProfileFragment(config))
         }
     }
 

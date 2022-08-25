@@ -4,11 +4,12 @@ import ai.comake.petping.*
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.PetRepository
 import ai.comake.petping.data.vo.ErrorResponse
+import ai.comake.petping.data.vo.InteractionStatus
 import ai.comake.petping.util.*
 import android.content.Context
 import android.net.Uri
 import android.view.View
-import androidx.lifecycle.LiveData
+import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -53,6 +54,8 @@ class ProfileEditViewModel @Inject constructor() : ViewModel() {
     val profileType = MutableLiveData<Int>().apply { value = -1 }
     val isScroll = MutableLiveData<Boolean>().apply { value = false }
 
+    val nameInteractionStatus = MutableLiveData<InteractionStatus>().apply { value = InteractionStatus() }
+
     val deleteErrorPopup = MutableLiveData<Event<ErrorResponse>>()
     val deletePopup = MutableLiveData<Event<Unit>>()
     val breedUpdated = MutableLiveData<Event<Unit>>()
@@ -79,6 +82,33 @@ class ProfileEditViewModel @Inject constructor() : ViewModel() {
                 isScroll.value = false
             } else {
                 isScroll.value = true
+            }
+        }
+    }
+
+    val petNameFocusChangeListener = object : View.OnFocusChangeListener {
+        override fun onFocusChange(v: View?, hasFocus: Boolean) {
+            val str = (v as EditText).text.toString()
+            if (hasFocus) {
+                nameInteractionStatus.value?.setFocusHintVisible(true)
+                nameInteractionStatus.value?.setLineStatus(true)
+
+                if (str.isNotEmpty()) {
+                    nameInteractionStatus.value?.setHelperVisible(false)
+                    nameInteractionStatus.value?.setInputStatus(true)
+                } else {
+                    nameInteractionStatus.value?.setHelperVisible(true)
+                }
+            } else {
+                if (str.isNotEmpty()) {
+                    nameInteractionStatus.value?.setFocusHintVisible(true)
+                } else {
+                    nameInteractionStatus.value?.setFocusHintVisible(false)
+                }
+
+                nameInteractionStatus.value?.setLineStatus(false)
+                nameInteractionStatus.value?.setInputStatus(false)
+                nameInteractionStatus.value?.setHelperVisible(false)
             }
         }
     }
@@ -204,6 +234,25 @@ class ProfileEditViewModel @Inject constructor() : ViewModel() {
      */
     fun onNameTextChanged(name: CharSequence) {
         petName.value = name.toString().trim()
+
+        if (name.toString().length > 0) {
+            nameInteractionStatus.value?.setInputStatus(true)
+            nameInteractionStatus.value?.setHelperVisible(false)
+
+            if (Pattern.compile(HANGUEL_PATTERN_NEW_FIX).matcher(name.toString()).matches()) {
+                nameInteractionStatus.value?.setValidation(true)
+            } else {
+                nameInteractionStatus.value?.setValidation(false)
+            }
+        } else {
+            nameInteractionStatus.value?.setInputStatus(false)
+            nameInteractionStatus.value?.setHelperVisible(true)
+            nameInteractionStatus.value?.setValidation(true)
+        }
+    }
+
+    fun onInputNameClear() {
+        petName.value = ""
     }
 
     /**

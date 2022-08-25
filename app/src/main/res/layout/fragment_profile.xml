@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/greyscale_1_fff"
+        android:background="@color/greyscale_fa_fa_fa"
         >
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -63,7 +63,7 @@
                 android:textColor="@color/greyscale_9_777"
                 android:fontFamily="@font/nanum_square_round"
                 android:textSize="14dp"
-                android:lineHeight="22sp"
+                android:lineHeight="22dp"
                 />
 
             <androidx.cardview.widget.CardView

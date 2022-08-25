@@ -4,6 +4,7 @@ import ai.comake.petping.AppConstants
 import ai.comake.petping.Event
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.InsuranceRepository
+import ai.comake.petping.data.repository.PetRepository
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.emit
 import ai.comake.petping.util.Coroutines
@@ -27,6 +28,9 @@ class InsuranceViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var repo:InsuranceRepository
 
+    @Inject
+    lateinit var petRepository: PetRepository
+
     private val _moveToInsuranceApply = MutableLiveData<Event<String>>()
     val moveToInsuranceApply:LiveData<Event<String>>
         get() = _moveToInsuranceApply
@@ -41,6 +45,9 @@ class InsuranceViewModel @Inject constructor() : ViewModel() {
 
     private val _showErrorPopup = MutableLiveData<Event<ErrorResponse>>()
     val showErrorPopup:LiveData<Event<ErrorResponse>> get() = _showErrorPopup
+
+    private val _showProfilePopup = MutableLiveData<Event<Unit>>()
+    val showProfilePopup:LiveData<Event<Unit>> get() = _showProfilePopup
 
     val ballonStatus = MutableLiveData<Boolean>().apply { value = false }
 
@@ -75,6 +82,32 @@ class InsuranceViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun getPetList(type:String) = Coroutines.main(this) {
+        val response = petRepository.getPetList(AppConstants.AUTH_KEY, AppConstants.ID)
+        when (response) {
+            is Resource.Success -> {
+                if (response.value.data.pets.size > 0 && response.value.data.pets[0].isFamilyProfile.not()) {
+                    if (type == "hanhwa") {
+                        _moveToHanhwa.emit(hanhwaUrl)
+                    } else if(type == "db") {
+                        _moveToDB.emit(dbUrl)
+                    } else {
+                        _moveToInsuranceApply.emit(claimUrl)
+                    }
+                } else {
+                    _showProfilePopup.emit()
+                }
+            }
+            is Resource.Error -> {
+                response.errorBody?.let { error ->
+                    if (error.code == "C2070") {
+                        _showProfilePopup.emit()
+                    }
+                }
+            }
+        }
+    }
+
     fun showBallon() {
         ballonStatus.value = true
     }
@@ -84,14 +117,14 @@ class InsuranceViewModel @Inject constructor() : ViewModel() {
     }
 
     fun moveHanhwaJoin() {
-        _moveToHanhwa.emit(hanhwaUrl)
+        getPetList("hanhwa")
     }
 
     fun moveDBJoin() {
-        _moveToDB.emit(dbUrl)
+        getPetList("db")
     }
 
     fun moveToApply() {
-        _moveToInsuranceApply.emit(claimUrl)
+        getPetList("")
     }
 }

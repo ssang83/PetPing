@@ -59,6 +59,7 @@
             tools:text="소요시간 · 30:00" />
 
         <com.google.android.material.imageview.ShapeableImageView
+            app:shapeAppearanceOverlay="@style/roundedImageView"
             android:id="@+id/trainerImage"
             imageUrl="@{data.speakerThumbnailFileUrl}"
             android:layout_width="50dp"

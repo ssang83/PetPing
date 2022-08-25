@@ -24,6 +24,7 @@ import android.telephony.TelephonyManager
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class AudioGuidePlayer(var mContext: Context?) {
     var telephonyManager: TelephonyManager? = null
@@ -240,5 +241,6 @@ class AudioGuidePlayer(var mContext: Context?) {
         val _startAudioGuide = MutableLiveData(false)
         val _endAudioGuide = MutableLiveData(false)
         val _isPauseAudioGuide = MutableLiveData(false)
+        val _isAudioGuideHeader = MutableStateFlow(true)
     }
 }

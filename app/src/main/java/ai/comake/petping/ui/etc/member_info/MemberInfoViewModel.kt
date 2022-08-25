@@ -73,7 +73,6 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
     val logoutErrorPopup = MutableLiveData<Event<ErrorResponse>>()
 
     var loginType = -1
-    var genderValue = ""
 
     val scrollChangeListener = object : View.OnScrollChangeListener {
         override fun onScrollChange(
@@ -118,8 +117,8 @@ class MemberInfoViewModel @Inject constructor() : ViewModel() {
 
                 data.birthAndGender?.let {
                     _birth.value = data.birthAndGender.substring(0, 6)
-                    genderValue = data.birthAndGender.substring(data.birthAndGender.length - 1)
-                    if ("1" == genderValue || "3" == genderValue) {
+                    if ("1" == data.birthAndGender.substring(data.birthAndGender.length - 1)
+                        || "3" == data.birthAndGender.substring(data.birthAndGender.length - 1)) {
                         _gender.value = "남성"
                     } else {
                         _gender.value = "여성"

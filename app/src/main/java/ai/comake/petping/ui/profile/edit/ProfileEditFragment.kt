@@ -15,6 +15,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.InputFilter
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
@@ -165,26 +166,26 @@ class ProfileEditFragment :
     private fun setUpUi() {
         with(binding) {
 
-            petNameWrapper.endIconMode = TextInputLayout.END_ICON_NONE
+//            petNameWrapper.endIconMode = TextInputLayout.END_ICON_NONE
             dropDownAutoComplete.endIconMode = TextInputLayout.END_ICON_NONE
             petBirthWrapper.endIconMode = TextInputLayout.END_ICON_NONE
             petWeightWrapper.endIconMode = TextInputLayout.END_ICON_NONE
 
-            setTextInputLayoutHintColor(petNameWrapper, requireContext(), R.color.greyscale_9_aaa)
+//            setTextInputLayoutHintColor(petNameWrapper, requireContext(), R.color.greyscale_9_aaa)
             setTextInputLayoutHintColor(dropDownAutoComplete, requireContext(), R.color.greyscale_9_aaa)
             setTextInputLayoutHintColor(petBirthWrapper, requireContext(), R.color.greyscale_9_aaa)
             setTextInputLayoutHintColor(petWeightWrapper, requireContext(), R.color.greyscale_9_aaa)
 
-            setEditText(
-                requireContext(),
-                petNameWrapper,
-                name,
-                Pattern.compile(HANGUEL_PATTERN_NEW),
-                "영문, 숫자, 특수문자는 사용할 수 없습니다.",
-                "이름이 무엇인가요?",
-                "이름",
-                "최대 10자의 한글만 사용해 주세요."
-            )
+//            setEditText(
+//                requireContext(),
+//                petNameWrapper,
+//                name,
+//                Pattern.compile(HANGUEL_PATTERN_NEW),
+//                "영문, 숫자, 특수문자는 사용할 수 없습니다.",
+//                "이름이 무엇인가요?",
+//                "이름",
+//                "최대 10자의 한글만 사용해 주세요."
+//            )
             setEditText(
                 requireContext(),
                 dropDownAutoComplete,
@@ -284,6 +285,16 @@ class ProfileEditFragment :
             header.btnBack.setSafeOnClickListener {
                 requireActivity().backStack(R.id.nav_main)
             }
+
+            outSide.setOnTouchListener { view, motionEvent ->
+                when (motionEvent.action) {
+                    MotionEvent.ACTION_UP -> view.let {
+                        hideKeyboard()
+                        outSide.clearFocus()
+                    }
+                }
+                true
+            }
         }
     }
 
@@ -315,7 +326,7 @@ class ProfileEditFragment :
                 requireActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) -> {
-                LogUtil.log("한번 거절")
+                LogUtil.log("TAG", "한번 거절")
                 permReqLuncher.launch(WRITE_EXTERNAL_STORAGE)
             }
             else -> {
@@ -328,12 +339,12 @@ class ProfileEditFragment :
      * 펫보험이 연결된 프로필일 때 textInputLayout 세팅
      */
     private fun disableInputByInsuraceUI(gender:Int) {
-        binding.name.isEnabled = false
+//        binding.name.isEnabled = false
         binding.maleFemale.setDisable(true)
         binding.maleFemale.setGender(gender)
         binding.breed.isEnabled = false
         binding.birth.isEnabled = false
-        binding.petNameWrapper.endIconMode = TextInputLayout.END_ICON_NONE
+//        binding.petNameWrapper.endIconMode = TextInputLayout.END_ICON_NONE
         binding.dropDownAutoComplete.endIconMode = TextInputLayout.END_ICON_NONE
         binding.petBirthWrapper.endIconMode = TextInputLayout.END_ICON_NONE
     }

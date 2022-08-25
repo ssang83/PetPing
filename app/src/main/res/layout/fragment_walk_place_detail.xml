@@ -13,16 +13,20 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:focusable="true"
+        android:clickable="true"
         android:elevation="2dp"
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:background="@color/white">
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round"
             android:text="@{viewModel.placeDetail.poiTitle}"
             android:id="@+id/placeDesc1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             tools:text="동반 가능 카페"
@@ -33,10 +37,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="@{viewModel.placeDetail.name}"
             android:id="@+id/placeName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="26dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             tools:text="개와 고양이의 시간"
@@ -46,10 +52,12 @@
             app:layout_constraintTop_toBottomOf="@+id/placeDesc1" />
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round"
             android:text="@{viewModel.placeDetail.poiDesc1}"
             android:id="@+id/placeDesc2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             tools:text="서울 월드컵로3길 14"
@@ -59,10 +67,12 @@
             app:layout_constraintTop_toBottomOf="@+id/placeName" />
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round"
             android:text="@{viewModel.placeDetail.poiDesc2}"
             android:id="@+id/placeDesc3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="2dp"
             tools:text="02-9887-9009"
@@ -72,10 +82,12 @@
             app:layout_constraintTop_toBottomOf="@+id/placeDesc2" />
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round"
             android:text="@{viewModel.placeDetail.poiDesc3}"
             android:id="@+id/placeDesc4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="2dp"
             tools:text="매일 11:00 - 21:00 (월요일 휴무)"

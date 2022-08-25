@@ -39,6 +39,8 @@ class MainShareViewModel @Inject constructor() : ViewModel() {
 
     val isSucceedBadge = MutableLiveData<Boolean>()
 
+    var destinationScreen = "mainScreen"
+
 //    fun setMenuLink(menu: MenuLink) {
 //        menuLink.value = Event(menu)
 //    }

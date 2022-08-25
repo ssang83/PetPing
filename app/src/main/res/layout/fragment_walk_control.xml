@@ -13,14 +13,18 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:focusable="true"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:background="@color/white">
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round_b"
             android:id="@+id/walkTimeValue"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:text="@{viewModel.walkTimeSeconds}"
             android:textColor="@color/color_111111"
@@ -31,11 +35,13 @@
             tools:text="00:00" />
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round"
             android:id="@+id/walkTimelabel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:text="@string/walk_time"
             android:textColor="@color/color_aaaaaa"
             android:textSize="13dp"
@@ -54,9 +60,11 @@
             app:layout_constraintTop_toTopOf="@+id/walkTimeValue" />
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round_b"
             android:id="@+id/walkDistanceValue"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:text="@{viewModel.walkDistanceKm}"
             android:textColor="@color/color_111111"
@@ -67,10 +75,12 @@
             tools:text="0.01" />
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/nanum_square_round"
             android:id="@+id/walkDistanceLabel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
             android:text="@string/distanceKm"
             android:textColor="@color/color_aaaaaa"
             android:textSize="13dp"

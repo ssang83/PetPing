@@ -18,7 +18,10 @@ class HomeShareViewModel : ViewModel() {
     private val _moveToReward = MutableLiveData<Event<Unit>>()
     val moveToReward: LiveData<Event<Unit>> = _moveToReward
 
-    var screenName: String = ""
+    var destinationScreen: String = "dashBoardScreen"
+
+    val showAudioGuideList = MutableLiveData<Event<Boolean>>()
+    var isVisibleAudioGuideList = false
 
     val isSucceedBadge = MutableLiveData<Event<Boolean>>()
 

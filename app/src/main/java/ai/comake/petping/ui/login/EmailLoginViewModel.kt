@@ -53,6 +53,7 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
 
     val emailErrorPopup = MutableLiveData<Event<ErrorResponse>>()
     val passwordErrorPopup = MutableLiveData<Event<ErrorResponse>>()
+    val loginErrorPopup = MutableLiveData<Event<ErrorResponse>>()
     val uiState = MutableLiveData<Event<UiState>>()
     val moveToHome = MutableLiveData<Event<Unit>>()
     val moveToFindPasswd = MutableLiveData<Event<Unit>>()
@@ -127,23 +128,26 @@ class EmailLoginViewModel @Inject constructor() : ViewModel() {
         when (response) {
             is Resource.Success -> {
                 uiState.emit(UiState.Success)
-                AppConstants.ID = response.value.data.id
-                AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
+                if (response.value.status == "200") {
+                    AppConstants.ID = response.value.data.id
+                    AppConstants.AUTH_KEY = "Bearer ${response.value.data.authorizationToken}"
 
-                sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
-                sharedPreferencesManager.saveLoginType(1)
+                    sharedPreferencesManager.saveLoginDataStore(UserDataStore(AppConstants.AUTH_KEY,AppConstants.ID))
+                    sharedPreferencesManager.saveLoginType(1)
 
-                moveToHome.emit()
+                    moveToHome.emit()
+                } else {
+                    if (response.value.error.message.contains("이메일")) {
+                        emailErrorPopup.emit(response.value.error)
+                    } else if (response.value.error.message.contains("비밀번호")) {
+                        passwordErrorPopup.emit(response.value.error)
+                    } else {
+                        loginErrorPopup.emit(response.value.error)
+                    }
+                }
             }
             is Resource.Error -> {
                 uiState.emit(UiState.Failure(null))
-                response.errorBody?.let { errorBody ->
-                    if (errorBody.message.contains("이메일")) {
-                        emailErrorPopup.emit(errorBody)
-                    } else if (errorBody.message.contains("비밀번호")) {
-                        passwordErrorPopup.emit(errorBody)
-                    }
-                }
             }
         }
     }

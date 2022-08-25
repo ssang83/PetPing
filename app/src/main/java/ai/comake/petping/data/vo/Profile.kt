@@ -1,5 +1,9 @@
 package ai.comake.petping.data.vo
 
+import ai.comake.petping.BR
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
+
 /**
  * android-petping-2
  * Class: Profile
@@ -53,3 +57,52 @@ data class PetProfile(
     val profileImageURL: String,
     val isMissionPet:Boolean
 )
+
+data class InteractionStatus(
+    private var inputStatus: Boolean = false,
+    private var validation: Boolean = true,
+    private var focusHintVisible: Boolean = true,
+    private var lineStatus: Boolean = false,
+    private var helperVisible: Boolean = false
+) : BaseObservable() {
+
+    @Bindable
+    fun getInputStatus() = inputStatus
+
+    fun setInputStatus(inputStatus: Boolean) {
+        this.inputStatus = inputStatus
+        notifyPropertyChanged(BR.inputStatus)
+    }
+
+    @Bindable
+    fun getValidation() = validation
+
+    fun setValidation(validation: Boolean) {
+        this.validation = validation
+        notifyPropertyChanged(BR.validation)
+    }
+
+    @Bindable
+    fun getFocusHintVisible() = focusHintVisible
+
+    fun setFocusHintVisible(focusHintVisible: Boolean) {
+        this.focusHintVisible = focusHintVisible
+        notifyPropertyChanged(BR.focusHintVisible)
+    }
+
+    @Bindable
+    fun getLineStatus() = lineStatus
+
+    fun setLineStatus(lineStatus: Boolean) {
+        this.lineStatus = lineStatus
+        notifyPropertyChanged(BR.lineStatus)
+    }
+
+    @Bindable
+    fun getHelperVisible() = helperVisible
+
+    fun setHelperVisible(helperVisible: Boolean) {
+        this.helperVisible = helperVisible
+        notifyPropertyChanged(BR.helperVisible)
+    }
+}

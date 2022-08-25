@@ -7,13 +7,14 @@ import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.data.vo.NetworkErrorEvent
 import ai.comake.petping.databinding.ActivityMainBinding
 import ai.comake.petping.ui.common.dialog.SingleBtnDialog
-import ai.comake.petping.util.LogUtil
-import ai.comake.petping.util.SharedPreferencesManager
+import ai.comake.petping.util.*
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.tasks.OnCompleteListener
@@ -33,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
-    private var destinationScreen = "mainScreen"
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,9 +79,39 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _controller, destination, arguments ->
             LogUtil.log("TAG", "destination " + destination.label)
-            destinationScreen = destination.label.toString()
-            if (destinationScreen == "homeScreen") {
-                checkNewBadge()
+            mainShareViewModel.destinationScreen = destination.label.toString()
+
+            when (mainShareViewModel.destinationScreen) {
+                "mainScreen" -> {
+                    updateWhiteIconStatusBar(this,Color.parseColor("#FF4857"))
+                }
+                "homeScreen" -> {
+                    updateBlackIconStatusBar(this,Color.parseColor("#FFFFFF"))
+                    checkNewBadge()
+                }
+                "loginScreen" -> {
+                    updateBlackIconStatusBar(this,Color.parseColor("#FFFFFF"))
+                }
+            }
+
+            if (mainShareViewModel.destinationScreen == "mainScreen") {
+                window?.apply {
+                    //상태바
+                    statusBarColor = Color.parseColor("#FF4857")
+                    //상태바 아이콘(true: 검정 / false: 흰색)
+                    WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars =
+                        false
+                }
+            }
+
+            if (mainShareViewModel.destinationScreen == "homeScreen") {
+                window?.apply {
+                    //상태바
+                    statusBarColor = Color.parseColor("#FFFFFF")
+                    //상태바 아이콘(true: 검정 / false: 흰색)
+                    WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars =
+                        true
+                }
             }
         }
     }
@@ -129,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openHomeNavMenu(menuLink: MenuLink) {
-        if (destinationScreen == "homeScreen") {
+        if (mainShareViewModel.destinationScreen == "homeScreen") {
             mainShareViewModel.moveLinkedScreen.value = Event(menuLink)
         } else {
             findNavController(R.id.nav_main).navigate(

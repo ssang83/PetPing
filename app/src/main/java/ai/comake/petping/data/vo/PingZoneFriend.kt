@@ -1,5 +1,8 @@
 package ai.comake.petping.data.vo
 
+import ai.comake.petping.util.toSeven
+import ai.comake.petping.util.toWalkTimeFormat
+
 /**
  * android-petping-2
  * Class: PingZoneFriend
@@ -24,4 +27,6 @@ data class PingZoneMeetPet(
     val meetDatetime: String,
     val gender: String,
     val breed: String
-)
+) {
+    val nameToSeven get() = name.toSeven()
+}

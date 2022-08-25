@@ -100,14 +100,8 @@ class MemberInfoFragment : BaseFragment<FragmentMemberInfoBinding>(FragmentMembe
             }
 
             moveToCert.observeEvent(viewLifecycleOwner) {
-                val config = CertWebConfig(
-                    name = name.value.toString(),
-                    birth = birth.value.toString(),
-                    gender = genderValue
-                )
-
                 requireActivity().findNavController(R.id.nav_main)
-                    .navigate(MemberInfoFragmentDirections.actionMemberInfoFragmentToCertWebFragment(config))
+                    .navigate(R.id.action_memberInfoFragment_to_certificationFragment)
             }
 
             moveToChangeEmail.observeEvent(viewLifecycleOwner) {

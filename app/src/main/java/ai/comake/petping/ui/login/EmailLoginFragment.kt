@@ -65,6 +65,14 @@ class EmailLoginFragment :
                 }.show()
             }
 
+            loginErrorPopup.observeEvent(viewLifecycleOwner) { errorResponse ->
+                SingleBtnDialog(
+                    requireContext(),
+                    errorResponse.title,
+                    errorResponse.message
+                ).show()
+            }
+
             moveToHome.observeEvent(viewLifecycleOwner) {
                 mainShareViewModel.registFCMToken()
 

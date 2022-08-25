@@ -135,7 +135,7 @@
                     android:text="@={viewModel.content}"
                     android:padding="13dp"
                     android:inputType="textMultiLine"
-                    android:lineHeight="24sp"
+                    android:lineHeight="24dp"
                     android:scrollbars="vertical"
                     android:maxLength="1000"
                     android:gravity="top"
@@ -170,7 +170,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/imageList"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="75dp"
                     android:layout_marginTop="20dp"
                     android:layout_gravity="center_horizontal"

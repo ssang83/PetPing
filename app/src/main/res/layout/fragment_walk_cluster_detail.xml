@@ -13,24 +13,43 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:focusable="true"
+        android:clickable="true"
         android:layout_width="match_parent"
-        android:layout_height="209dp"
+        android:layout_height="210dp"
+        android:background="@color/color_ffffff"
         android:paddingStart="13dp"
-        android:paddingEnd="13dp"
-        android:background="@color/color_ffffff">
+        android:paddingEnd="13dp">
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/recentVisit"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_marginStart="7dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:gravity=""
+            android:lines="1"
+            android:text="핑존 친구들"
+            android:textColor="@color/color_111111"
+            android:textSize="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:orientation="horizontal"
-            android:background="@color/color_ffffff"
             android:id="@+id/clusterRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:background="@color/color_ffffff"
             android:clipToPadding="true"
+            android:orientation="horizontal"
             android:overScrollMode="never"
             app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/fragment_walk_cluster_detail_list_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

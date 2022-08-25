@@ -42,7 +42,6 @@ class RNSViewModel @Inject constructor() : ViewModel() {
     val ownerClear = MutableLiveData<Boolean>().apply { value = false }
     val ownerFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
     val ownerLineStatus = MutableLiveData<Boolean>().apply { value = false }
-    val rnsHelperVisible = MutableLiveData<Boolean>().apply { value = false }
     val rnsInputStatus = MutableLiveData<Boolean>().apply { value = false }
     val rnsClear = MutableLiveData<Boolean>().apply { value = false }
     val rnsFocusHintVisible = MutableLiveData<Boolean>().apply { value = false }
@@ -70,21 +69,19 @@ class RNSViewModel @Inject constructor() : ViewModel() {
                     value = false
                 }
             }
-        }
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun afterTextChanged(s: Editable?) {
+
             if (s?.toString()?.length!! > 0) {
-                if (Pattern.compile(NUMBER_PATTERN).matcher(registerNumber.value.toString()).matches()) {
+                if (s.toString().length == 15 && Pattern.compile(NUMBER_PATTERN).matcher(registerNumber.value.toString()).matches()) {
                     isValidRNS.value = true
                 } else {
                     isValidRNS.value = false
-                    rnsHelperVisible.value = false
                 }
             } else {
                 isValidRNS.value = true
-                rnsHelperVisible.value = true
             }
         }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun afterTextChanged(s: Editable?) {}
     }
 
     val ownerFocusChangedListener = object : View.OnFocusChangeListener {
@@ -131,15 +128,6 @@ class RNSViewModel @Inject constructor() : ViewModel() {
             if (hasFocus) {
                 rnsFocusHintVisible.value = true
                 rnsLineStatus.value = true
-                rnsHelperVisible.apply {
-                    if (str.isNotEmpty()) {
-                        value = false
-                    } else {
-                        value = true
-                        isValidRNS.value = true
-                    }
-                }
-
 
                 rnsInputStatus.apply {
                     if (str.isNotEmpty()) {
@@ -159,7 +147,6 @@ class RNSViewModel @Inject constructor() : ViewModel() {
 
                 rnsLineStatus.value = false
                 rnsInputStatus.value = false
-                rnsHelperVisible.value = false
             }
         }
     }

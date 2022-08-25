@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nanum_square_round_b"
-                android:lineHeight="34sp"
+                android:lineHeight="34dp"
                 android:textColor="#111111"
                 android:lineSpacingExtra="3dp"
                 android:layout_marginTop="16dp"
@@ -139,7 +139,7 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/pet_insurance_join"
-                app:onSafeClick="@{view -> viewModel.petJoinInsurance()}"
+                app:onSafeClick="@{view -> viewModel.getPetList()}"
                 />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

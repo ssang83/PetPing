@@ -5,10 +5,13 @@ import ai.comake.petping.Event
 import ai.comake.petping.UiState
 import ai.comake.petping.api.Resource
 import ai.comake.petping.data.repository.InsuranceRepository
+import ai.comake.petping.data.repository.PetRepository
 import ai.comake.petping.data.vo.ErrorResponse
 import ai.comake.petping.data.vo.InsurancePet
+import ai.comake.petping.data.vo.Pet
 import ai.comake.petping.data.vo.PetInsurJoinsData
 import ai.comake.petping.emit
+import ai.comake.petping.util.Coroutines
 import ai.comake.petping.util.getErrorBodyConverter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,6 +31,12 @@ import javax.inject.Inject
 @HiltViewModel
 class InsuranceHistoryViewModel @Inject constructor() : ViewModel() {
 
+    @Inject
+    lateinit var repo: InsuranceRepository
+
+    @Inject
+    lateinit var petRepo: PetRepository
+
     private val _insuranceDataList = MutableLiveData<List<PetInsurJoinsData>>()
     val insuranceDataList:LiveData<List<PetInsurJoinsData>> get() = _insuranceDataList
 
@@ -41,8 +50,8 @@ class InsuranceHistoryViewModel @Inject constructor() : ViewModel() {
     val uiState = MutableLiveData<Event<UiState>>()
     val moveToInsurnaceDetail = MutableLiveData<Event<PetInsurJoinsData>>()
 
-    @Inject
-    lateinit var repo: InsuranceRepository
+    private val _showProfilePopup = MutableLiveData<Event<Unit>>()
+    val showProfilePopup:LiveData<Event<Unit>> get() = _showProfilePopup
 
     /**
      * 펫보험 데이터 받아오기
@@ -83,24 +92,6 @@ class InsuranceHistoryViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun petJoinInsurance() = viewModelScope.launch {
-        uiState.emit(UiState.Loading)
-        val response = repo.getPetInsuranceCheck(AppConstants.AUTH_KEY, AppConstants.ID)
-        when (response) {
-            is Resource.Success -> {
-                uiState.emit(UiState.Success)
-                moveToInsuranceScreen.emit(response.value.data.insurJoinURL)
-            }
-            is Resource.Failure -> {
-                uiState.emit(UiState.Failure(null))
-                response.errorBody?.let { errorBody ->
-                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
-                    petJoinErrorPopup.emit(errorResponse)
-                }
-            }
-        }
-    }
-
     /**
      * 펫보험 인증하기 버튼 클릭 시
      */
@@ -118,5 +109,43 @@ class InsuranceHistoryViewModel @Inject constructor() : ViewModel() {
 
     fun goToConnectPage(petId: Int) {
         moveToAuthScreen.emit(petId)
+    }
+
+    fun getPetList() = Coroutines.main(this) {
+        val response = petRepo.getPetList(AppConstants.AUTH_KEY, AppConstants.ID)
+        when (response) {
+            is Resource.Success -> {
+                if (response.value.data.pets.size > 0 && response.value.data.pets[0].isFamilyProfile.not()) {
+                    petJoinInsurance()
+                } else {
+                    _showProfilePopup.emit()
+                }
+            }
+            is Resource.Error -> {
+                response.errorBody?.let { error ->
+                    if (error.code == "C2070") {
+                        _showProfilePopup.emit()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun petJoinInsurance() = viewModelScope.launch {
+        uiState.emit(UiState.Loading)
+        val response = repo.getPetInsuranceCheck(AppConstants.AUTH_KEY, AppConstants.ID)
+        when (response) {
+            is Resource.Success -> {
+                uiState.emit(UiState.Success)
+                moveToInsuranceScreen.emit(response.value.data.insurJoinURL)
+            }
+            is Resource.Failure -> {
+                uiState.emit(UiState.Failure(null))
+                response.errorBody?.let { errorBody ->
+                    val errorResponse = getErrorBodyConverter().convert(errorBody)!!
+                    petJoinErrorPopup.emit(errorResponse)
+                }
+            }
+        }
     }
 }

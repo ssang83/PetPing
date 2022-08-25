@@ -4,7 +4,9 @@ import ai.comake.petping.R
 import ai.comake.petping.data.vo.WebConfig
 import ai.comake.petping.databinding.FragmentInsuranceBinding
 import ai.comake.petping.observeEvent
+import ai.comake.petping.ui.common.dialog.SingleBtnDialog
 import ai.comake.petping.ui.home.HomeFragmentDirections
+import ai.comake.petping.ui.insurance.InsuranceHistoryFragmentDirections
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.updateWhiteStatusBar
 import android.os.Bundle
@@ -85,9 +87,20 @@ class InsuranceFragment : Fragment() {
             }
 
             showErrorPopup.observeEvent(viewLifecycleOwner) { errorResponse ->
-                when (errorResponse.code) {
 
-                }
+            }
+
+            showProfilePopup.observeEvent(viewLifecycleOwner) {
+                SingleBtnDialog(
+                    requireContext(),
+                    "반려견 프로필을 만들어 주세요.",
+                    "보험료 확인과 펫보험 가입을 위해 반려견 프로필을 만들어 주세요.",
+                    btnCallback = {
+                        requireActivity().findNavController(R.id.nav_main).navigate(
+                            HomeFragmentDirections.actionHomeScreenToProfileGraph(true)
+                        )
+                    }
+                ).show()
             }
         }
     }

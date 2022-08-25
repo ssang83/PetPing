@@ -189,7 +189,7 @@ class NewProfileThirdFragment :
                 requireActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) -> {
-                LogUtil.log("한번 거절")
+                LogUtil.log("TAG","한번 거절")
                 permReqLuncher.launch(STORAGE_PERMISSION)
             }
             else -> {

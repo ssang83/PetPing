@@ -24,11 +24,13 @@ import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.repeatOnStarted
 import ai.comake.petping.util.updateDarkStatusBar
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -74,7 +76,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().window.let { updateDarkStatusBar(it) }
+
         setUpObserver()
         initAppConstant()
 //        checkMenuDirection()
@@ -99,23 +101,33 @@ class MainFragment : Fragment() {
                 }
             }
 
+            isFailedWalkFinish.observeEvent(viewLifecycleOwner) { isFailed ->
+                if (isFailed) {
+                    checkSavedLogin()
+                }
+            }
+
             tokenRefresh.observeEvent(viewLifecycleOwner) {
                 checkSavedLogin()
             }
         }
 
+
+        viewModel.checkAppVersion()
         LogUtil.log("TAG", "onViewCreated")
     }
 
     override fun onResume() {
         super.onResume()
+        //산책종료 로직 순서를 위해 임시적으로 막아둠 QA전달 완
+
         // 강제 업데이트 팝업 발생 시 스토어 이동 후 다시 펫핑 앱 실행 시
         // 앱버전 체크가 되지 않아서 강제 업데이트 팝업이 발생 되지 않아서 호출 위치 변경함.
-        if (isWalking.not()) { // 산책 중 푸시로 진입 시 업데이트 팝업 발생되면 안됨..
-            viewModel.checkAppVersion()
-        } else {
-            checkSavedLogin()
-        }
+//        if (isWalking.not()) { // 산책 중 푸시로 진입 시 업데이트 팝업 발생되면 안됨..
+//            viewModel.checkAppVersion()
+//        } else {
+//            료
+//        }
     }
 
     private fun setUpObserver() {
@@ -188,7 +200,8 @@ class MainFragment : Fragment() {
     //여기서 순서대로 실행
     private fun checkSystemInfo() {
         RemoteConfigMangaer.getInstance().init()
-        RemoteConfigMangaer.getInstance().fetchAndActivate(requireActivity()
+        RemoteConfigMangaer.getInstance().fetchAndActivate(
+            requireActivity()
         ) { task ->
             if (task.isSuccessful) {
                 try {
@@ -225,7 +238,7 @@ class MainFragment : Fragment() {
 
         val type = activity?.intent?.getStringExtra("type") ?: ""
         val link = activity?.intent?.getStringExtra("link") ?: ""
-        menuLink =  MenuLink.Fcm(type,link)
+        menuLink = MenuLink.Fcm(type, link)
 
 //        FCM_TYPE = activity?.intent?.getStringExtra("type") ?: ""
 //        FCM_LINK = activity?.intent?.getStringExtra("link") ?: ""
@@ -274,8 +287,8 @@ class MainFragment : Fragment() {
                 viewModel.asyncWalkFinish(SAPA_KEY, id, body)
             } else {
                 withContext(Dispatchers.Main) {
-//                    checkSavedLogin()
-                    viewModel.checkAccessToken()
+                    checkSavedLogin()
+//                    viewModel.checkAccessToken()
                 }
             }
         }

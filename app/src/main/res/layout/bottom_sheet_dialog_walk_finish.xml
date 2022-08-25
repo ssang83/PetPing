@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/nanum_square_round"
-            android:lineHeight="23sp"
+            android:lineHeight="23dp"
             android:text="산책 중 등록한 마킹과 산책 기록이\n프로필에 저장돼요."
             android:textAlignment="center"
             android:textColor="@color/greyscale_9_111"

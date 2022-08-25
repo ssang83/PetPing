@@ -582,3 +582,9 @@ fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
     }
 }
+
+fun String.toSeven(): String {
+    return if (this.length > 7) {
+        "${this.substring(0, 7)}..."
+    } else this
+}

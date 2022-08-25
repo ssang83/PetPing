@@ -135,6 +135,16 @@ class WithdrawalFragment :
                     outSide.clearFocus()
                 })
 
+            outSide.setOnTouchListener { view, motionEvent ->
+                when (motionEvent.action) {
+                    MotionEvent.ACTION_UP -> view.let {
+                        hideKeyboard()
+                        outSide.clearFocus()
+                    }
+                }
+                true
+            }
+
             header.btnBack.setSafeOnClickListener {
                 requireActivity().backStack(R.id.nav_main)
             }

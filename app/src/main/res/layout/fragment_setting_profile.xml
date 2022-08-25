@@ -70,20 +70,19 @@
 
                         <TextView
                             android:id="@+id/tvGender"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_profile_gender"
                             android:textColor="@color/color_bbbbbb"
                             android:textSize="15dp"
                             android:fontFamily="@font/nanum_square_round"
-                            app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             />
 
                         <TextView
                             android:id="@+id/gender"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:textColor="@color/greyscale_9_111"
@@ -97,20 +96,19 @@
 
                         <TextView
                             android:id="@+id/tvBreed"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_profile_breed"
                             android:textColor="@color/color_bbbbbb"
                             android:textSize="15dp"
                             android:fontFamily="@font/nanum_square_round"
-                            app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintTop_toTopOf="@+id/breed"
                             app:layout_constraintStart_toStartOf="parent"
                             />
 
                         <TextView
                             android:id="@+id/breed"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:layout_marginTop="18dp"
@@ -126,20 +124,19 @@
 
                         <TextView
                             android:id="@+id/tvBirth"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_profile_birth"
                             android:textColor="@color/color_bbbbbb"
                             android:textSize="15dp"
                             android:fontFamily="@font/nanum_square_round"
-                            app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintTop_toTopOf="@id/birth"
                             app:layout_constraintStart_toStartOf="parent"
                             />
 
                         <TextView
                             android:id="@+id/birth"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:text="@{viewModel.birth}"
@@ -153,20 +150,19 @@
 
                         <TextView
                             android:id="@+id/tvWeight"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_profile_weight"
                             android:textColor="@color/color_bbbbbb"
                             android:textSize="15dp"
                             android:fontFamily="@font/nanum_square_round"
-                            app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintTop_toTopOf="@+id/weight"
                             app:layout_constraintStart_toStartOf="parent"
                             />
 
                         <TextView
                             android:id="@+id/weight"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:text="@{viewModel.weight}"
@@ -180,20 +176,19 @@
 
                         <TextView
                             android:id="@+id/tvWalk"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_profile_possible_walk"
                             android:textColor="@color/color_bbbbbb"
                             android:textSize="15dp"
                             android:fontFamily="@font/nanum_square_round"
-                            app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintTop_toTopOf="@+id/walk"
                             app:layout_constraintStart_toStartOf="parent"
                             />
 
                         <TextView
                             android:id="@+id/walk"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:text="@{viewModel.isWalk == true ? @string/walk_possible : @string/walk_impossible}"
@@ -207,24 +202,23 @@
 
                         <TextView
                             android:id="@+id/tvProfilePublic"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_profile_profile_status"
                             android:textColor="@color/color_bbbbbb"
                             android:textSize="15dp"
                             android:layout_marginTop="18dp"
                             android:fontFamily="@font/nanum_square_round"
-                            app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintTop_toBottomOf="@+id/tvWalk"
                             app:layout_constraintStart_toStartOf="parent"
                             />
 
                         <TextView
                             android:id="@+id/profileStatus"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
-                            android:text="@{viewModel.isPublic == true ? @string/mission_pet_not_setting : @string/mission_pet_setting}"
+                            android:text="@{viewModel.isPublic == true ? @string/mission_pet_not_setting : @string/profile_public}"
                             tools:text="미설정"
                             android:layout_marginTop="18dp"
                             android:textColor="@color/greyscale_9_111"
@@ -235,7 +229,7 @@
 
                         <TextView
                             android:id="@+id/tvPetNumber"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_profile_rns"
                             android:textColor="@color/color_bbbbbb"
@@ -248,7 +242,7 @@
 
                         <TextView
                             android:id="@+id/petNumber"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             tools:text="410020204020"
@@ -298,7 +292,7 @@
 
                         <TextView
                             android:id="@+id/tvMissionPet1"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/setting_profile_mission_pet"
                             android:textColor="@color/color_bbbbbb"

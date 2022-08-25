@@ -17,6 +17,8 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:focusable="true"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:background="@color/white"
@@ -37,7 +39,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:fontFamily="@font/nanum_square_round"
+            android:fontFamily="@font/nanum_square_round_b"
             android:includeFontPadding="false"
             android:id="@+id/petName"
             android:layout_width="wrap_content"
@@ -46,7 +48,6 @@
             android:text="@{viewModel.markingDetail.pet.getPetName}"
             android:textColor="@color/color_111111"
             android:textSize="18dp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="금강" />
@@ -107,6 +108,7 @@
             tools:background="@drawable/marking_detail_pet" />
 
         <TextView
+            android:fontFamily="@font/nanum_square_round"
             android:id="@+id/walkHistoryButton"
             android:layout_width="match_parent"
             android:layout_height="36dp"

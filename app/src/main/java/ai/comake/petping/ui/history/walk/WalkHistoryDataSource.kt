@@ -43,11 +43,13 @@ class WalkHistoryDataSource(
                     viewModel.viewMode.value = response.value.data.viewMode
 
                     val items = response.value.data.walks
+                    val listSize = response.value.data.listSize
+                    val pagingSize = response.value.data.numOfRows
                     viewModel.walkRecordList.value = items
                     LoadResult.Page(
                         data = items,
                         prevKey = if (page == 0) null else page - 1,
-                        nextKey = if (items.isEmpty()) null else page + 1
+                        nextKey = if (listSize < pagingSize) null else page + 1
                     )
                 }
                 else -> LoadResult.Error(Throwable("fail to api call"))

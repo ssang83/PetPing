@@ -243,7 +243,7 @@
                         android:layout_marginStart="37dp"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/nanum_square_round"
-                        android:lineHeight="20sp"
+                        android:lineHeight="20dp"
                         android:text="이메일 주소, 휴대폰 번호, 앱 알림으로\n이벤트 소식을 알려 드려요."
                         android:textColor="@color/greyscale_9_aaa"
                         android:textSize="12dp" />

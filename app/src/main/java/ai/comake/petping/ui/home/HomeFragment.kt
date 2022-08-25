@@ -3,12 +3,16 @@ package ai.comake.petping.ui.home
 import ai.comake.petping.AppConstants.AUTH_KEY
 import ai.comake.petping.AppConstants.DOUBLE_BACK_PRESS_EXITING_TIME_LIMIT
 import ai.comake.petping.AppConstants.ID
+import ai.comake.petping.Event
 import ai.comake.petping.MainShareViewModel
 import ai.comake.petping.R
 import ai.comake.petping.data.db.badge.BadgeRepository
 import ai.comake.petping.data.vo.MenuLink
 import ai.comake.petping.databinding.FragmentHomeBinding
 import ai.comake.petping.observeEvent
+import ai.comake.petping.ui.home.walk.WalkBottomUi
+import ai.comake.petping.ui.home.walk.WalkViewModel
+import ai.comake.petping.ui.home.walk.service.LocationUpdatesService.Companion._walkBottomUi
 import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.readTextFromUri
 import android.app.Activity
@@ -44,6 +48,7 @@ class HomeFragment : Fragment() {
     private val args by navArgs<HomeFragmentArgs>()
     private val mainShareViewModel: MainShareViewModel by activityViewModels()
     private val homeShareViewModel: HomeShareViewModel by activityViewModels()
+    private val walkViewModel by viewModels<WalkViewModel>()
     private var navController: NavController? = null
     private var menuIcons = hashMapOf(
         R.id.dashBoardScreen to BottomMenu(R.id.dashBoardScreenIcon, R.id.dashBoardScreenTitle),
@@ -87,11 +92,7 @@ class HomeFragment : Fragment() {
         checkMenuLink(args.menulink)
         checkNewBadge()
 
-        if (homeShareViewModel.screenName.isEmpty()) {
-            homeShareViewModel.screenName = "dashBoardScreen"
-        }
-
-        LogUtil.log("screenName : ${homeShareViewModel.screenName}")
+        LogUtil.log("screenName : ${homeShareViewModel.destinationScreen}")
     }
 
     fun checkNewBadge() {
@@ -102,17 +103,17 @@ class HomeFragment : Fragment() {
         when (view.id) {
             R.id.dashBoardScreen -> {
                 LogUtil.log("TAG", "dashBoardScreen ")
-                homeShareViewModel.screenName = "dashBoardScreen"
+                homeShareViewModel.destinationScreen = "dashBoardScreen"
                 showDashBoardScreen()
             }
             R.id.walkScreen -> {
                 LogUtil.log("TAG", "walkScreen ")
-                homeShareViewModel.screenName = "walkScreen"
+                homeShareViewModel.destinationScreen = "walkScreen"
                 showWalkScreen()
             }
             R.id.rewardScreen -> {
                 LogUtil.log("TAG", "rewardScreen ")
-                homeShareViewModel.screenName = "rewardScreen"
+                homeShareViewModel.destinationScreen = "rewardScreen"
                 showRewardScreen()
 
                 if (isNewPointBadge()) {
@@ -121,12 +122,12 @@ class HomeFragment : Fragment() {
             }
             R.id.shopScreen -> {
                 LogUtil.log("TAG", "shopScreen ")
-                homeShareViewModel.screenName = "shopScreen"
+                homeShareViewModel.destinationScreen = "shopScreen"
                 showShopScreen()
             }
             R.id.insuranceScreen -> {
                 LogUtil.log("TAG", "insuranceScreen ")
-                homeShareViewModel.screenName = "insuranceScreen"
+                homeShareViewModel.destinationScreen = "insuranceScreen"
                 showInsuranceScreen()
             }
         }
@@ -258,8 +259,42 @@ class HomeFragment : Fragment() {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            finishApplication()
+            backKeyEvent()
         }
+    }
+
+    fun backKeyEvent() {
+        LogUtil.log(
+            "TAG",
+            "homeShareViewModel.destinationScreen: ${homeShareViewModel.destinationScreen}"
+        )
+        LogUtil.log(
+            "TAG",
+            "homeShareViewModel.isVisibleAudioGuideList: ${homeShareViewModel.isVisibleAudioGuideList}"
+        )
+        if (homeShareViewModel.destinationScreen == "walkScreen" && homeShareViewModel.isVisibleAudioGuideList) {
+            homeShareViewModel.showAudioGuideList.postValue(Event(false))
+            return
+        }
+
+        when(_walkBottomUi.value) {
+            WalkBottomUi.MARKING ->{
+                _walkBottomUi.value = WalkBottomUi.NONE
+                return
+            }
+
+            WalkBottomUi.PLACE ->{
+                _walkBottomUi.value = WalkBottomUi.NONE
+                return
+            }
+
+            WalkBottomUi.CLUSTER ->{
+                _walkBottomUi.value = WalkBottomUi.NONE
+                return
+            }
+        }
+
+        finishApplication()
     }
 
     private fun setupClickEvent() {
