@@ -208,6 +208,7 @@
                         android:paddingStart="11dp"
                         android:paddingEnd="11dp"
                         app:viewModel="@{viewModel}"
+                        tools:listitem="@layout/item_friend_view"
                         app:friendItems="@{viewModel.friendInfoList}"
                         android:visibility="@{viewModel.friendInfoList.size() &lt; 2 ? View.GONE : View.VISIBLE}"
                         />
@@ -271,7 +272,7 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="176dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:layout_marginHorizontal="15dp"
                         android:outlineSpotShadowColor="#4A000000"
@@ -285,21 +286,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="20dp"
+                            android:paddingBottom="45dp"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="24dp"
+                                android:layout_marginTop="20dp"
                                 android:fontFamily="@font/nanum_square_round_b"
                                 android:lineSpacingExtra="8dp"
                                 android:textColor="@color/greyscale_9_111"
                                 android:textSize="17dp"
                                 app:petFriendTitle="@{viewModel.petName}"></TextView>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="23dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -308,7 +306,9 @@
                                 android:lineSpacingExtra="8dp"
                                 android:text="산책하실 때 지도 위에 표시된\n핑존 주변에 데려가 보세요."
                                 android:textColor="@color/greyscale_9_777"
-                                android:textSize="15dp"></TextView>
+                                android:textSize="15dp"
+                                android:layout_marginTop="15dp"
+                                />
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>

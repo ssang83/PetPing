@@ -1577,6 +1577,9 @@ object BindingUtils {
         items?.let {
             recyclerView.apply {
                 itemAnimator = DefaultItemAnimator()
+                layoutManager = LinearLayoutManager(recyclerView.context).apply {
+                    orientation = LinearLayoutManager.HORIZONTAL
+                }
                 adapter = FriendAdapter(viewModel).apply { submitList(it) }
             }
         }

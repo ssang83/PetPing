@@ -59,9 +59,11 @@
             tools:text="핑팁 리스트 텍스트 타이틀이 두줄로 뜬다면 이렇게 뜨겠죠"
             android:text="@{item.mainText}"
             android:textColor="@color/greyscale_9_111"
+            android:paddingStart="9dp"
+            android:paddingEnd="9dp"
             android:textSize="18dp"
             android:fontFamily="@font/nanum_square_round_b"
-            android:lines="2"
+            android:maxLines="2"
             android:lineSpacingExtra="5dp"
             />
     </LinearLayout>

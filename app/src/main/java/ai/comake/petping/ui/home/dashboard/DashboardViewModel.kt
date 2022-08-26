@@ -9,6 +9,7 @@ import ai.comake.petping.data.repository.PetRepository
 import ai.comake.petping.data.vo.*
 import ai.comake.petping.emit
 import ai.comake.petping.util.Coroutines
+import ai.comake.petping.util.LogUtil
 import ai.comake.petping.util.SharedPreferencesManager
 import ai.comake.petping.util.encrypt
 import android.content.Context
@@ -466,6 +467,7 @@ class DashboardViewModel @Inject constructor() : ViewModel() {
         val response = dashboardRepo.getPingZoneFriends(AppConstants.AUTH_KEY, petId)
         when (response) {
             is Resource.Success -> {
+                LogUtil.log("ping zone friend size : ${response.value.data.pingzoneMeetPets.size}")
                 _friendInfoList.value = response.value.data.pingzoneMeetPets
                 if (response.value.data.pingzoneMeetPets.size == 1) {
                     val friendInfo = response.value.data.pingzoneMeetPets[0]

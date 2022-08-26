@@ -135,6 +135,12 @@
                                 app:layout_constraintStart_toStartOf="@+id/tvAvailablePing"
                                 app:layout_constraintTop_toBottomOf="@+id/pingAmount" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/color_14000000"
+                            />
                     </LinearLayout>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
